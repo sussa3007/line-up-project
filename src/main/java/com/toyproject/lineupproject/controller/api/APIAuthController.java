@@ -11,6 +11,7 @@ public class APIAuthController {
     public String signUp(){
         return "done.";
     }
+
     @GetMapping("/login")
     public String login(){
         return "done.";
