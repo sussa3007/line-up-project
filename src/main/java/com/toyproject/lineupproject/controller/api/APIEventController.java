@@ -1,6 +1,7 @@
 package com.toyproject.lineupproject.controller.api;
 
 import com.toyproject.lineupproject.exception.GeneralException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,15 +11,14 @@ import java.util.List;
 public class APIEventController {
 
     @GetMapping("/events")
-    public List<String> getEvents() {
-        throw new GeneralException("Test GET");
+    public List<String> getEvents() throws Exception {
+        throw new HttpMediaTypeNotSupportedException("Test SPRING GET");
 //        return List.of("event1", "event2");
     }
 
     @PostMapping("/events")
     public Boolean createEvent() {
-        throw new RuntimeException("Test POST");
-
+        throw new RuntimeException("Test Runtime");
 //        return true;
     }
 
