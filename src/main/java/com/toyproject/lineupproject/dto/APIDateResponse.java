@@ -10,8 +10,22 @@ import lombok.ToString;
 public class APIDateResponse extends com.toyproject.lineupproject.dto.APIErrorResponse{
     private final Object data;
 
-    private APIDateResponse(Boolean success, Integer errorCode, String message, Object data){
+    private APIDateResponse(
+            Boolean success,
+            Integer errorCode,
+            String message,
+            Object data){
         super(success,errorCode,message);
         this.data = data;
+    }
+
+    public static APIDateResponse of(
+            boolean success,
+            Integer errorCode,
+            String message,
+            Object data
+    ){
+        return new APIDateResponse(
+                success, errorCode, message, data);
     }
 }

@@ -1,9 +1,11 @@
 package com.toyproject.lineupproject.domain;
 
 import com.toyproject.lineupproject.constant.EventStatus;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
+@Data
 public class Event {
 
     private Long id;

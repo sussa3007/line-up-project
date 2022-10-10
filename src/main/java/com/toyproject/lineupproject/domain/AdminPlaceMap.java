@@ -1,7 +1,10 @@
 package com.toyproject.lineupproject.domain;
 
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
+@Data
 public class AdminPlaceMap {
 
     private Long id;
