@@ -2,15 +2,12 @@ package com.toyproject.lineupproject.controller.error;
 
 
 import com.toyproject.lineupproject.constant.ErrorCode;
-import com.toyproject.lineupproject.dto.APIErrorResponse;
 import com.toyproject.lineupproject.exception.GeneralException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 // View Excption Handler
