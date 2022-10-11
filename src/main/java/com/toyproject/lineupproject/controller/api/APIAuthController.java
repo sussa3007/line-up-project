@@ -1,19 +1,20 @@
 package com.toyproject.lineupproject.controller.api;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.toyproject.lineupproject.dto.APIDataResponse;
+import com.toyproject.lineupproject.dto.AdminRequest;
+import com.toyproject.lineupproject.dto.LoginRequest;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api")
 @RestController
 public class APIAuthController {
-    @GetMapping("/sign-up")
-    public String signUp(){
-        return "done.";
+    @PostMapping("/sign-up")
+    public APIDataResponse<String> signUp(@RequestBody AdminRequest adminRequest) {
+        return APIDataResponse.empty();
     }
 
-    @GetMapping("/login")
-    public String login(){
-        return "done.";
+    @PostMapping("/login")
+    public APIDataResponse<String> login(@RequestBody LoginRequest loginRequest) {
+        return APIDataResponse.empty();
     }
 }
