@@ -5,8 +5,8 @@ import com.toyproject.lineupproject.dto.AdminRequest;
 import com.toyproject.lineupproject.dto.LoginRequest;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/api")
-@RestController
+//@RequestMapping("/api")
+//@RestController
 public class APIAuthController {
     @PostMapping("/sign-up")
     public APIDataResponse<String> signUp(@RequestBody AdminRequest adminRequest) {

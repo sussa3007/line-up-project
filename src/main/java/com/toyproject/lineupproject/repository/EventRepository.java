@@ -1,14 +1,16 @@
 package com.toyproject.lineupproject.repository;
 
 import com.toyproject.lineupproject.constant.EventStatus;
+import com.toyproject.lineupproject.domain.Event;
 import com.toyproject.lineupproject.dto.EventDTO;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 // Todo: 인스턴스 생성 편의를 위해 임시로 default 사용
-public interface EventRepository {
+public interface EventRepository extends JpaRepository<Event,Long> {
     default List<EventDTO> findEvents(
             Long placeId,
             String eventName,
