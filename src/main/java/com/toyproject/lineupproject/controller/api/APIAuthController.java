@@ -4,7 +4,7 @@ import com.toyproject.lineupproject.dto.APIDataResponse;
 import com.toyproject.lineupproject.dto.AdminRequest;
 import com.toyproject.lineupproject.dto.LoginRequest;
 import org.springframework.web.bind.annotation.*;
-
+@Deprecated
 //@RequestMapping("/api")
 //@RestController
 public class APIAuthController {

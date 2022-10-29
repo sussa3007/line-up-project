@@ -6,6 +6,7 @@ import com.toyproject.lineupproject.constant.EventStatus;
 import com.toyproject.lineupproject.dto.EventDTO;
 import com.toyproject.lineupproject.dto.EventResponse;
 import com.toyproject.lineupproject.service.EventService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ import static org.mockito.BDDMockito.then;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@Deprecated
+@Disabled("API 컨트롤러가 필요없는 상황이어서 비활성화")
+@DisplayName("API 컨트롤러 - 이벤트")
 @WebMvcTest(APIEventController.class)
 class APIEventControllerTest {
 
@@ -262,6 +266,7 @@ class APIEventControllerTest {
     }
     private EventDTO createEventDTO() {
         return EventDTO.of(
+                1L,
                 1L,
                 "오후 운동",
                 EventStatus.OPENED,
