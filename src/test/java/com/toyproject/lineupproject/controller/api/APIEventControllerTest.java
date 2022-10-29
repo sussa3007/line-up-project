@@ -44,19 +44,15 @@ class APIEventControllerTest {
         this.mapper = mapper;
     }
 
-    @DisplayName("[API][GET] 이벤트 리스트 조회 + 검색 파라미터")
+    @DisplayName("[API][GET] 이벤트 리스트 조회 + 잘못된 검색 파라미터")
     @Test
     void givenParams_whenRequestingEvents_thenReturnsListOfEventsInStandardResponse() throws Exception {
         // Given
-
         // When & Then
         mvc.perform(
                 get("/api/events")
                         .queryParam("placeId","0")
                         .queryParam("eventName","오")
-                        .queryParam("eventStatus",EventStatus.OPENED.name())
-                        .queryParam("eventStartDatetime","2021-01-01T00:00:00")
-                        .queryParam("eventEndDatetime","2021-01-02T00:00:00")
                 )
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -69,7 +65,7 @@ class APIEventControllerTest {
         then(eventService).shouldHaveNoInteractions();
     }
 
-    @DisplayName("[API][GET] 이벤트 리스트 조회 + 잘못된 검색 파라미터")
+    @DisplayName("[API][GET] 이벤트 리스트 조회 + 검색 파라미터")
     @Test
     void givenWrongParams_whenRequestingEvents_thenReturnsFailedStandardResponse() throws Exception {
         // Given
