@@ -2,7 +2,7 @@ package com.toyproject.lineupproject.controller.error;
 
 
 import com.toyproject.lineupproject.constant.ErrorCode;
-import com.toyproject.lineupproject.dto.APIErrorResponse;
+import com.toyproject.lineupproject.dto.ApiErrorResponse;
 import com.toyproject.lineupproject.exception.GeneralException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -44,7 +44,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     private ResponseEntity<Object> handleExceptionInternal(Exception e, ErrorCode errorCode, HttpHeaders headers, WebRequest request) {
         return super.handleExceptionInternal(
                 e,
-                APIErrorResponse.of(false, errorCode.getCode(), errorCode.getMessage(e)),
+                ApiErrorResponse.of(false, errorCode.getCode(), errorCode.getMessage(e)),
                 headers,
                 errorCode.getHttpStatus(),
                 request

@@ -1,7 +1,7 @@
 package com.toyproject.lineupproject.controller.error;
 
 import com.toyproject.lineupproject.constant.ErrorCode;
-import com.toyproject.lineupproject.dto.APIErrorResponse;
+import com.toyproject.lineupproject.dto.ApiErrorResponse;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,7 +38,7 @@ public class BaseErrorController implements ErrorController {
 
     // Error json body
     @RequestMapping("/error")
-    public ResponseEntity<APIErrorResponse> error(HttpServletResponse response){
+    public ResponseEntity<ApiErrorResponse> error(HttpServletResponse response){
         HttpStatus status = HttpStatus.valueOf(response.getStatus());
         ErrorCode errorCode =
                 status.is4xxClientError()
@@ -47,7 +47,7 @@ public class BaseErrorController implements ErrorController {
 
         return ResponseEntity
                 .status(status)
-                .body(APIErrorResponse.of(false,errorCode ));
+                .body(ApiErrorResponse.of(false,errorCode ));
 
     }
 
