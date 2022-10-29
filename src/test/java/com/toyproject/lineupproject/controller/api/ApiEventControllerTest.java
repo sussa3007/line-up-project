@@ -3,9 +3,10 @@ package com.toyproject.lineupproject.controller.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toyproject.lineupproject.constant.ErrorCode;
 import com.toyproject.lineupproject.constant.EventStatus;
-import com.toyproject.lineupproject.dto.EventDTO;
+import com.toyproject.lineupproject.dto.EventDto;
 import com.toyproject.lineupproject.dto.EventResponse;
 import com.toyproject.lineupproject.service.EventService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,11 @@ import static org.mockito.BDDMockito.then;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(APIEventController.class)
-class APIEventControllerTest {
+@Deprecated
+@Disabled("API 컨트롤러가 필요없는 상황이어서 비활성화")
+@DisplayName("API 컨트롤러 - 이벤트")
+@WebMvcTest(ApiEventController.class)
+class ApiEventControllerTest {
 
     private final MockMvc mvc;
     private final ObjectMapper mapper;
@@ -36,7 +40,7 @@ class APIEventControllerTest {
     @MockBean
     private EventService eventService;
 
-    public APIEventControllerTest(
+    public ApiEventControllerTest(
             @Autowired MockMvc mvc,
             @Autowired ObjectMapper mapper
     ) {
@@ -260,8 +264,9 @@ class APIEventControllerTest {
                 .andExpect(jsonPath("$.message").value(ErrorCode.OK.getMessage()));
         then(eventService).should().removeEvent(eq(eventId));
     }
-    private EventDTO createEventDTO() {
-        return EventDTO.of(
+    private EventDto createEventDTO() {
+        return EventDto.of(
+                1L,
                 1L,
                 "오후 운동",
                 EventStatus.OPENED,

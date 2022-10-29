@@ -1,7 +1,7 @@
 package com.toyproject.lineupproject.controller.error;
 
 import com.toyproject.lineupproject.constant.ErrorCode;
-import com.toyproject.lineupproject.dto.APIErrorResponse;
+import com.toyproject.lineupproject.dto.ApiErrorResponse;
 import com.toyproject.lineupproject.exception.GeneralException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,13 +19,13 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class APIExceptionHandlerTest {
-    private APIExceptionHandler sut;
+class ApiExceptionHandlerTest {
+    private ApiExceptionHandler sut;
     private WebRequest webRequest;
 
     @BeforeEach
     void setUp() {
-        sut = new APIExceptionHandler();
+        sut = new ApiExceptionHandler();
         webRequest = new DispatcherServletWebRequest(new MockHttpServletRequest());
     }
 
@@ -38,7 +38,7 @@ class APIExceptionHandlerTest {
         ResponseEntity<Object> response = sut.validation(e, webRequest);
         // Then
         assertThat(response)
-                .hasFieldOrPropertyWithValue("body", APIErrorResponse.of(
+                .hasFieldOrPropertyWithValue("body", ApiErrorResponse.of(
                         false,
                         ErrorCode.VALIDATION_ERROR,e))
                 .hasFieldOrPropertyWithValue("headers", HttpHeaders.EMPTY)
@@ -55,7 +55,7 @@ class APIExceptionHandlerTest {
         ResponseEntity<Object> response = sut.general(e, webRequest);
         // Then
         assertThat(response)
-                .hasFieldOrPropertyWithValue("body", APIErrorResponse.of(
+                .hasFieldOrPropertyWithValue("body", ApiErrorResponse.of(
                         false,
                         errorCode,e))
                 .hasFieldOrPropertyWithValue("headers", HttpHeaders.EMPTY)
@@ -72,7 +72,7 @@ class APIExceptionHandlerTest {
         ResponseEntity<Object> response = sut.exception(e, webRequest);
         // Then
         assertThat(response)
-                .hasFieldOrPropertyWithValue("body", APIErrorResponse.of(
+                .hasFieldOrPropertyWithValue("body", ApiErrorResponse.of(
                         false,
                         ErrorCode.INTERNAL_ERROR,e))
                 .hasFieldOrPropertyWithValue("headers", HttpHeaders.EMPTY)
