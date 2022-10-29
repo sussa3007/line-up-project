@@ -1,6 +1,7 @@
 package com.toyproject.lineupproject.dto;
 
 import com.toyproject.lineupproject.constant.EventStatus;
+import com.toyproject.lineupproject.domain.Event;
 
 import java.time.LocalDateTime;
 
@@ -40,5 +41,45 @@ public record EventDTO(
                 createdAt,
                 modifiedAt
         );
+    }
+    public static EventDTO of(Event event) {
+        return new EventDTO(
+                event.getPlaceId(),
+                event.getEventName(),
+                event.getEventStatus(),
+                event.getEventStartDatetime(),
+                event.getEventEndDatetime(),
+                event.getCurrentNumberOfPeople(),
+                event.getCapacity(),
+                event.getMemo(),
+                event.getCreatedAt(),
+                event.getModifiedAt()
+        );
+    }
+
+    public Event toEntity() {
+        return Event.of(
+                placeId,
+                eventName,
+                eventStatus,
+                eventStartDatetime,
+                eventEndDatetime,
+                currentNumberOfPeople,
+                capacity,
+                memo
+        );
+    }
+
+    public Event updateEntity(Event event) {
+        if (placeId != null) { event.setPlaceId(placeId); }
+        if (eventName != null) { event.setEventName(eventName); }
+        if (eventStatus != null) { event.setEventStatus(eventStatus); }
+        if (eventStartDatetime != null) { event.setEventStartDatetime(eventStartDatetime); }
+        if (eventEndDatetime != null) { event.setEventEndDatetime(eventEndDatetime); }
+        if (currentNumberOfPeople != null) { event.setCurrentNumberOfPeople(currentNumberOfPeople); }
+        if (capacity != null) { event.setCapacity(capacity); }
+        if (memo != null) { event.setMemo(memo); }
+
+        return event;
     }
 }
