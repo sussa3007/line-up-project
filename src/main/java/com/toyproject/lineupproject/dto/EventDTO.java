@@ -6,6 +6,7 @@ import com.toyproject.lineupproject.domain.Event;
 import java.time.LocalDateTime;
 
 public record EventDTO(
+        Long id,
         Long placeId,
         String eventName,
         EventStatus eventStatus,
@@ -17,7 +18,9 @@ public record EventDTO(
         LocalDateTime createdAt,
         LocalDateTime modifiedAt
 ) {
+
     public static EventDTO of(
+            Long id,
             Long placeId,
             String eventName,
             EventStatus eventStatus,
@@ -30,6 +33,7 @@ public record EventDTO(
             LocalDateTime modifiedAt
     ) {
         return new EventDTO(
+                id,
                 placeId,
                 eventName,
                 eventStatus,
@@ -42,8 +46,10 @@ public record EventDTO(
                 modifiedAt
         );
     }
+
     public static EventDTO of(Event event) {
         return new EventDTO(
+                event.getId(),
                 event.getPlaceId(),
                 event.getEventName(),
                 event.getEventStatus(),
