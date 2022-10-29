@@ -1,7 +1,7 @@
 package com.toyproject.lineupproject.integration;
 
 
-import com.toyproject.lineupproject.dto.EventDTO;
+import com.toyproject.lineupproject.dto.EventDto;
 import com.toyproject.lineupproject.service.EventService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,8 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
 
 @SpringBootTest
 public class EventServiceSociableTest {
@@ -25,7 +23,7 @@ public class EventServiceSociableTest {
         // Given
 
         // When
-        List<EventDTO> list =
+        List<EventDto> list =
                 sut.getEvents(null, null,
                         null, null, null);
         // Then

@@ -3,7 +3,7 @@ package com.toyproject.lineupproject.controller.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toyproject.lineupproject.constant.ErrorCode;
 import com.toyproject.lineupproject.constant.EventStatus;
-import com.toyproject.lineupproject.dto.EventDTO;
+import com.toyproject.lineupproject.dto.EventDto;
 import com.toyproject.lineupproject.dto.EventResponse;
 import com.toyproject.lineupproject.service.EventService;
 import org.junit.jupiter.api.Disabled;
@@ -264,8 +264,8 @@ class APIEventControllerTest {
                 .andExpect(jsonPath("$.message").value(ErrorCode.OK.getMessage()));
         then(eventService).should().removeEvent(eq(eventId));
     }
-    private EventDTO createEventDTO() {
-        return EventDTO.of(
+    private EventDto createEventDTO() {
+        return EventDto.of(
                 1L,
                 1L,
                 "오후 운동",
