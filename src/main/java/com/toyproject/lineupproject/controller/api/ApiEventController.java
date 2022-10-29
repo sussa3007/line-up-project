@@ -22,7 +22,7 @@ import java.util.List;
 //@Validated
 //@RequestMapping("/api")
 //@RestController
-public class APIEventController {
+public class ApiEventController {
 
     private final EventService eventService;
 

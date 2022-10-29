@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 @Deprecated
 //@RequestMapping("/api")
 //@RestController
-public class APIAuthController {
+public class ApiAuthController {
     @PostMapping("/sign-up")
     public APIDataResponse<String> signUp(@RequestBody AdminRequest adminRequest) {
         return APIDataResponse.empty();
