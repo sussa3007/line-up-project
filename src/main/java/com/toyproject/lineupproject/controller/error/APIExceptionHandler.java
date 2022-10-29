@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.data.rest.webmvc.RepositoryRestController;
 
 import javax.validation.ConstraintViolationException;
 
 
 // API Excption Handler
-@RestControllerAdvice(annotations = RestController.class)
+@RestControllerAdvice(annotations = {RestController.class, RepositoryRestController.class})
 // RestController를 사용하는 API만 적용
 // Spring webMVC에서 발생하는 Exception 추가 ResponseEntityExceptionHandler 상속 받음
 // handleExceptionInternal 오버라이딩
