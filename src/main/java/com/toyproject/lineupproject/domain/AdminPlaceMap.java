@@ -1,6 +1,5 @@
 package com.toyproject.lineupproject.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +24,6 @@ import java.time.LocalDateTime;
 @Entity
 public class AdminPlaceMap {
 
-    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
