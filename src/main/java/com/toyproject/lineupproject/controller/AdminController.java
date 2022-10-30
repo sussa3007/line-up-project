@@ -18,19 +18,21 @@ import java.util.Map;
 @RequestMapping("/admin")
 @Controller
 public class AdminController {
-/* @RequestParam 기본값은 false = Optional data */
+
     @GetMapping("/places")
     public ModelAndView adminPlaces(
             PlaceType placeType,
             String placeName,
             String address
-    ){
+    ) {
         Map<String, Object> map = new HashMap<>();
         map.put("placeType", placeType);
         map.put("placeName", placeName);
         map.put("address", address);
+
         return new ModelAndView("admin/places", map);
     }
+
     @GetMapping("/places/{placeId}")
     public ModelAndView adminPlaceDetail(@PathVariable Long placeId) {
         Map<String, Object> map = new HashMap<>();
@@ -48,6 +50,7 @@ public class AdminController {
 
         return new ModelAndView("admin/place-detail", map);
     }
+
     @GetMapping("/events")
     public ModelAndView adminEvents(
             Long placeId,
@@ -65,12 +68,23 @@ public class AdminController {
 
         return new ModelAndView("admin/events", map);
     }
+
     @GetMapping("/events/{eventId}")
     public ModelAndView adminEventDetail(@PathVariable Long eventId) {
         Map<String, Object> map = new HashMap<>();
         map.put("event", EventDto.of(
                 eventId,
-                1L,
+                PlaceDto.of(
+                        1L,
+                        PlaceType.SPORTS,
+                        "배드민턴장",
+                        "서울시 그리구 그래동",
+                        "010-2222-3333",
+                        33,
+                        null,
+                        LocalDateTime.now(),
+                        LocalDateTime.now()
+                ),
                 "오후 운동",
                 EventStatus.OPENED,
                 LocalDateTime.of(2021, 1, 1, 13, 0, 0),

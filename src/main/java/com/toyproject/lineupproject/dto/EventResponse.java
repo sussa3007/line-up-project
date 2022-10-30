@@ -5,7 +5,8 @@ import com.toyproject.lineupproject.constant.EventStatus;
 import java.time.LocalDateTime;
 
 public record EventResponse(
-        Long placeId,
+        Long id,
+        PlaceDto place,
         String eventName,
         EventStatus eventStatus,
         LocalDateTime eventStartDatetime,
@@ -14,8 +15,10 @@ public record EventResponse(
         Integer capacity,
         String memo
 ) {
+
     public static EventResponse of(
-            Long placeId,
+            Long id,
+            PlaceDto place,
             String eventName,
             EventStatus eventStatus,
             LocalDateTime eventStartDatetime,
@@ -25,7 +28,8 @@ public record EventResponse(
             String memo
     ) {
         return new EventResponse(
-                placeId,
+                id,
+                place,
                 eventName,
                 eventStatus,
                 eventStartDatetime,
@@ -37,9 +41,10 @@ public record EventResponse(
     }
 
     public static EventResponse from(EventDto eventDTO) {
-        if(eventDTO==null) return null;
+        if (eventDTO == null) { return null; }
         return EventResponse.of(
-                eventDTO.placeId(),
+                eventDTO.id(),
+                eventDTO.placeDto(),
                 eventDTO.eventName(),
                 eventDTO.eventStatus(),
                 eventDTO.eventStartDatetime(),
@@ -49,4 +54,5 @@ public record EventResponse(
                 eventDTO.memo()
         );
     }
+
 }
