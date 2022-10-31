@@ -5,25 +5,27 @@ import com.toyproject.lineupproject.constant.ErrorCode;
 import com.toyproject.lineupproject.constant.EventStatus;
 import com.toyproject.lineupproject.domain.Place;
 import com.toyproject.lineupproject.dto.EventDto;
+import com.toyproject.lineupproject.dto.EventViewResponse;
 import com.toyproject.lineupproject.exception.GeneralException;
 import com.toyproject.lineupproject.repository.EventRepository;
 import com.toyproject.lineupproject.repository.PlaceRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class EventService {
+
     private final EventRepository eventRepository;
     private final PlaceRepository placeRepository;
 
-    @Transactional(readOnly = true)
     public List<EventDto> getEvents(Predicate predicate) {
         try {
             return StreamSupport.stream(eventRepository.findAll(predicate).spliterator(), false)
@@ -33,22 +35,29 @@ public class EventService {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
     }
-    @Transactional(readOnly = true)
 
-    public List<EventDto> getEvents(
-            Long placeId,
+    public Page<EventViewResponse> getEventViewResponse(
+            String placeName,
             String eventName,
             EventStatus eventStatus,
             LocalDateTime eventStartDatetime,
-            LocalDateTime eventEndDatetime
+            LocalDateTime eventEndDatetime,
+            Pageable pageable
     ) {
         try {
-            return null;
+            return eventRepository.findEventViewPageBySearchParams(
+                    placeName,
+                    eventName,
+                    eventStatus,
+                    eventStartDatetime,
+                    eventEndDatetime,
+                    pageable
+            );
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
     }
-    @Transactional(readOnly = true)
+
     public Optional<EventDto> getEvent(Long eventId) {
         try {
             return eventRepository.findById(eventId).map(EventDto::of);
@@ -56,7 +65,7 @@ public class EventService {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
     }
-    @Transactional
+
     public boolean createEvent(EventDto eventDTO) {
         try {
             if (eventDTO == null) {
@@ -71,7 +80,7 @@ public class EventService {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
     }
-    @Transactional
+
     public boolean modifyEvent(Long eventId, EventDto dto) {
         try {
             if (eventId == null || dto == null) {
@@ -86,7 +95,7 @@ public class EventService {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
     }
-    @Transactional
+
     public boolean removeEvent(Long eventId) {
         try {
             if (eventId == null) {
@@ -99,6 +108,4 @@ public class EventService {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
     }
-
-
 }

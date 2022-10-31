@@ -36,7 +36,7 @@ values
     (2, 'test event', 'CANCELLED', '2022-09-30 18:00:00', '2022-09-30 20:00:00', 0, 10, 'test'),
     (2, 'test event', 'CANCELLED', '2022-09-30 18:00:00', '2022-09-30 20:00:00', 0, 10, 'test'),
     (2, 'test event', 'CANCELLED', '2022-09-30 18:00:00', '2022-09-30 20:00:00', 0, 10, 'test'),
-    (3, '오전 스키', 'OPENED', '2022-08-01 08:00:00', '2022-08-01 12:30:00', 12, 50, 'test memo6')
+    (3, '오전 스키', 'OPENED', '2022-08-02 08:00:00', '2022-08-02 12:30:00', 12, 50, 'test memo6')
 ;
 
 insert into `admin` (`email`, `nickname`, `password`, `phone_number`, `memo`)
