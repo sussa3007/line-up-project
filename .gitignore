@@ -37,3 +37,6 @@ out/
 .vscode/
 ### querydsl
 /src/main/generated
+
+### jooq
+/src/main/generated-jooq

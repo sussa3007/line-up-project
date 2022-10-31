@@ -1,6 +1,7 @@
 plugins {
 	id 'org.springframework.boot' version '2.7.4'
 	id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+	id 'nu.studer.jooq' version '5.2.2'
 	id 'java'
 }
 
@@ -19,6 +20,8 @@ repositories {
 }
 project.ext {
 	querydslVersion = dependencyManagement.importedProperties['querydsl.version']
+	mysqlVersion = dependencyManagement.importedProperties['mysql.version']
+	jooqVersion = dependencyManagement.importedProperties['jooq.version']
 }
 
 dependencies {
@@ -45,12 +48,16 @@ dependencies {
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api" // java.lang.NoClassDefFoundError (javax.annotation.Generated) 발생 대응
 	annotationProcessor("jakarta.persistence:jakarta.persistence-api")
 
+	// jooq
+	implementation 'org.springframework.boot:spring-boot-starter-jooq'
+	jooqGenerator "mysql:mysql-connector-java:${project.mysqlVersion}"
+
+
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
-//// Querydsl 설정부
 //// Querydsl 설정부
 def generated='src/main/generated'
 
@@ -67,4 +74,65 @@ sourceSets {
 // gradle clean 시에 QClass 디렉토리 삭제
 clean {
 	delete file(generated)
+}
+
+def generatedJooq = 'src/main/generated-jooq'
+
+jooq {
+	version = project.jooqVersion
+
+	configurations {
+		main {  // name of the jOOQ configuration
+			generationTool {
+				logging = org.jooq.meta.jaxb.Logging.WARN
+				jdbc {
+					driver = 'com.mysql.cj.jdbc.Driver'
+					url = 'jdbc:mysql://localhost:3306/lineup'
+					user = 'root'
+					password = 'tndud1933'
+				}
+				generator {
+					name = 'org.jooq.codegen.JavaGenerator'
+					database {
+						name = 'org.jooq.meta.mysql.MySQLDatabase'
+						inputSchema = 'lineup'
+						includes = '.*'
+						excludes = ''
+						forcedTypes {
+							forcedType {
+								userType = 'com.toyproject.lineupproject.constant.EventStatus'
+								enumConverter = true
+								includeExpression = '.*\\.event_status'
+								includeTypes = '.*'
+							}
+							forcedType {
+								userType = 'com.toyproject.lineupproject.constant.PlaceType'
+								enumConverter = true
+								includeExpression = '.*\\.place_type'
+								includeTypes = '.*'
+							}
+						}
+					}
+					generate {
+						deprecated = false
+						records = true
+						immutablePojos = true
+						fluentSetters = true
+						javaTimeTypes = true
+					}
+					target {
+						packageName = 'com.toyproject.lineupproject'
+						directory = generatedJooq
+					}
+					strategy.name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+				}
+			}
+		}
+	}
+}
+
+// incremental build (증분 빌드) - Jooq 오브젝트 생성 퍼포먼스 향상
+tasks.named('generateJooq').configure {
+	allInputsDeclared = true
+	outputs.cacheIf { true }
 }
