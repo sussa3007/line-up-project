@@ -1,0 +1,1 @@
+web: java $JAVA_OPTS -Dserver.port=$PORT -Dspring.profiles.active=alpha -jar build/libs/line-up-project-0.1.3-SNAPSHOT.jar

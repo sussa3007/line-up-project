@@ -7,6 +7,7 @@ import com.toyproject.lineupproject.exception.GeneralException;
 import com.toyproject.lineupproject.repository.PlaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,11 +16,13 @@ import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PlaceService {
 
     private final PlaceRepository placeRepository;
 
     // 전체조회
+    @Transactional(readOnly = true)
     public List<PlaceDto> getPlaces(Predicate predicate) {
         try {
             return StreamSupport.stream(
@@ -32,6 +35,7 @@ public class PlaceService {
         }
     }
     // 단건조회
+    @Transactional(readOnly = true)
     public Optional<PlaceDto> getPlace(Long placeId) {
         try {
             return placeRepository.findById(placeId).map(PlaceDto::of);
