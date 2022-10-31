@@ -126,7 +126,7 @@ class EventRepositoryTest {
         // When
         Iterable<Event> events = sut.findAll(new BooleanBuilder());
         // Then
-        assertThat(events).hasSize(27);
+        assertThat(events).hasSize(7);
     }
 
     private Event createEvent(Place place) {
