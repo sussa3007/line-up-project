@@ -51,6 +51,19 @@ public record PlaceDto(
         );
     }
 
+    public static PlaceDto idOnly(Long placeId) {
+        return PlaceDto.of(
+                placeId,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
+    }
+
     public Place toEntity() {
         return Place.of(
                 placeType,
