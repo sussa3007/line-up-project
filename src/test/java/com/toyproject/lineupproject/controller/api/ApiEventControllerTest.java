@@ -167,7 +167,7 @@ class ApiEventControllerTest {
     void givenEventId_whenRequestingExistentEvent_thenReturnsEventInStandardResponse() throws Exception {
         // Given
         long eventId = 1L;
-        given(eventService.getEvent(eventId)).willReturn(Optional.of(createEventDTO()));
+        given(eventService.getEvent(eventId)).willReturn(Optional.of(createEventDto()));
 
         // When & Then
         mvc.perform(get("/api/events/" + eventId))
@@ -325,7 +325,7 @@ class ApiEventControllerTest {
     }
 
 
-    private EventDto createEventDTO() {
+    private EventDto createEventDto() {
         return EventDto.of(
                 1L,
                 createPlaceDto(1L),

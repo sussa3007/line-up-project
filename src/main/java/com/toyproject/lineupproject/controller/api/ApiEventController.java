@@ -36,7 +36,6 @@ public class ApiEventController {
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime eventStartDatetime,
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime eventEndDatetime
     ) {
-
         return ApiDataResponse.of(List.of(EventResponse.of(
                 1L,
                 PlaceDto.of(
@@ -60,18 +59,20 @@ public class ApiEventController {
         )));
     }
 
-
-    @PostMapping("/events")
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiDataResponse<String> createEvent(@Valid @RequestBody EventRequest eventRequest) {
-        boolean result = eventService.createEvent(eventRequest.toDTO());
+    @PostMapping("/place/{placeId}/events")
+    public ApiDataResponse<String> createEvent(
+            @Valid @RequestBody EventRequest eventRequest,
+            @PathVariable Long placeId
+    ) {
+        boolean result = eventService.createEvent(eventRequest.toDto(PlaceDto.idOnly(placeId)));
+
         return ApiDataResponse.of(Boolean.toString(result));
     }
 
     @GetMapping("/events/{eventId}")
     public ApiDataResponse<EventResponse> getEvent(@Positive @PathVariable Long eventId) {
-        EventResponse eventResponse =
-                EventResponse.from(eventService.getEvent(eventId).orElse(null));
+        EventResponse eventResponse = EventResponse.from(eventService.getEvent(eventId).orElse(null));
 
         return ApiDataResponse.of(eventResponse);
     }
@@ -81,7 +82,7 @@ public class ApiEventController {
             @Positive @PathVariable Long eventId,
             @Valid @RequestBody EventRequest eventRequest
     ) {
-        boolean result = eventService.modifyEvent(eventId, eventRequest.toDTO());
+        boolean result = eventService.modifyEvent(eventId, eventRequest.toDto(null));
         return ApiDataResponse.of(Boolean.toString(result));
     }
 
@@ -92,18 +93,4 @@ public class ApiEventController {
         return ApiDataResponse.of(Boolean.toString(result));
     }
 
-
-    // Local ExceptionHandler
-//    @ExceptionHandler
-//    public ResponseEntity<APIErrorResponse> general(GeneralException e){
-//        ErrorCode errorCode = e.getErrorCode();
-//        HttpStatus status = errorCode.isClientSideError() ?
-//                HttpStatus.BAD_REQUEST :
-//                HttpStatus.INTERNAL_SERVER_ERROR;
-//        return ResponseEntity
-//                .status(status)
-//                .body(APIErrorResponse.of(
-//                        false, errorCode, errorCode.getMessage(e)
-//                ));
-//    }
 }

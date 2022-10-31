@@ -16,39 +16,40 @@ import java.util.Map;
 @Controller
 public class BaseErrorController implements ErrorController {
 
-    // Error view
     @RequestMapping(path = "/error", produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView errorHtmp(HttpServletResponse response){
-        HttpStatus status = HttpStatus.valueOf(response.getStatus());
-        ErrorCode errorCode =
-                status.is4xxClientError()
-                        ? ErrorCode.BAD_REQUEST
-                        : ErrorCode.INTERNAL_ERROR;
+    public ModelAndView errorHtml(HttpServletResponse response) {
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getStatus());
+        ErrorCode errorCode = httpStatus.is4xxClientError() ? ErrorCode.BAD_REQUEST : ErrorCode.INTERNAL_ERROR;
 
-        return new ModelAndView("error",
+        if (httpStatus == HttpStatus.OK) {
+            httpStatus = HttpStatus.FORBIDDEN;
+            errorCode = ErrorCode.BAD_REQUEST;
+        }
+
+        return new ModelAndView(
+                "error",
                 Map.of(
-                        "statusCode", status.value(),
+                        "statusCode", httpStatus.value(),
                         "errorCode", errorCode,
-                        "message", errorCode
-                                .getMessage(status.getReasonPhrase())
+                        "message", errorCode.getMessage(httpStatus.getReasonPhrase())
                 ),
-                status
+                httpStatus
         );
     }
 
-    // Error json body
     @RequestMapping("/error")
-    public ResponseEntity<ApiErrorResponse> error(HttpServletResponse response){
-        HttpStatus status = HttpStatus.valueOf(response.getStatus());
-        ErrorCode errorCode =
-                status.is4xxClientError()
-                        ? ErrorCode.BAD_REQUEST
-                        : ErrorCode.INTERNAL_ERROR;
+    public ResponseEntity<ApiErrorResponse> error(HttpServletResponse response) {
+        HttpStatus httpStatus = HttpStatus.valueOf(response.getStatus());
+        ErrorCode errorCode = httpStatus.is4xxClientError() ? ErrorCode.BAD_REQUEST : ErrorCode.INTERNAL_ERROR;
+
+        if (httpStatus == HttpStatus.OK) {
+            httpStatus = HttpStatus.FORBIDDEN;
+            errorCode = ErrorCode.BAD_REQUEST;
+        }
 
         return ResponseEntity
-                .status(status)
-                .body(ApiErrorResponse.of(false,errorCode ));
-
+                .status(httpStatus)
+                .body(ApiErrorResponse.of(false, errorCode));
     }
 
 }
