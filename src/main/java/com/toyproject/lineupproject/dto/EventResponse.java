@@ -54,5 +54,8 @@ public record EventResponse(
                 eventDTO.memo()
         );
     }
+    public String getPlaceName() {
+        return this.place().placeName();
+    }
 
 }
