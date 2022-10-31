@@ -58,4 +58,16 @@ public record EventResponse(
         return this.place().placeName();
     }
 
+    public static EventResponse empty(PlaceDto placeDto) {
+        return EventResponse.of(
+                null,
+                placeDto,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
+    }
 }
