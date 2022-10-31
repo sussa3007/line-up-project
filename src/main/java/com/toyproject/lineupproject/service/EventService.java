@@ -3,10 +3,15 @@ package com.toyproject.lineupproject.service;
 import com.querydsl.core.types.Predicate;
 import com.toyproject.lineupproject.constant.ErrorCode;
 import com.toyproject.lineupproject.constant.EventStatus;
+import com.toyproject.lineupproject.domain.Place;
 import com.toyproject.lineupproject.dto.EventDto;
+import com.toyproject.lineupproject.dto.EventViewResponse;
 import com.toyproject.lineupproject.exception.GeneralException;
 import com.toyproject.lineupproject.repository.EventRepository;
+import com.toyproject.lineupproject.repository.PlaceRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,10 +19,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class EventService {
+
     private final EventRepository eventRepository;
+    private final PlaceRepository placeRepository;
 
     public List<EventDto> getEvents(Predicate predicate) {
         try {
@@ -29,15 +36,23 @@ public class EventService {
         }
     }
 
-    public List<EventDto> getEvents(
-            Long placeId,
+    public Page<EventViewResponse> getEventViewResponse(
+            String placeName,
             String eventName,
             EventStatus eventStatus,
             LocalDateTime eventStartDatetime,
-            LocalDateTime eventEndDatetime
+            LocalDateTime eventEndDatetime,
+            Pageable pageable
     ) {
         try {
-            return null;
+            return eventRepository.findEventViewPageBySearchParams(
+                    placeName,
+                    eventName,
+                    eventStatus,
+                    eventStartDatetime,
+                    eventEndDatetime,
+                    pageable
+            );
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
@@ -57,7 +72,9 @@ public class EventService {
                 return false;
             }
 
-            eventRepository.save(eventDTO.toEntity());
+            Place place = placeRepository.findById(eventDTO.placeDto().id())
+                    .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
+            eventRepository.save(eventDTO.toEntity(place));
             return true;
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
@@ -91,6 +108,4 @@ public class EventService {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
     }
-
-
 }

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.toyproject'
-version = '0.1.2-SNAPSHOT'
+version = '0.1.3-SNAPSHOT'
 sourceCompatibility = "16"
 
 configurations {
@@ -16,6 +16,9 @@ configurations {
 
 repositories {
 	mavenCentral()
+}
+project.ext {
+	querydslVersion = dependencyManagement.importedProperties['querydsl.version']
 }
 
 dependencies {
@@ -32,12 +35,13 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	// MySQl
+	runtimeOnly 'mysql:mysql-connector-java'
 
 	// queryDSL 설정
 	implementation "com.querydsl:querydsl-jpa"
-	implementation "com.querydsl:querydsl-core"
 	implementation "com.querydsl:querydsl-collections"
-	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jpa" // querydsl JPAAnnotationProcessor 사용 지정
+	annotationProcessor "com.querydsl:querydsl-apt:${project.querydslVersion}:jpa" // querydsl JPAAnnotationProcessor 사용 지정
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api" // java.lang.NoClassDefFoundError (javax.annotation.Generated) 발생 대응
 	annotationProcessor("jakarta.persistence:jakarta.persistence-api")
 
@@ -46,18 +50,18 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
-targetCompatibility = JavaVersion.VERSION_16
-// querydsl 적용
+//// Querydsl 설정부
+//// Querydsl 설정부
 def generated='src/main/generated'
+
+// querydsl QClass 파일 생성 위치를 지정
+tasks.withType(JavaCompile) {
+	options.getGeneratedSourceOutputDirectory().set(file(generated))
+}
 
 // java source set 에 querydsl QClass 위치 추가
 sourceSets {
 	main.java.srcDirs += [ generated ]
-}
-
-// querydsl QClass 파일 위치를 잡아주는 설정
-tasks.withType(JavaCompile) {
-	options.getGeneratedSourceOutputDirectory().set(file(generated))
 }
 
 // gradle clean 시에 QClass 디렉토리 삭제
