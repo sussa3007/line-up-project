@@ -58,7 +58,7 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
-//// Querydsl 설정부
+// Querydsl 설정부
 def generated='src/main/generated'
 
 // querydsl QClass 파일 생성 위치를 지정
