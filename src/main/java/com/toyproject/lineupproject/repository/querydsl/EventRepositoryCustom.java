@@ -14,7 +14,7 @@ public interface EventRepositoryCustom {
             EventStatus eventStatus,
             LocalDateTime eventStartDatetime,
             LocalDateTime eventEndDatetime,
-            Pageable pgeable
+            Pageable pageable
     );
 
 }
