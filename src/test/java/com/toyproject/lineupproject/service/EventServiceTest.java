@@ -23,7 +23,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -142,12 +141,30 @@ class EventServiceTest {
         then(eventRepository).should().findById(any());
     }
 
+    @DisplayName("이벤트 ID로 존재하는 이벤트를 조회하면, 해당 이벤트 정보를 출력하여 보여준다.")
+    @Test
+    void givenPlaceIdAndPageable_whenSearchingEventsWithPlace_thenReturnsEventsPage() {
+        // Given
+        long placeId = 1L;
+        Place place = createPlace();
+        given(placeRepository.findById(placeId)).willReturn(Optional.of(place));
+        given(eventRepository.findByPlace(place, PageRequest.ofSize(5))).willReturn(Page.empty());
+
+        // When
+        Page<EventViewResponse> result = sut.getEvent(placeId, PageRequest.ofSize(5));
+
+        // Then
+        assertThat(result).hasSize(0);
+        then(placeRepository).should().findById(placeId);
+        then(eventRepository).should().findByPlace(place, PageRequest.ofSize(5));
+    }
+
     @DisplayName("이벤트 정보를 주면, 이벤트를 생성하고 결과를 true 로 보여준다.")
     @Test
     void givenEvent_whenCreating_thenCreatesEventAndReturnsTrue() {
         // Given
         EventDto eventDto = EventDto.of(createEvent("오후 운동", false));
-        given(placeRepository.getById(eventDto.placeDto().id())).willReturn(createPlace());
+        given(placeRepository.findById(eventDto.placeDto().id())).willReturn(Optional.of(createPlace()));
         given(eventRepository.save(any(Event.class))).willReturn(any());
 
         // When
@@ -155,7 +172,7 @@ class EventServiceTest {
 
         // Then
         assertThat(result).isTrue();
-        then(placeRepository).should().getById(eventDto.placeDto().id());
+        then(placeRepository).should().findById(eventDto.placeDto().id());
         then(eventRepository).should().save(any(Event.class));
     }
 
@@ -178,8 +195,7 @@ class EventServiceTest {
     void givenWrongPlaceId_whenCreating_thenThrowsGeneralException() {
         // Given
         EventDto eventDto = EventDto.of(createEvent("오후 운동", false));
-        given(placeRepository.getById(eventDto.placeDto().id())).willReturn(null);
-        given(eventRepository.save(any(Event.class))).willThrow(EntityNotFoundException.class);
+        given(placeRepository.findById(eventDto.placeDto().id())).willReturn(null);
 
         // When
         Throwable thrown = catchThrowable(() -> sut.createEvent(eventDto));
@@ -188,8 +204,6 @@ class EventServiceTest {
         assertThat(thrown)
                 .isInstanceOf(GeneralException.class)
                 .hasMessageContaining(ErrorCode.DATA_ACCESS_ERROR.getMessage());
-        then(placeRepository).should().getById(eventDto.placeDto().id());
-        then(eventRepository).should().save(any(Event.class));
     }
 
     @DisplayName("이벤트 생성 중 데이터 예외가 발생하면, 줄서기 프로젝트 기본 에러로 전환하여 예외 던진다")
@@ -198,7 +212,7 @@ class EventServiceTest {
         // Given
         EventDto eventDto = EventDto.of(createEvent("오후 운동", false));
         RuntimeException e = new RuntimeException("This is test.");
-        given(placeRepository.getById(eventDto.placeDto().id())).willReturn(null);
+        given(placeRepository.findById(eventDto.placeDto().id())).willReturn(Optional.of(createPlace()));
         given(eventRepository.save(any(Event.class))).willThrow(e);
 
         // When
@@ -208,7 +222,7 @@ class EventServiceTest {
         assertThat(thrown)
                 .isInstanceOf(GeneralException.class)
                 .hasMessage(ErrorCode.DATA_ACCESS_ERROR.getMessage(e));
-        then(placeRepository).should().getById(eventDto.placeDto().id());
+        then(placeRepository).should().findById(eventDto.placeDto().id());
         then(eventRepository).should().save(any(Event.class));
     }
 
@@ -358,7 +372,7 @@ class EventServiceTest {
     void givenEventWithoutId_whenUpserting_thenCreatesEventAndReturnsTrue() {
         // Given
         EventDto eventDto = EventDto.of(createEvent(null, "오후 운동", false));
-        given(placeRepository.getById(eventDto.placeDto().id())).willReturn(createPlace());
+        given(placeRepository.findById(eventDto.placeDto().id())).willReturn(Optional.of(createPlace()));
         given(eventRepository.save(any(Event.class))).willReturn(any());
 
         // When
@@ -366,7 +380,7 @@ class EventServiceTest {
 
         // Then
         assertThat(result).isTrue();
-        then(placeRepository).should().getById(eventDto.placeDto().id());
+        then(placeRepository).should().findById(eventDto.placeDto().id());
         then(eventRepository).should(never()).findById(any());
         then(eventRepository).should().save(any(Event.class));
     }
