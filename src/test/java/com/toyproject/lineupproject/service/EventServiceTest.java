@@ -155,7 +155,6 @@ class EventServiceTest {
 
         // Then
         assertThat(result).hasSize(0);
-        then(placeRepository).should().findById(placeId);
         then(eventRepository).should().findByPlace(place, PageRequest.ofSize(5));
     }
 

@@ -1,13 +1,17 @@
 package com.toyproject.lineupproject.controller;
 
+import com.toyproject.lineupproject.config.SecurityConfig;
 import com.toyproject.lineupproject.constant.EventStatus;
 import com.toyproject.lineupproject.dto.EventDto;
 import com.toyproject.lineupproject.service.EventService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
@@ -24,7 +28,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @DisplayName("View 컨트롤러 - 이벤트")
-@WebMvcTest(EventController.class)
+@WebMvcTest(
+        controllers = EventController.class,
+        excludeAutoConfiguration = SecurityAutoConfiguration.class,
+        excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)
+)
 class EventControllerTest {
 
     private final MockMvc mvc;
