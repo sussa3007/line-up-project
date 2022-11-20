@@ -22,9 +22,12 @@ public class SecurityConfig {
                 .and()
                 .formLogin()
                 .permitAll()
+                .loginPage("/login")
+                .defaultSuccessUrl("/admin/places")
                 .and()
                 .logout()
                 .permitAll()
+                .logoutUrl("/logout")
                 .logoutSuccessUrl("/");
         return http.build();
     }
