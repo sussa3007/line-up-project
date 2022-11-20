@@ -3,14 +3,14 @@
 <thlogic>
     <attr sel="#eventTitle" th:text="'이벤트 상세'" />
     <attr sel="#eventTable" th:object="${event}">
-        <attr sel="#placeName" th:text="*{placeName} ?: _" />
-        <attr sel="#eventName" th:text="*{eventName} ?: _" />
-        <attr sel="#eventStatus" th:text="*{eventStatus} ?: _" />
-        <attr sel="#eventStartDatetime" th:text="*{eventStartDatetime} ?: _" />
-        <attr sel="#eventEndDatetime" th:text="*{eventEndDatetime} ?: _" />
-        <attr sel="#currentNumberOfPeople" th:text="*{currentNumberOfPeople} ?: _" />
-        <attr sel="#capacity" th:text="*{capacity} ?: _" />
+        <attr sel="#placeName" th:value="*{placeName} ?: _" />
+        <attr sel="#eventName" th:value="*{eventName} ?: _" />
+        <attr sel="#eventStatus" th:value="*{eventStatus} ?: _" />
+        <attr sel="#eventStartDatetime" th:value="*{eventStartDatetime} ?: _" />
+        <attr sel="#eventEndDatetime" th:value="*{eventEndDatetime} ?: _" />
+        <attr sel="#currentNumberOfPeople" th:value="*{currentNumberOfPeople} ?: _" />
+        <attr sel="#capacity" th:value="*{capacity} ?: _" />
         <attr sel="#memo" th:text="*{memo} ?: _" />
     </attr>
-    <attr sel="#backToEvents" th:href="@{/events}" />
+    <attr sel="#backToEvents" th:onclick="'location.href=\'' + @{/events} + '\''" />
 </thlogic>
