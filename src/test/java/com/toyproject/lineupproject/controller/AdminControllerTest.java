@@ -2,6 +2,7 @@ package com.toyproject.lineupproject.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toyproject.lineupproject.config.SecurityConfig;
 import com.toyproject.lineupproject.constant.AdminOperationStatus;
 import com.toyproject.lineupproject.constant.EventStatus;
 import com.toyproject.lineupproject.constant.PlaceType;
@@ -11,11 +12,15 @@ import com.toyproject.lineupproject.service.PlaceService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -27,6 +32,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -34,7 +40,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @DisplayName("View 컨트롤러 - 어드민")
-@WebMvcTest(AdminController.class)
+@WebMvcTest(
+        controllers = AdminController.class,
+        excludeAutoConfiguration = SecurityAutoConfiguration.class,
+        excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)
+)
 class AdminControllerTest {
 
     private final MockMvc mvc;
@@ -84,6 +94,7 @@ class AdminControllerTest {
         given(placeService.getPlace(placeId)).willReturn(Optional.of(
                 PlaceDto.of(placeId, null, null, null, null, null, null, null, null)
         ));
+        given(eventService.getEvent(eq(placeId), any(PageRequest.class))).willReturn(Page.empty());
 
         // When & Then
         mvc.perform(get("/admin/places/" + placeId))
@@ -93,7 +104,10 @@ class AdminControllerTest {
                 .andExpect(model().hasNoErrors())
                 .andExpect(model().attribute("adminOperationStatus", AdminOperationStatus.MODIFY))
                 .andExpect(model().attribute("placeTypeOption", PlaceType.values()))
-                .andExpect(model().attributeExists("place"));
+                .andExpect(model().attributeExists("place"))
+                .andExpect(model().attributeExists("events"));
+        then(placeService).should().getPlace(placeId);
+        then(eventService).should().getEvent(eq(placeId), any(PageRequest.class));
     }
 
     @DisplayName("[view][GET] 어드민 페이지 - 장소 세부 정보 뷰, 데이터 없음")
@@ -109,6 +123,7 @@ class AdminControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("error"));
         then(placeService).should().getPlace(placeId);
+        then(eventService).shouldHaveNoInteractions();
     }
 
     @DisplayName("[view][GET] 어드민 페이지 - 장소 새로 만들기 뷰")
@@ -129,8 +144,8 @@ class AdminControllerTest {
     @Test
     void givenNewPlace_whenSavingPlace_thenSavesPlaceAndReturnsToListPage() throws Exception {
         // Given
-        PlaceRequest placeRequest = PlaceRequest.of(PlaceType.SPORTS, "강남 배드민턴장", "서울시 강남구 강남동", "010-1231-2312", 10, null);
-        given(placeService.createPlace(placeRequest.toDto())).willReturn(true);
+        PlaceRequest placeRequest = PlaceRequest.of(null, PlaceType.SPORTS, "강남 배드민턴장", "서울시 강남구 강남동", "010-1231-2312", 10, null);
+        given(placeService.upsertPlace(placeRequest.toDto())).willReturn(true);
 
         // When & Then
         mvc.perform(
@@ -142,9 +157,28 @@ class AdminControllerTest {
                 .andExpect(view().name("redirect:/admin/confirm"))
                 .andExpect(redirectedUrl("/admin/confirm"))
                 .andExpect(flash().attribute("adminOperationStatus", AdminOperationStatus.CREATE))
-                .andExpect(flash().attribute("redirectUrl", "/admin/places"))
-                .andDo(MockMvcResultHandlers.print());
-        then(placeService).should().createPlace(placeRequest.toDto());
+                .andExpect(flash().attribute("redirectUrl", "/admin/places"));
+        then(placeService).should().upsertPlace(placeRequest.toDto());
+    }
+
+    @DisplayName("[view][GET] 어드민 페이지 - 장소 세부 정보 뷰, 장소 삭제")
+    @Test
+    void givenPlaceId_whenDeletingPlace_thenDeletesPlaceAndReturnsToListPage() throws Exception {
+        // Given
+        long placeId = 1L;
+        given(placeService.removePlace(placeId)).willReturn(true);
+
+        // When & Then
+        mvc.perform(
+                        get("/admin/places/" + placeId + "/delete")
+                                .contentType(MediaType.TEXT_HTML)
+                )
+                .andExpect(status().isSeeOther())
+                .andExpect(view().name("redirect:/admin/confirm"))
+                .andExpect(redirectedUrl("/admin/confirm"))
+                .andExpect(flash().attribute("adminOperationStatus", AdminOperationStatus.DELETE))
+                .andExpect(flash().attribute("redirectUrl", "/admin/places"));
+        then(placeService).should().removePlace(placeId);
     }
 
     @DisplayName("[view][GET] 어드민 페이지 - 이벤트 리스트 뷰")
@@ -234,9 +268,8 @@ class AdminControllerTest {
     void givenNewEvent_whenSavingEvent_thenSavesEventAndReturnsToListPage() throws Exception {
         // Given
         long placeId = 1L;
-        EventRequest eventRequest =
-                EventRequest.of("test event", EventStatus.OPENED, LocalDateTime.now(), LocalDateTime.now(), 10, 10, null);
-        given(eventService.createEvent(eventRequest.toDto(PlaceDto.idOnly(placeId)))).willReturn(true);
+        EventRequest eventRequest = EventRequest.of(null, "test event", EventStatus.OPENED, LocalDateTime.now(), LocalDateTime.now(), 10, 10, null);
+        given(eventService.upsertEvent(eventRequest.toDto(PlaceDto.idOnly(placeId)))).willReturn(true);
 
         // When & Then
         mvc.perform(
@@ -248,16 +281,34 @@ class AdminControllerTest {
                 .andExpect(view().name("redirect:/admin/confirm"))
                 .andExpect(redirectedUrl("/admin/confirm"))
                 .andExpect(flash().attribute("adminOperationStatus", AdminOperationStatus.CREATE))
-                .andExpect(flash().attribute("redirectUrl", "/admin/places/" + placeId))
-                .andDo(MockMvcResultHandlers.print());
-        then(eventService).should().createEvent(eventRequest.toDto(PlaceDto.idOnly(placeId)));
+                .andExpect(flash().attribute("redirectUrl", "/admin/places/" + placeId));
+        then(eventService).should().upsertEvent(eventRequest.toDto(PlaceDto.idOnly(placeId)));
+    }
+
+    @DisplayName("[view][GET] 어드민 페이지 - 이벤트 세부 정보 뷰, 이벤트 삭제")
+    @Test
+    void givenEventId_whenDeletingEvent_thenDeletesEventAndReturnsToListPage() throws Exception {
+        // Given
+        long eventId = 1L;
+        given(eventService.removeEvent(eventId)).willReturn(true);
+
+        // When & Then
+        mvc.perform(
+                        get("/admin/events/" + eventId + "/delete")
+                                .contentType(MediaType.TEXT_HTML)
+                )
+                .andExpect(status().isSeeOther())
+                .andExpect(view().name("redirect:/admin/confirm"))
+                .andExpect(redirectedUrl("/admin/confirm"))
+                .andExpect(flash().attribute("adminOperationStatus", AdminOperationStatus.DELETE))
+                .andExpect(flash().attribute("redirectUrl", "/admin/events"));
+        then(eventService).should().removeEvent(eventId);
     }
 
     @DisplayName("[view][GET] 어드민 페이지 - 기능 확인 페이지")
     @Test
     void given_whenAfterOperation_thenRedirectsToPage() throws Exception {
         // Given
-
 
         // When & Then
         mvc.perform(
@@ -269,15 +320,14 @@ class AdminControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("admin/confirm"))
                 .andExpect(model().attribute("adminOperationStatus", AdminOperationStatus.CREATE))
-                .andExpect(model().attribute("redirectUrl", "/admin/places"))
-                .andDo(MockMvcResultHandlers.print());
+                .andExpect(model().attribute("redirectUrl", "/admin/places"));
     }
 
     @DisplayName("장소 객체를 form data 로 변환")
     @Test
     void givenPlaceObject_whenConverting_thenReturnsFormData() {
         // Given
-        PlaceRequest placeRequest = PlaceRequest.of(PlaceType.SPORTS, "강남 배드민턴장", "서울시 강남구 강남동", "010-1231-2312", 10, null);
+        PlaceRequest placeRequest = PlaceRequest.of(null, PlaceType.SPORTS, "강남 배드민턴장", "서울시 강남구 강남동", "010-1231-2312", 10, null);
 
         // When
         String result = objectToFormData(placeRequest);

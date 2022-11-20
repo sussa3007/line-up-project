@@ -31,9 +31,9 @@ class ApiPlaceControllerTest {
         this.mapper = mapper;
     }
 
-    @DisplayName("[API][GET] 장소 리스트 조회")
+    @DisplayName("[API][GET] 장소 리스트 조회 - 장소 리스트 데이터를 담은 표준 API 출력")
     @Test
-    void givenNothing_whenRequestingPlaces_thenReturnsListOfPlacesInStandardResponse() throws Exception {
+    void givenNothing_whenRequestingPlaces_thenReturnsPlacesInStandardResponse() throws Exception {
         // Given
 
         // When & Then
@@ -57,6 +57,7 @@ class ApiPlaceControllerTest {
     void givenPlace_whenCreatingAPlace_thenReturnsSuccessfulStandardResponse() throws Exception {
         // Given
         PlaceRequest placeRequest = PlaceRequest.of(
+                null,
                 PlaceType.COMMON,
                 "랄라배드민턴장",
                 "서울시 강남구 강남대로 1234",
@@ -122,6 +123,7 @@ class ApiPlaceControllerTest {
         // Given
         long placeId = 1L;
         PlaceRequest placeRequest = PlaceRequest.of(
+                null,
                 PlaceType.COMMON,
                 "랄라배드민턴장",
                 "서울시 강남구 강남대로 1234",
