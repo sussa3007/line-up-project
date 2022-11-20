@@ -12,7 +12,10 @@ import com.toyproject.lineupproject.exception.GeneralException;
 import com.toyproject.lineupproject.service.EventService;
 import com.toyproject.lineupproject.service.PlaceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,16 +54,21 @@ public class AdminController {
     }
 
     @GetMapping("/places/{placeId}")
-    public ModelAndView adminPlaceDetail(@PathVariable Long placeId) {
+    public ModelAndView adminPlaceDetail(
+            @PathVariable Long placeId,
+            @PageableDefault Pageable pageable
+            ) {
         PlaceResponse place = placeService.getPlace(placeId)
                 .map(PlaceResponse::from)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
+        Page<EventViewResponse> events = eventService.getEvent(placeId, pageable);
 
         return new ModelAndView(
                 "admin/place-detail",
                 Map.of(
                         "adminOperationStatus", AdminOperationStatus.MODIFY,
                         "place", place,
+                        "events", events,
                         "placeTypeOption", PlaceType.values()
                 )
         );
@@ -76,17 +84,34 @@ public class AdminController {
 
     @ResponseStatus(HttpStatus.SEE_OTHER)
     @PostMapping("/places")
-    public String createPlace(
+    public String upsertPlace(
             @Valid PlaceRequest placeRequest,
             RedirectAttributes redirectAttributes
     ) {
-        placeService.createPlace(placeRequest.toDto());
+        AdminOperationStatus status = placeRequest.id() != null ? AdminOperationStatus.MODIFY : AdminOperationStatus.CREATE;
+        placeService.upsertPlace(placeRequest.toDto());
 
-        redirectAttributes.addFlashAttribute("adminOperationStatus", AdminOperationStatus.CREATE);
+        redirectAttributes.addFlashAttribute("adminOperationStatus", status);
         redirectAttributes.addFlashAttribute("redirectUrl", "/admin/places");
 
         return "redirect:/admin/confirm";
     }
+
+
+    @ResponseStatus(HttpStatus.SEE_OTHER)
+    @GetMapping("/places/{placeId}/delete")
+    public String deletePlace(
+            @PathVariable Long placeId,
+            RedirectAttributes redirectAttributes
+    ) {
+        placeService.removePlace(placeId);
+
+        redirectAttributes.addFlashAttribute("adminOperationStatus", AdminOperationStatus.DELETE);
+        redirectAttributes.addFlashAttribute("redirectUrl", "/admin/places");
+
+        return "redirect:/admin/confirm";
+    }
+
 
     @GetMapping("/places/{placeId}/newEvent")
     public String newEvent(@PathVariable Long placeId, Model model) {
@@ -103,15 +128,30 @@ public class AdminController {
 
     @ResponseStatus(HttpStatus.SEE_OTHER)
     @PostMapping("/places/{placeId}/events")
-    public String createEvent(
+    public String upsertEvent(
             @Valid EventRequest eventRequest,
             @PathVariable Long placeId,
             RedirectAttributes redirectAttributes
     ) {
-        eventService.createEvent(eventRequest.toDto(PlaceDto.idOnly(placeId)));
+        AdminOperationStatus status = eventRequest.id() != null ? AdminOperationStatus.MODIFY : AdminOperationStatus.CREATE;
+        eventService.upsertEvent(eventRequest.toDto(PlaceDto.idOnly(placeId)));
 
-        redirectAttributes.addFlashAttribute("adminOperationStatus", AdminOperationStatus.CREATE);
+        redirectAttributes.addFlashAttribute("adminOperationStatus", status);
         redirectAttributes.addFlashAttribute("redirectUrl", "/admin/places/" + placeId);
+
+        return "redirect:/admin/confirm";
+    }
+
+    @ResponseStatus(HttpStatus.SEE_OTHER)
+    @GetMapping("/events/{eventId}/delete")
+    public String deleteEvent(
+            @PathVariable Long eventId,
+            RedirectAttributes redirectAttributes
+    ) {
+        eventService.removeEvent(eventId);
+
+        redirectAttributes.addFlashAttribute("adminOperationStatus", AdminOperationStatus.DELETE);
+        redirectAttributes.addFlashAttribute("redirectUrl", "/admin/events");
 
         return "redirect:/admin/confirm";
     }

@@ -3,8 +3,11 @@ package com.toyproject.lineupproject.repository;
 import com.querydsl.core.types.dsl.ComparableExpression;
 import com.querydsl.core.types.dsl.StringExpression;
 import com.toyproject.lineupproject.domain.Event;
+import com.toyproject.lineupproject.domain.Place;
 import com.toyproject.lineupproject.domain.QEvent;
 import com.toyproject.lineupproject.repository.querydsl.EventRepositoryCustom;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
@@ -26,4 +29,5 @@ public interface EventRepository extends
         bindings.bind(root.eventEndDatetime).first(ComparableExpression::loe);
     }
 
+    Page<Event> findByPlace(Place place, Pageable pageable);
 }

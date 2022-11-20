@@ -3,6 +3,7 @@ package com.toyproject.lineupproject.service;
 import com.querydsl.core.types.Predicate;
 import com.toyproject.lineupproject.constant.ErrorCode;
 import com.toyproject.lineupproject.constant.EventStatus;
+import com.toyproject.lineupproject.domain.Event;
 import com.toyproject.lineupproject.domain.Place;
 import com.toyproject.lineupproject.dto.EventDto;
 import com.toyproject.lineupproject.dto.EventViewResponse;
@@ -11,6 +12,7 @@ import com.toyproject.lineupproject.repository.EventRepository;
 import com.toyproject.lineupproject.repository.PlaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,6 +66,38 @@ public class EventService {
     public Optional<EventDto> getEvent(Long eventId) {
         try {
             return eventRepository.findById(eventId).map(EventDto::of);
+        } catch (Exception e) {
+            throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public Page<EventViewResponse> getEvent(Long placeId, Pageable pageable) {
+        try {
+            Place place = placeRepository.findById(placeId)
+                    .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
+            Page<Event> eventPage = eventRepository.findByPlace(place, pageable);
+
+            return new PageImpl<>(
+                    eventPage.getContent()
+                            .stream()
+                            .map(event -> EventViewResponse.from(EventDto.of(event)))
+                            .toList(),
+                    eventPage.getPageable(),
+                    eventPage.getTotalElements()
+            );
+        } catch (Exception e) {
+            throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
+        }
+    }
+
+    public boolean upsertEvent(EventDto eventDto) {
+        try {
+            if (eventDto.id() != null) {
+                return modifyEvent(eventDto.id(), eventDto);
+            } else {
+                return createEvent(eventDto);
+            }
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
