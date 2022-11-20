@@ -8,12 +8,9 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 //@AutoConfigureMockMvc
@@ -37,10 +34,8 @@ class BaseControllerTest {
         // Given
         // When & Then
         mvc.perform(get("/"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                .andExpect(content().string(containsString("Hello World")))
-                .andExpect(view().name("index"))
-                .andDo(print());
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrl("/events"))
+                .andExpect(view().name("redirect:/events"));
     }
 }
