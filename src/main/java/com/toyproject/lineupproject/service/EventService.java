@@ -3,11 +3,14 @@ package com.toyproject.lineupproject.service;
 import com.querydsl.core.types.Predicate;
 import com.toyproject.lineupproject.constant.ErrorCode;
 import com.toyproject.lineupproject.constant.EventStatus;
+import com.toyproject.lineupproject.domain.Admin;
+import com.toyproject.lineupproject.domain.AdminPlaceMap;
 import com.toyproject.lineupproject.domain.Event;
 import com.toyproject.lineupproject.domain.Place;
 import com.toyproject.lineupproject.dto.EventDto;
 import com.toyproject.lineupproject.dto.EventViewResponse;
 import com.toyproject.lineupproject.exception.GeneralException;
+import com.toyproject.lineupproject.repository.AdminPlaceMapRepository;
 import com.toyproject.lineupproject.repository.EventRepository;
 import com.toyproject.lineupproject.repository.PlaceRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +21,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @RequiredArgsConstructor
@@ -30,10 +35,29 @@ public class EventService {
     private final EventRepository eventRepository;
     private final PlaceRepository placeRepository;
 
+    private final AdminPlaceMapRepository adminPlaceMapRepository;
+
+    private final AdminService adminService;
+
     @Transactional(readOnly = true)
     public List<EventDto> getEvents(Predicate predicate) {
         try {
             return StreamSupport.stream(eventRepository.findAll(predicate).spliterator(), false)
+                    .map(EventDto::of)
+                    .toList();
+        } catch (Exception e) {
+            throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
+        }
+    }
+    @Transactional(readOnly = true)
+    public List<EventDto> getEventsByEmail(String  email) {
+        try {
+            Admin findUser = adminService.findUserByEmail(email);
+            List<AdminPlaceMap> all = adminPlaceMapRepository.findAllByAdmin(findUser);
+            List<Place> places = all.stream().map(AdminPlaceMap::getPlace).collect(Collectors.toList());
+            List<Event> events = new ArrayList<>();
+            places.forEach(p -> events.addAll(eventRepository.findAllByPlace(p)));
+            return StreamSupport.stream(events.spliterator(), false)
                     .map(EventDto::of)
                     .toList();
         } catch (Exception e) {
