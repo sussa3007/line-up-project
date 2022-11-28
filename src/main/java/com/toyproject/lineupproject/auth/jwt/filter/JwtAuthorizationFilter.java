@@ -54,17 +54,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     }
 
-//    @Override
-//    protected boolean shouldNotFilter(
-//            HttpServletRequest request
-//    ) throws ServletException {
-//        String authorization = Arrays.stream(request.getCookies())
-//                .filter(cookie -> cookie.getName().equals(JwtProperties.COOKIE_NAME_ACCESS_TOKEN)).findFirst()
-//                .map(Cookie::getValue)
-//                .orElse(null);
-//
-//        return authorization == null || !authorization.startsWith("Bearer ");
-//    }
 
     private Map<String, Object> verifyJws(HttpServletRequest request) {
 

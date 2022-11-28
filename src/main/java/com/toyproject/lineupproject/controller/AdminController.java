@@ -1,20 +1,17 @@
 package com.toyproject.lineupproject.controller;
 
-import com.querydsl.core.types.Predicate;
 import com.toyproject.lineupproject.constant.AdminOperationStatus;
 import com.toyproject.lineupproject.constant.ErrorCode;
 import com.toyproject.lineupproject.constant.EventStatus;
 import com.toyproject.lineupproject.constant.PlaceType;
-import com.toyproject.lineupproject.domain.Event;
-import com.toyproject.lineupproject.domain.Place;
 import com.toyproject.lineupproject.dto.*;
 import com.toyproject.lineupproject.exception.GeneralException;
+import com.toyproject.lineupproject.service.AdminService;
 import com.toyproject.lineupproject.service.EventService;
 import com.toyproject.lineupproject.service.PlaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -25,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -37,9 +35,14 @@ public class AdminController {
     private final EventService eventService;
     private final PlaceService placeService;
 
+    private final AdminService adminService;
+
     @GetMapping("/places")
-    public ModelAndView adminPlaces(@QuerydslPredicate(root = Place.class) Predicate predicate) {
-        List<PlaceResponse> places = placeService.getPlaces(predicate)
+    public ModelAndView adminPlaces(
+//            @QuerydslPredicate(root = Place.class) Predicate predicate
+            Principal principal
+    ) {
+        List<PlaceResponse> places = placeService.getPlacesByEmail(principal.getName())
                 .stream()
                 .map(PlaceResponse::from)
                 .toList();
@@ -86,7 +89,8 @@ public class AdminController {
     @PostMapping("/places")
     public String upsertPlace(
             @Valid PlaceRequest placeRequest,
-            RedirectAttributes redirectAttributes
+            RedirectAttributes redirectAttributes,
+            Principal principal
     ) {
         AdminOperationStatus status = placeRequest.id() != null ? AdminOperationStatus.MODIFY : AdminOperationStatus.CREATE;
         placeService.upsertPlace(placeRequest.toDto());
@@ -157,8 +161,12 @@ public class AdminController {
     }
 
     @GetMapping("/events")
-    public ModelAndView adminEvents(@QuerydslPredicate(root = Event.class) Predicate predicate) {
-        List<EventResponse> events = eventService.getEvents(predicate)
+    public ModelAndView adminEvents(
+//            @QuerydslPredicate(root = Event.class) Predicate predicate
+            Principal principal
+    ) {
+
+        List<EventResponse> events = eventService.getEventsByEmail(principal.getName())
                 .stream()
                 .map(EventResponse::from)
                 .toList();

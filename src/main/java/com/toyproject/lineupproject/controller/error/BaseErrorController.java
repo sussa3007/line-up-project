@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -17,7 +18,10 @@ import java.util.Map;
 public class BaseErrorController implements ErrorController {
 
     @RequestMapping(path = "/error", produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView errorHtml(HttpServletResponse response) {
+    public ModelAndView errorHtml(
+            HttpServletResponse response,
+            @RequestHeader("referer") String referer
+    ) {
         HttpStatus httpStatus = HttpStatus.valueOf(response.getStatus());
         ErrorCode errorCode = httpStatus.is4xxClientError() ? ErrorCode.BAD_REQUEST : ErrorCode.INTERNAL_ERROR;
 
@@ -31,7 +35,8 @@ public class BaseErrorController implements ErrorController {
                 Map.of(
                         "statusCode", httpStatus.value(),
                         "errorCode", errorCode,
-                        "message", errorCode.getMessage(httpStatus.getReasonPhrase())
+                        "message", errorCode.getMessage(httpStatus.getReasonPhrase()),
+                        "backUrl", referer
                 ),
                 httpStatus
         );

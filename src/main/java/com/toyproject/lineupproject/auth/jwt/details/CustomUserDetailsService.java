@@ -3,7 +3,6 @@ package com.toyproject.lineupproject.auth.jwt.details;
 import com.toyproject.lineupproject.auth.jwt.utils.JwtAuthorityUtils;
 import com.toyproject.lineupproject.constant.ErrorCode;
 import com.toyproject.lineupproject.domain.Admin;
-import com.toyproject.lineupproject.exception.GeneralException;
 import com.toyproject.lineupproject.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,7 +26,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Admin> optionalAdmin = adminRepository.findByEmail(username);
-        Admin admin = optionalAdmin.orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
+        Admin admin = optionalAdmin.orElseThrow(
+                () -> new UsernameNotFoundException(ErrorCode.NOT_FOUND_MEMBER.getMessage()));
         return new CustomUserDetails(admin);
     }
 

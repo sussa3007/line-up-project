@@ -92,7 +92,7 @@ class AdminControllerTest {
         // Given
         long placeId = 1L;
         given(placeService.getPlace(placeId)).willReturn(Optional.of(
-                PlaceDto.of(placeId, null, null, null, null, null, null, null, null)
+                PlaceDto.of(placeId, null,null, null, null, null, null, null, null, null)
         ));
         given(eventService.getEvent(eq(placeId), any(PageRequest.class))).willReturn(Page.empty());
 
@@ -144,7 +144,7 @@ class AdminControllerTest {
     @Test
     void givenNewPlace_whenSavingPlace_thenSavesPlaceAndReturnsToListPage() throws Exception {
         // Given
-        PlaceRequest placeRequest = PlaceRequest.of(null, PlaceType.SPORTS, "강남 배드민턴장", "서울시 강남구 강남동", "010-1231-2312", 10, null);
+        PlaceRequest placeRequest = PlaceRequest.of(null, null,PlaceType.SPORTS, "강남 배드민턴장", "서울시 강남구 강남동", "010-1231-2312", 10, null);
         given(placeService.upsertPlace(placeRequest.toDto())).willReturn(true);
 
         // When & Then
@@ -248,7 +248,7 @@ class AdminControllerTest {
     void givenNothing_whenRequestingNewEventPage_thenReturnsNewEventPage() throws Exception {
         // Given
         long placeId = 1L;
-        PlaceDto placeDto = PlaceDto.of(null, null, "test name", null, null, null, null, null, null);
+        PlaceDto placeDto = PlaceDto.of(null,null, null, "test name", null, null, null, null, null, null);
         EventResponse expectedEventResponse = EventResponse.empty(placeDto);
         given(placeService.getPlace(placeId)).willReturn(Optional.of(placeDto));
 
@@ -327,7 +327,7 @@ class AdminControllerTest {
     @Test
     void givenPlaceObject_whenConverting_thenReturnsFormData() {
         // Given
-        PlaceRequest placeRequest = PlaceRequest.of(null, PlaceType.SPORTS, "강남 배드민턴장", "서울시 강남구 강남동", "010-1231-2312", 10, null);
+        PlaceRequest placeRequest = PlaceRequest.of(null,null, PlaceType.SPORTS, "강남 배드민턴장", "서울시 강남구 강남동", "010-1231-2312", 10, null);
 
         // When
         String result = objectToFormData(placeRequest);

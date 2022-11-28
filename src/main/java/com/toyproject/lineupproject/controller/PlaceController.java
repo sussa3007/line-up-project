@@ -1,13 +1,10 @@
 package com.toyproject.lineupproject.controller;
 
-import com.querydsl.core.types.Predicate;
 import com.toyproject.lineupproject.constant.ErrorCode;
-import com.toyproject.lineupproject.domain.Place;
 import com.toyproject.lineupproject.dto.PlaceResponse;
 import com.toyproject.lineupproject.exception.GeneralException;
 import com.toyproject.lineupproject.service.PlaceService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,11 +24,11 @@ public class PlaceController {
 
     @GetMapping
     public ModelAndView places(
-            @QuerydslPredicate(root = Place.class)Predicate predicate
+//            @QuerydslPredicate(root = Place.class)Predicate predicate
             ){
         Map<String, Object> map = new HashMap<>();
         List<PlaceResponse> places =
-                placeService.getPlaces(predicate)
+                placeService.getPlacesAll()
                         .stream()
                         .map(PlaceResponse::from)
                         .toList();

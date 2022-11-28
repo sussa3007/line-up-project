@@ -344,6 +344,7 @@ class ApiEventControllerTest {
     private PlaceDto createPlaceDto(Long placeId) {
         return PlaceDto.of(
                 placeId,
+                "admin@gmail.com",
                 PlaceType.COMMON,
                 "배드민턴장",
                 "서울시 가나구 다라동",

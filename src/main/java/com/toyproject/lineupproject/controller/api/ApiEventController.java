@@ -40,6 +40,7 @@ public class ApiEventController {
                 1L,
                 PlaceDto.of(
                         1L,
+                        "admin@gmail.com",
                         PlaceType.SPORTS,
                         "배드민턴장",
                         "서울시 가나구 다라동",

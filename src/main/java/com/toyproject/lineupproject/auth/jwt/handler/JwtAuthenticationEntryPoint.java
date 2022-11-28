@@ -36,9 +36,11 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         if (exception instanceof GeneralException) {
             ErrorCode errorCode = ((GeneralException) exception).getErrorCode();
             if (errorCode.equals(ErrorCode.NOT_FOUND_COOKIE)) {
-                response.sendRedirect("/login");
+                request.setAttribute("msg", "Not found Cookie & login information");
+                request.setAttribute("nextPage", "/login");
+                response.setStatus(HttpStatus.NOT_FOUND.value());
+                request.getRequestDispatcher("/error").forward(request, response);
             } else if (errorCode.equals(ErrorCode.EXPIRED_ACCESS_TOKEN)) {
-                log.error("### errorURI = {}", request.getRequestURI());
                 Cookie cookie = cookieUtils.createCookie(
                         JwtProperties.REDIRECTION_URI,
                         request.getRequestURI(),

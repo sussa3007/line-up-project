@@ -1,17 +1,30 @@
 package com.toyproject.lineupproject.auth.jwt.controller;
 
+import com.toyproject.lineupproject.auth.jwt.JwtTokenizer;
+import com.toyproject.lineupproject.auth.jwt.utils.CookieUtils;
+import com.toyproject.lineupproject.service.AdminService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 @Controller
+@RequiredArgsConstructor
 public class AuthController {
+
+
+    private final AdminService adminService;
+
+    private final JwtTokenizer jwtTokenizer;
+
+    private final CookieUtils cookieUtils;
+
     @GetMapping("/login")
-    public String login(){
+    public String login() {
+
         return "auth/login";
     }
-
 
 
     @GetMapping("/logout")

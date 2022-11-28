@@ -1,76 +1,141 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
   <title>관리자 장소</title>
 </head>
 <body>
 <header th:insert="fragments.html::nav"></header>
-<p>
-  <span id="placeTitle">This is admin place detail page.</span>
-</p>
-<form id="placeForm">
-  <table id="placeTable">
-    <tbody>
-    <tr>
-      <td><label for="placeType">장소 유형</label></td>
-      <td>
-        <select id="placeType" name="placeType" required>
-          <option>스포츠</option>
-          <option>레스토랑</option>
-          <option>일반</option>
-        </select>
-      </td>
-    </tr>
-    <tr>
-      <td><label for="placeName">장소 이름</label></td>
-      <td><input type="text" id="placeName" name="placeName" required></td>
-    </tr>
-    <tr>
-      <td><label for="address">주소</label></td>
-      <td><input type="text" id="address" name="address" required></td>
-    </tr>
-    <tr>
-      <td><label for="phoneNumber">전화번호</label></td>
-      <td><input type="tel" id="phoneNumber" name="phoneNumber" required></td>
-    </tr>
-    <tr>
-      <td><label for="capacity">수용 인원</label></td>
-      <td><input type="number" id="capacity" name="capacity" required></td>
-    </tr>
-    <tr>
-      <td><label for="memo">메모</label></td>
-      <td><textarea id="memo" name="memo"></textarea></td>
-    </tr>
-    </tbody>
-  </table>
-  <input type="hidden" id="placeId" name="id">
-  <input type="hidden" id="csrf">
-</form>
-<button id="savePlace" type="submit">저장</button>
-<button id="removePlace" type="button">삭제</button>
-<button id="backToPlaces" type="button">취소</button>
-<hr>
-<table id="eventTable">
-  <thead>
-  <tr>
-    <th>이벤트명</th>
-    <th>이벤트 상태</th>
-    <th>시작 ~ 종료</th>
-    <th>현재 인원 / 최대 인원</th>
-    <th>상세</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-    <td class="eventName">테스트 이벤트</td>
-    <td class="eventStatus">OPENED</td>
-    <td class="eventDatetime">1/1 9AM	~ 1/1 12PM</td>
-    <td class="people">0 / 10</td>
-    <td><a>상세</a></td>
-  </tr>
-  </tbody>
-</table>
-<button id="newEvent" type="button">새 이벤트</button>
+<div class="space-y-4">
+  <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+    <span id="placeTitle">This is admin place detail page.</span>
+  </h2>
+  <div class="mt-5 md:mt-0">
+    <form id="placeForm">
+      <table id="placeTable" class="w-full max-w-md">
+        <tbody>
+        <tr>
+          <td class="md:w-1/3">
+            <label for="adminEmail" class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">관리자 이메일</label>
+          </td>
+          <td class="md:w-2/3">
+            <input type="text" id="adminEmail" name="adminEmail"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                   required>
+          </td>
+        </tr>
+        <tr>
+          <td class="md:w-1/3">
+            <label for="placeType" class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">장소 유형</label>
+          </td>
+          <td class="md:w-2/3">
+            <select id="placeType" name="placeType"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    required>
+              <option>스포츠</option>
+              <option>레스토랑</option>
+              <option>일반</option>
+            </select>
+        </tr>
+        <tr>
+          <td class="md:w-1/3">
+            <label for="placeName" class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">장소 이름</label>
+          </td>
+          <td class="md:w-2/3">
+            <input type="text" id="placeName" name="placeName"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                   required>
+          </td>
+        </tr>
+        <tr>
+          <td class="md:w-1/3">
+            <label for="address" class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">주소</label>
+          </td>
+          <td class="md:w-2/3">
+            <input type="text" id="address" name="address"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                   required>
+          </td>
+        </tr>
+        <tr>
+          <td class="md:w-1/3">
+            <label for="phoneNumber" class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">전화번호</label>
+          </td>
+          <td class="md:w-2/3">
+            <input type="text" id="phoneNumber" name="phoneNumber"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                   required>
+          </td>
+        </tr>
+        <tr>
+          <td class="md:w-1/3">
+            <label for="capacity" class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">수용 인원</label>
+          </td>
+          <td class="md:w-2/3">
+            <input type="number" id="capacity" name="capacity"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                   required>
+          </td>
+        </tr>
+        <tr>
+          <td class="md:w-1/3">
+            <label for="memo" class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">메모</label>
+          </td>
+          <td class="md:w-2/3">
+            <textarea id="memo" name="memo"
+                      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <input type="hidden" id="placeId" name="id">
+      <input type="hidden" id="csrf">
+    </form>
+    <div class="text-right w-full max-w-md">
+      <button id="savePlace" type="submit"
+              class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">저장
+      </button>
+      <button id="removePlace" type="button" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+        삭제
+      </button>
+      <button id="backToPlaces" type="button"
+              class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded">취소
+      </button>
+    </div>
+    <hr style="margin-top: 1em">
+    <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg w-full max-w-xxl">
+      <table id="eventTable" class="w-full max-w-xxl divide-y divide-gray-200" style="margin-top: 1em">
+        <thead class="bg-gray-50">
+        <tr>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">이벤트명</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">이벤트 상태</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">시작 ~ 종료</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">현재 인원 / 최대 인원</th>
+          <th scope="col" class="relative px-6 py-3"><span class="sr-only">상세</span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td class="eventName px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">테스트 이벤트</td>
+          <td class="eventStatus px-6 py-4 whitespace-nowrap">
+            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">OPENED</span>
+          </td>
+          <td class="eventDatetime px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">1/1 9AM ~ 1/1 12PM</td>
+          <td class="people px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">0 / 10</td>
+          <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+            <a class="text-indigo-600 hover:text-indigo-900">상세</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <button id="newEvent" type="button"
+              class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+              style="margin: 1em"
+      >새 이벤트</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>

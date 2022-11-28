@@ -61,7 +61,7 @@ class PlaceControllerTest {
         // Given
         long placeId = 1L;
         given(placeService.getPlace(placeId)).willReturn(Optional.of(
-                PlaceDto.of(null, null, null, null, null, null, null, null, null)
+                PlaceDto.of(null, null,null, null, null, null, null, null, null, null)
         ));
 
         // When & Then
