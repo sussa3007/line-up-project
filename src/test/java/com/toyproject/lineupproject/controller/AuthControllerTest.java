@@ -1,5 +1,6 @@
 package com.toyproject.lineupproject.controller;
 
+import com.toyproject.lineupproject.auth.jwt.controller.AuthController;
 import com.toyproject.lineupproject.config.SecurityConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,6 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -38,19 +38,6 @@ class AuthControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("auth/login"));
-    }
-
-    @DisplayName("[view][GET] 어드민 회원 가입 페이지")
-    @Test
-    void givenNothing_whenRequestingSignUpPage_thenReturnsSignUpPage() throws Exception {
-        // Given
-
-        // When & Then
-        mvc.perform(get("/sign-up"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                .andExpect(content().string(containsString("Sign-Up Page")))
-                .andExpect(view().name("auth/sign-up"));
     }
 
 }
