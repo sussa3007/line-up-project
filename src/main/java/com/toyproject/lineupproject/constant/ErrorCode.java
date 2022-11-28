@@ -23,6 +23,8 @@ public enum ErrorCode {
     NOT_FOUND_MEMBER(10005, HttpStatus.NOT_FOUND, "Not found member"),
     MEMBER_EXISTS(10006, HttpStatus.BAD_REQUEST, "Member Exists"),
 
+    REQUETS_DELETE_PLACE_DENIED(10007, HttpStatus.BAD_REQUEST, "Request Place Delete Denied"),
+
     INTERNAL_ERROR(20000, HttpStatus.INTERNAL_SERVER_ERROR, "Internal error"),
     SPRING_INTERNAL_ERROR(20001, HttpStatus.INTERNAL_SERVER_ERROR, "Spring-detected internal error"),
     DATA_ACCESS_ERROR(20002, HttpStatus.INTERNAL_SERVER_ERROR, "Data access error"),
