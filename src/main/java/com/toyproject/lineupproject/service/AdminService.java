@@ -8,6 +8,7 @@ import com.toyproject.lineupproject.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +37,31 @@ public class AdminService {
 
 
         return adminRepository.save(admin);
+    }
+
+    public Admin updateUser(Admin admin) {
+        verifiedUser(admin);
+        return adminRepository.save(admin);
+    }
+
+    @Transactional(readOnly = true)
+    public Admin findUser(Admin  admin) {
+        return verifiedUser(admin);
+    }
+
+    @Transactional(readOnly = true)
+    public Admin findUserByEmail(String  email) {
+        return verifiedUserByEmail(email);
+    }
+    private Admin verifiedUser(Admin admin) {
+        return adminRepository.findByEmail(admin.getEmail())
+                .orElseThrow(
+                        () -> new GeneralException(ErrorCode.NOT_FOUND_MEMBER));
+    }
+    private Admin verifiedUserByEmail(String  email) {
+        return adminRepository.findByEmail(email)
+                .orElseThrow(
+                        () -> new GeneralException(ErrorCode.NOT_FOUND_MEMBER));
     }
 
 }

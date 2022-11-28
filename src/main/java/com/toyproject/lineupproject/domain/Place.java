@@ -79,6 +79,11 @@ public class Place {
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     private final Set<AdminPlaceMap> adminPlaceMaps = new LinkedHashSet<>();
 
+    public void addAdminPlaceMaps(Admin admin) {
+        AdminPlaceMap apm = AdminPlaceMap.of(admin, this);
+        adminPlaceMaps.add(apm);
+        admin.addAdminPlaceMaps(apm);
+    }
 
     protected Place() {}
 

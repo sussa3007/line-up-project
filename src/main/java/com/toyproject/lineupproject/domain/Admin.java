@@ -57,6 +57,9 @@ public class Admin {
     @OneToMany(mappedBy = "admin")
     private final Set<AdminPlaceMap> adminPlaceMaps = new LinkedHashSet<>();
 
+    public void addAdminPlaceMaps(AdminPlaceMap adminPlaceMap) {
+        adminPlaceMaps.add(adminPlaceMap);
+    }
 
     @Column(nullable = false, insertable = false, updatable = false,
             columnDefinition = "datetime default CURRENT_TIMESTAMP")
