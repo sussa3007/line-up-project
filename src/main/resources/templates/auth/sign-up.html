@@ -2,9 +2,59 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <title>Login</title>
 </head>
-<body>
-Sign-Up Page
+<body class="bg-gray-200" >
+<header th:insert="fragments.html::nav"></header>
+<div class="py-32 bg-gray-200 flex justify-center">
+    <div class="w-full max-w-xs">
+        <form id="signUpForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <div class="mb-4">
+                <label for="email" class="block text-gray-700 text-sm font-bold mb-2">
+                    Email
+                </label>
+                <input type="text" id="email" name="email" placeholder="이메일 주소 (ex: hello@mail.com)" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+            </div>
+
+            <div class="mb-6">
+                <label for="nickname" class="block text-gray-700 text-sm font-bold mb-2">
+                    Nickname
+                </label>
+                <input type="text" id="nickname" name="nickname" placeholder="Nickname" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" required>
+            </div>
+
+            <div class="mb-6">
+                <label for="password" class="block text-gray-700 text-sm font-bold mb-2">
+                    Password
+                </label>
+                <input type="password" id="password" name="password" placeholder="******" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" required>
+            </div>
+
+            <div class="mb-6">
+                <label for="phoneNumber" class="block text-gray-700 text-sm font-bold mb-2">
+                    Phone Number
+                </label>
+                <input type="text" id="phoneNumber" name="phoneNumber" placeholder="010-0000-0000" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" required>
+            </div>
+
+            <div class="mb-6">
+                <label for="memo" class="block text-gray-700 text-sm font-bold mb-2">
+                    Memo
+                </label>
+                <input type="text" id="memo" name="memo" placeholder="메모" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" required>
+            </div>
+            <input type="hidden" id="csrf">
+            <div class="flex items-center justify-between">
+                <button id="signup" type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Sign Up
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
 </body>
 </html>
