@@ -41,9 +41,16 @@ values
 
 insert into `admin` (`email`, `nickname`, `password`, `phone_number`, `memo`)
 values
-    ('test@test.com', '테스트', '{noop}1234!', '010-0101-0101', '안녕하세요'),
-    ('admin@test.com', 'admin', '{noop}1234!', '010-0101-0999', '안녕하세요')
+    ('test@test.com', '테스트', '{noop}1111!', '010-0101-0101', '안녕하세요'),
+    ('admin@gmail.com', 'admin', '{noop}1111!', '010-0101-0999', '안녕하세요')
 ;
+
+insert into `admin_roles`(`admin_id`, `roles`)
+values
+    (1, 'USER'),
+    (2, 'ADMIN'),
+    (2, 'USER')
+    ;
 
 insert into `admin_place_map` (`admin_id`, `place_id`)
 values

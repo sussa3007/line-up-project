@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
+
 @RequiredArgsConstructor
 @Validated
 @Controller
@@ -22,7 +24,7 @@ public class SignUpController {
 
     @PostMapping("/new-signup")
     public String register(
-            @ModelAttribute AdminRequest adminRequest
+            @Valid @ModelAttribute AdminRequest adminRequest
     ) {
 
         adminService.createUser(adminRequest.dtoToAdmin());
