@@ -9,9 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @ToString
@@ -41,8 +39,12 @@ public class Admin {
     @Column(nullable = false)
     private String password;
 
+    @ElementCollection(fetch = FetchType.EAGER)
     @Setter
-    @Column(nullable = false)
+    private List<String> roles = new ArrayList<>();
+
+    @Setter
+    @Column
     private String phoneNumber;
 
 
