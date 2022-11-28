@@ -13,6 +13,8 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
 
+import java.util.List;
+
 public interface EventRepository extends
         JpaRepository<Event, Long>,
         EventRepositoryCustom,
@@ -30,4 +32,5 @@ public interface EventRepository extends
     }
 
     Page<Event> findByPlace(Place place, Pageable pageable);
+    List<Event> findAllByPlace(Place place);
 }

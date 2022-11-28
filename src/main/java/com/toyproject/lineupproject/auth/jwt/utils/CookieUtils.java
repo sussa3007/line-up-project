@@ -2,12 +2,15 @@ package com.toyproject.lineupproject.auth.jwt.utils;
 
 import com.toyproject.lineupproject.constant.ErrorCode;
 import com.toyproject.lineupproject.exception.GeneralException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 
 @Component
+@Slf4j
 public class CookieUtils {
 
     public Cookie createCookie(String cookieName, String value, int maxAge) {
@@ -60,5 +63,15 @@ public class CookieUtils {
         String jws = findCookie.getValue().replace("Bearer", "");
         findCookie.setValue(jws);
         return findCookie;
+    }
+
+    public void clearCookies(Cookie[] cookies, HttpServletResponse response) {
+        if (cookies == null) throw new GeneralException(ErrorCode.NOT_FOUND_COOKIE);
+        Arrays.stream(cookies)
+                .forEach(cookie -> {
+                            cookie.setValue(null);
+                            cookie.setMaxAge(0);
+                            response.addCookie(cookie);
+                        });
     }
 }

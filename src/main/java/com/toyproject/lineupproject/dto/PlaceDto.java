@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 
 public record PlaceDto(
         Long id,
+
+        String adminEmail,
         PlaceType placeType,
         String placeName,
         String address,
@@ -18,6 +20,7 @@ public record PlaceDto(
 ) {
     public static PlaceDto of(
             Long id,
+            String adminEmail,
             PlaceType placeType,
             String placeName,
             String address,
@@ -29,6 +32,7 @@ public record PlaceDto(
     ) {
         return new PlaceDto(
                 id,
+                adminEmail,
                 placeType,
                 placeName,
                 address,
@@ -40,6 +44,7 @@ public record PlaceDto(
     }
     public static PlaceDto of(Place place){
         return new PlaceDto(place.getId(),
+                place.getAdminPlaceMaps().stream().findFirst().orElse(null).getAdmin().getEmail(),
                 place.getPlaceType(),
                 place.getPlaceName(),
                 place.getAddress(),
@@ -54,6 +59,7 @@ public record PlaceDto(
     public static PlaceDto idOnly(Long placeId) {
         return PlaceDto.of(
                 placeId,
+                null,
                 null,
                 null,
                 null,

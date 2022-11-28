@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,7 +33,7 @@ class BaseExceptionHandlerTest {
         GeneralException e = new GeneralException(errorCode);
 
         // When
-        ModelAndView result = sut.general(e);
+        ModelAndView result = sut.general(e, new MockHttpServletRequest("GET", "/sample"));
 
         // Then
         assertThat(result)

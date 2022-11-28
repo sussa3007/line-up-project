@@ -58,6 +58,7 @@ class ApiPlaceControllerTest {
         // Given
         PlaceRequest placeRequest = PlaceRequest.of(
                 null,
+                "test@test.com",
                 PlaceType.COMMON,
                 "랄라배드민턴장",
                 "서울시 강남구 강남대로 1234",
@@ -124,6 +125,7 @@ class ApiPlaceControllerTest {
         long placeId = 1L;
         PlaceRequest placeRequest = PlaceRequest.of(
                 null,
+                "test@test.com",
                 PlaceType.COMMON,
                 "랄라배드민턴장",
                 "서울시 강남구 강남대로 1234",

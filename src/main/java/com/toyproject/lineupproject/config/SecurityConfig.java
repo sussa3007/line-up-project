@@ -3,6 +3,7 @@ package com.toyproject.lineupproject.config;
 import com.toyproject.lineupproject.auth.jwt.JwtTokenizer;
 import com.toyproject.lineupproject.auth.jwt.filter.JwtAuthenticationFilter;
 import com.toyproject.lineupproject.auth.jwt.filter.JwtAuthorizationFilter;
+import com.toyproject.lineupproject.auth.jwt.handler.CustomAuthenticationFailureHandler;
 import com.toyproject.lineupproject.auth.jwt.handler.CustomAuthenticationSuccessHandler;
 import com.toyproject.lineupproject.auth.jwt.handler.JwtAccessDeniedHandler;
 import com.toyproject.lineupproject.auth.jwt.handler.JwtAuthenticationEntryPoint;
@@ -46,6 +47,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/", "/events/**", "/places/**","/new-signup","/sign-up","/auth/reissue-token").permitAll()
+                .antMatchers("/logout").hasAnyRole("ADMIN","USER")
                 .anyRequest().hasRole("ADMIN")
                 .and()
                 .apply(new CustomFilterConfig())
@@ -63,13 +65,15 @@ public class SecurityConfig {
                 .exceptionHandling().authenticationEntryPoint(
                         new JwtAuthenticationEntryPoint(cookieUtils)
                 )
-                .accessDeniedHandler(new JwtAccessDeniedHandler())
+                .accessDeniedHandler(new JwtAccessDeniedHandler(cookieUtils))
                 .and()
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/")
                 .deleteCookies(JwtProperties.COOKIE_NAME_ACCESS_TOKEN)
                 .deleteCookies(JwtProperties.COOKIE_NAME_REFRESH_TOKEN)
+                .deleteCookies(JwtProperties.REDIRECTION_URI)
+
         ;
         return http.build();
     }
@@ -95,6 +99,10 @@ public class SecurityConfig {
 
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(
                     new CustomAuthenticationSuccessHandler(cookieUtils));
+            jwtAuthenticationFilter.setAuthenticationFailureHandler(
+                    new CustomAuthenticationFailureHandler()
+            );
+
             jwtAuthenticationFilter.setRequiresAuthenticationRequestMatcher(
                     new AntPathRequestMatcher("/login","POST"));
 
