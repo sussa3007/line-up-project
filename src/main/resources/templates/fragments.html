@@ -19,12 +19,18 @@
                 >
                     Event Home
                 </a>
+                <a id="placeshome"
+                   class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                   th:href="@{/places}"
+                >
+                    Places Home
+                </a>
                 <a id="adminpage"
                    class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
                    sec:authorize="hasAnyRole('ROLE_ADMIN')"
                    th:href="@{/admin/places}"
                 >
-                    Admin Page
+                    Admin Places
                 </a>
                 <a id="adminevents"
                    class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
