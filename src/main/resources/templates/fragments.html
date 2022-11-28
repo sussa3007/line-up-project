@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <title>fragments</title>
+</head>
+<body class="max-w-6xl mx-auto px-4 ">
+<div th:fragment="nav">
+    <nav style="margin: 0.5em" class="flex-column-reverse">
+        <div class="flex align-baseline justify-between ">
+            <div>
+                <a id="eventhome"
+                   class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                   th:href="@{/}"
+                >
+                    Event Home
+                </a>
+                <a id="adminpage"
+                   class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                   sec:authorize="hasAnyRole('ROLE_ADMIN')"
+                   th:href="@{/admin/places}"
+                >
+                    Admin Page
+                </a>
+                <a id="adminevents"
+                   class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                   sec:authorize="hasAnyRole('ROLE_ADMIN')"
+                   th:href="@{/admin/events}"
+                >
+                    Admin Events
+                </a>
+            </div>
+            <div>
+                <button id="login" type="submit"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded"
+                        sec:authorize="!isAuthenticated()"
+                        th:onclick="|location.href='@{/login}'|">
+                    Login
+                </button>
+                <button id="signup" type="submit"
+                        class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-3 rounded"
+                        sec:authorize="!isAuthenticated()"
+                        th:onclick="|location.href='@{/sign-up}'|">
+                    Sign In
+                </button>
+                <button id="logout" type="button"
+                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded"
+                        sec:authorize="isAuthenticated()"
+                        th:onclick="|location.href='@{/logout}'|"
+                >
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+</div>
+</body>
+</html>
