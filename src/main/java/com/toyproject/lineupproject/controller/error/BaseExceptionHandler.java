@@ -74,15 +74,18 @@ public class BaseExceptionHandler {
     }
 
     @ExceptionHandler
-    public ModelAndView general(GeneralException e) {
+    public ModelAndView general(GeneralException e, HttpServletRequest request) {
         ErrorCode errorCode = e.getErrorCode();
+        String referer = request.getHeader("REFERER").replace("http://localhost:8080", "");
 
         return new ModelAndView(
                 "error",
                 Map.of(
                         "statusCode", errorCode.getHttpStatus().value(),
                         "errorCode", errorCode,
-                        "message", errorCode.getMessage()
+                        "message", errorCode.getMessage(),
+                        "msg", e.getMessage() + " Return to previous page",
+                        "nextPage", referer
                 ),
                 errorCode.getHttpStatus()
         );
