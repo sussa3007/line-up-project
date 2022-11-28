@@ -37,3 +37,7 @@ out/
 .vscode/
 ### querydsl
 /src/main/generated
+
+### env ###
+env.yml
+env.properties
