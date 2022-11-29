@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<thlogic>
+    <attr sel="#usersTitle" th:text="'사용자 목록 - 관리자'" />
+    <attr sel="#usersTable">
+        <attr sel="tbody">
+            <attr sel="tr[0]" th:each="user : ${allUser}">
+                <attr sel="td.email" th:text="${user.email}" />
+                <attr sel="td.nickname" th:text="${user.nickname}" />
+                <attr sel="td.role/span" th:text="${user.role}" />
+                <attr sel="td.phoneNumber" th:text="${user.phoneNumber}" />
+                <attr sel="td.memo" th:text="${user.memo}" />
+                <attr sel="td.createAt" th:text="${#temporals.format(user.createAt, 'M/d (ha)', 'US')}" />
+                <attr sel="td/a" th:text="'수정'" th:href="@{'/admin/user/' + ${user.id}}" />
+            </attr>
+        </attr>
+    </attr>
+</thlogic>
