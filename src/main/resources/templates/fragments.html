@@ -53,6 +53,13 @@
                         th:onclick="|location.href='@{/sign-up}'|">
                     Sign In
                 </button>
+                <button id="mypage" type="button"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded"
+                        sec:authorize="isAuthenticated()"
+                        th:onclick="|location.href='@{/info}'|"
+                >
+                    MyPage
+                </button>
                 <button id="logout" type="button"
                         class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded"
                         sec:authorize="isAuthenticated()"
