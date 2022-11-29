@@ -4,6 +4,7 @@ import com.toyproject.lineupproject.constant.PlaceType;
 
 public record PlaceResponse(
         Long id,
+        String adminEmail,
         PlaceType placeType,
         String placeName,
         String address,
@@ -13,6 +14,7 @@ public record PlaceResponse(
 ) {
     public static PlaceResponse of(
             Long id,
+            String adminEmail,
             PlaceType placeType,
             String placeName,
             String address,
@@ -22,6 +24,7 @@ public record PlaceResponse(
     ) {
         return new PlaceResponse(
                 id,
+                adminEmail,
                 placeType,
                 placeName,
                 address,
@@ -33,6 +36,7 @@ public record PlaceResponse(
         if (placeDto == null) { return null; }
         return PlaceResponse.of(
                 placeDto.id(),
+                placeDto.adminEmail(),
                 placeDto.placeType(),
                 placeDto.placeName(),
                 placeDto.address(),

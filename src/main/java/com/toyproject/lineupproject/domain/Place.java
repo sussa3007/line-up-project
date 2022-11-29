@@ -31,6 +31,10 @@ public class Place {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
+    @Column(nullable = false, columnDefinition = "varchar(20) default 'NoneAdminEmail'")
+    private String adminEmail;
+
 
     @Setter
     @Column(nullable = false, columnDefinition = "varchar(20) default 'COMMON'")
@@ -102,6 +106,23 @@ public class Place {
         this.capacity = capacity;
         this.memo = memo;
     }
+    protected Place(
+            PlaceType placeType,
+            String adminEmail,
+            String placeName,
+            String address,
+            String phoneNumber,
+            Integer capacity,
+            String memo
+    ) {
+        this.placeType = placeType;
+        this.adminEmail = adminEmail;
+        this.placeName = placeName;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.capacity = capacity;
+        this.memo = memo;
+    }
 
     public static Place of(
             PlaceType placeType,
@@ -112,6 +133,17 @@ public class Place {
             String memo
     ) {
         return new Place(placeType, placeName, address, phoneNumber, capacity, memo);
+    }
+    public static Place of(
+            PlaceType placeType,
+            String adminEmail,
+            String placeName,
+            String address,
+            String phoneNumber,
+            Integer capacity,
+            String memo
+    ) {
+        return new Place(placeType, adminEmail ,placeName, address, phoneNumber, capacity, memo);
     }
 
 
