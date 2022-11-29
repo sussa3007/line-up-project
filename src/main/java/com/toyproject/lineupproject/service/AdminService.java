@@ -3,9 +3,12 @@ package com.toyproject.lineupproject.service;
 import com.toyproject.lineupproject.auth.jwt.utils.JwtAuthorityUtils;
 import com.toyproject.lineupproject.constant.ErrorCode;
 import com.toyproject.lineupproject.domain.Admin;
+import com.toyproject.lineupproject.dto.AdminResponse;
 import com.toyproject.lineupproject.exception.GeneralException;
 import com.toyproject.lineupproject.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,11 +58,25 @@ public class AdminService {
         return verifiedUser(admin);
     }
 
+    @Transactional(readOnly = true)
+    public Admin findUserById(Long  userId) {
+        return adminRepository.findById(userId)
+                .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_MEMBER));
+    }
+
 
     @Transactional(readOnly = true)
     public Admin findUserByEmail(String  email) {
         return verifiedUserByEmail(email);
     }
+
+    @Transactional(readOnly = true)
+    public Page<AdminResponse> findAllUser(Pageable pageable) {
+        return adminRepository.findAll(pageable).map(AdminResponse::of);
+    }
+
+
+    // 검증 기능 로직
     private Admin verifiedUser(Admin admin) {
         return adminRepository.findByEmail(admin.getEmail())
                 .orElseThrow(

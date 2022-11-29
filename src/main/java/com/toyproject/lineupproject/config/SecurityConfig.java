@@ -46,10 +46,22 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/events/**", "/places/**","/new-signup","/sign-up","/auth/reissue-token").permitAll()
-                .antMatchers("/logout").hasAnyRole("ADMIN","USER")
-                .antMatchers("/info").hasAnyRole("ADMIN","USER")
-                .anyRequest().hasRole("ADMIN")
+                .antMatchers("/", "/error","/events/**", "/places/**","/new-signup","/sign-up","/auth/reissue-token")
+                .permitAll()
+                .antMatchers("/logout")
+                .hasAnyRole("SUPERADMIN","ADMIN","USER")
+                .antMatchers("/info")
+                .hasAnyRole("SUPERADMIN","ADMIN","USER")
+                .antMatchers(
+                        "/admin/user-all",
+                        "/admin/modify",
+                        "/admin/user/{userId}",
+                        "/admin/events-all",
+                        "/admin/places-all",
+                        "/admin/user-all")
+                .hasRole("SUPERADMIN")
+                .antMatchers("/admin/**").hasAnyRole("SUPERADMIN","ADMIN")
+                .anyRequest().hasAnyRole("SUPERADMIN","ADMIN")
                 .and()
                 .apply(new CustomFilterConfig())
                 .and()
