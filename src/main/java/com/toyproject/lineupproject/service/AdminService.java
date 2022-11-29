@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AdminService {
     private final AdminRepository adminRepository;
 
@@ -39,15 +40,21 @@ public class AdminService {
         return adminRepository.save(admin);
     }
 
-    public Admin updateUser(Admin admin) {
-        verifiedUser(admin);
-        return adminRepository.save(admin);
+
+    public void updateUser(Admin admin) {
+        //todo update시 비밀번호 인코딩 안됨 에러
+        String encodePassword = passwordEncoder.encode(admin.getPassword());
+        admin.setPassword(encodePassword);
+
+        Admin findAdmin = verifiedUser(admin);
+        findAdmin.updateEntity(admin);
     }
 
     @Transactional(readOnly = true)
     public Admin findUser(Admin  admin) {
         return verifiedUser(admin);
     }
+
 
     @Transactional(readOnly = true)
     public Admin findUserByEmail(String  email) {

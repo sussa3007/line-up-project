@@ -86,6 +86,14 @@ public class Admin {
         return new Admin(email, nickname, password, phoneNumber, memo);
     }
 
+    public void updateEntity(Admin admin) {
+        this.email = admin.getEmail();
+        this.nickname = admin.getNickname();
+        this.password = admin.getPassword();
+        this.phoneNumber = admin.getPhoneNumber();
+        this.memo = admin.getMemo();
+    }
+
 
     @Override
     public boolean equals(Object obj) {

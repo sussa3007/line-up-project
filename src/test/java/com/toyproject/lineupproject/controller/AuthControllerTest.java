@@ -1,6 +1,6 @@
 package com.toyproject.lineupproject.controller;
 
-import com.toyproject.lineupproject.auth.jwt.controller.AuthController;
+import com.toyproject.lineupproject.controller.auth.AuthController;
 import com.toyproject.lineupproject.config.SecurityConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

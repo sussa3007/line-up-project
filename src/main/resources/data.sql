@@ -2,11 +2,11 @@
 
 insert into `place` (`place_type`, `place_name`, `address`, `phone_number`, `capacity`, `memo`)
 values
-    ('SPORTS', '시민 배드민턴', '경기도 성남시 대왕판교로 999', '010-9999-0000', 20, '판교는 정말 체크남방셔츠 뿐인가'),
-    ('RESTAURANT', '레스토랑', '서울시 강남구 가나대로 123', '010-1234-5678', 10, '테스트 메모'),
-    ('SPORTS', '천국 스키장', '하늘 천국 천국로 555', '010-1004-1004', 9000, null),
-    ('COMMON', '스프링컴퍼니', '111, Gana-ro, Gangnam-gu, Seoul', '010-1111-1111', 50, '우리회사 마니 사랑해주세열'),
-    ('PARTY', '무도회장', '서울시 강남구 가나대로 123 2층', '010-1234-5678', 1, '에블바리')
+    ('SPORTS', '스포츠 센터', '경기도 성남시 판교로 999', '010-9999-0000', 20, '스포츠 센터 예약 가능'),
+    ('RESTAURANT', '스프링 식당', '서울시 강남구 가나대로 123', '010-1234-5678', 10, '테스트 메모'),
+    ('SPORTS', '스프링 스키장', '하늘 천국 천국로 555', '010-1004-1004', 9000, null),
+    ('COMMON', '스프링 컴퍼니', '111, Gana-ro, Gangnam-gu, Seoul', '010-1111-1111', 50, '회사 방문 가능'),
+    ('PARTY', '스프링 파티룸', '서울시 강남구 가나대로 123 2층', '010-1234-5678', 1, '파티룸 예약 가능')
 ;
 
 insert into `event` (`place_id`, `event_name`, `event_status`, `event_start_datetime`, `event_end_datetime`, `current_number_of_people`, `capacity`, `memo`)
