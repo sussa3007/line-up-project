@@ -6,7 +6,6 @@ import com.toyproject.lineupproject.constant.EventStatus;
 import com.toyproject.lineupproject.constant.PlaceType;
 import com.toyproject.lineupproject.dto.*;
 import com.toyproject.lineupproject.exception.GeneralException;
-import com.toyproject.lineupproject.service.AdminService;
 import com.toyproject.lineupproject.service.EventService;
 import com.toyproject.lineupproject.service.PlaceService;
 import lombok.RequiredArgsConstructor;
@@ -34,8 +33,6 @@ public class AdminController {
 
     private final EventService eventService;
     private final PlaceService placeService;
-
-    private final AdminService adminService;
 
     @GetMapping("/places")
     public ModelAndView adminPlaces(

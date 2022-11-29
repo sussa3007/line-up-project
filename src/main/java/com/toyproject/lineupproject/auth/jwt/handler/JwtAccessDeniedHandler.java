@@ -28,7 +28,7 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
             AccessDeniedException accessDeniedException
     ) throws IOException, ServletException {
         log.warn("Forbidden error happened: {}", accessDeniedException.getMessage());
-
+        cookieUtils.clearCookies(request.getCookies(),response);
         request.setAttribute("msg", ErrorCode.ACCESS_DENIED.getMessage()+" Return Home");
         request.setAttribute("nextPage", "/");
         response.setStatus(HttpStatus.FORBIDDEN.value());

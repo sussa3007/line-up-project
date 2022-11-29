@@ -1,4 +1,4 @@
-package com.toyproject.lineupproject.auth.jwt.controller;
+package com.toyproject.lineupproject.controller.auth;
 
 import com.toyproject.lineupproject.auth.jwt.JwtTokenizer;
 import com.toyproject.lineupproject.auth.jwt.utils.CookieUtils;
@@ -33,5 +33,6 @@ public class AuthController {
 
         return "auth/logout";
     }
+
 
 }
