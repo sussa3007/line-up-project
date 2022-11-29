@@ -77,7 +77,9 @@ public class BaseExceptionHandler {
     public ModelAndView general(GeneralException e, HttpServletRequest request) {
         ErrorCode errorCode = e.getErrorCode();
         String referer = request.getHeader("REFERER").replace("http://localhost:8080", "");
-
+        if (e.getErrorCode().equals(ErrorCode.NOT_FOUND_MEMBER)) {
+            referer = "/";
+        }
         return new ModelAndView(
                 "error",
                 Map.of(
