@@ -1,16 +1,22 @@
 package com.toyproject.lineupproject.controller;
 
+import com.querydsl.core.types.Predicate;
 import com.toyproject.lineupproject.constant.AdminOperationStatus;
 import com.toyproject.lineupproject.constant.ErrorCode;
 import com.toyproject.lineupproject.constant.EventStatus;
 import com.toyproject.lineupproject.constant.PlaceType;
+import com.toyproject.lineupproject.domain.Admin;
+import com.toyproject.lineupproject.domain.Event;
+import com.toyproject.lineupproject.domain.Place;
 import com.toyproject.lineupproject.dto.*;
 import com.toyproject.lineupproject.exception.GeneralException;
+import com.toyproject.lineupproject.service.AdminService;
 import com.toyproject.lineupproject.service.EventService;
 import com.toyproject.lineupproject.service.PlaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -34,11 +40,28 @@ public class AdminController {
     private final EventService eventService;
     private final PlaceService placeService;
 
+    private final AdminService adminService;
+
+    @GetMapping("/user-all")
+    public ModelAndView superAdminUsers(
+            /* 기본값 0 10 */
+            @PageableDefault Pageable pageable
+    ) {
+        Page<AdminResponse> allUser = adminService.findAllUser(pageable);
+        return new ModelAndView(
+                "admin/users",
+                Map.of(
+                        "allUser", allUser
+                )
+        );
+    }
+
     @GetMapping("/places")
     public ModelAndView adminPlaces(
 //            @QuerydslPredicate(root = Place.class) Predicate predicate
             Principal principal
     ) {
+
         List<PlaceResponse> places = placeService.getPlacesByEmail(principal.getName())
                 .stream()
                 .map(PlaceResponse::from)
@@ -52,6 +75,25 @@ public class AdminController {
                 )
         );
     }
+    /* todo pageable 기능 구현 예정 */
+    @GetMapping("/places-all")
+    public ModelAndView superAdminPlaces(
+            @QuerydslPredicate(root = Place.class) Predicate predicate
+    ) {
+        List<PlaceResponse> places = placeService.getPlaces(predicate)
+                .stream()
+                .map(PlaceResponse::from)
+                .toList();
+
+        return new ModelAndView(
+                "admin/places",
+                Map.of(
+                        "places", places,
+                        "placeTypeOption", PlaceType.values()
+                )
+        );
+    }
+
 
     @GetMapping("/places/{placeId}")
     public ModelAndView adminPlaceDetail(
@@ -62,7 +104,6 @@ public class AdminController {
                 .map(PlaceResponse::from)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
         Page<EventViewResponse> events = eventService.getEvent(placeId, pageable);
-
         return new ModelAndView(
                 "admin/place-detail",
                 Map.of(
@@ -177,6 +218,25 @@ public class AdminController {
         );
     }
 
+    /* todo 페이지 구현 예정*/
+    @GetMapping("/events-all")
+    public ModelAndView adminEvents(
+            @QuerydslPredicate(root = Event.class) Predicate predicate
+    ) {
+        List<EventResponse> events = eventService.getEvents(predicate)
+                .stream()
+                .map(EventResponse::from)
+                .toList();
+
+        return new ModelAndView(
+                "admin/events",
+                Map.of(
+                        "events", events,
+                        "eventStatusOption", EventStatus.values()
+                )
+        );
+    }
+
     @GetMapping("/events/{eventId}")
     public ModelAndView adminEventDetail(@PathVariable Long eventId) {
         EventResponse event = eventService.getEvent(eventId)
@@ -200,5 +260,37 @@ public class AdminController {
         }
 
         return "admin/confirm";
+    }
+
+    @GetMapping("/user/{userId}")
+    public ModelAndView userInfoBySuperAdmin(
+            @PathVariable Long userId,
+            @RequestHeader("referer") String referer
+    ) {
+        Admin user = adminService.findUserById(userId);
+
+        return new ModelAndView(
+                "auth/modify",
+                Map.of(
+                        "adminOperationStatus", AdminOperationStatus.MODIFY,
+                        "user", user,
+                        "backUrl", referer
+                )
+        );
+    }
+
+    @PostMapping("/modify")
+    public ModelAndView updateUserBySuperAdmin(
+            @Valid @ModelAttribute AdminRequest adminRequest
+    ) {
+        adminService.updateUser(adminRequest.dtoToAdmin());
+
+        return new ModelAndView(
+                "/alert",
+                Map.of(
+                        "msg", "정상적으로 수정 되었습니다.",
+                        "nextPage", "/admin/user-all"
+                )
+        );
     }
 }

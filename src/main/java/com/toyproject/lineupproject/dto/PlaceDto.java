@@ -73,6 +73,7 @@ public record PlaceDto(
     public Place toEntity() {
         return Place.of(
                 placeType,
+                adminEmail,
                 placeName,
                 address,
                 phoneNumber,
