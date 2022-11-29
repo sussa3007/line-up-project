@@ -39,6 +39,28 @@
                 >
                     Admin Events
                 </a>
+                <a id="adminpageall"
+                   class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                   sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
+                   th:href="@{/admin/places-all}"
+                >
+                    All Places
+                </a>
+                <a id="admineventsall"
+                   class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                   sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
+                   th:href="@{/admin/events-all}"
+                >
+                    All Events
+                </a>
+                <a id="memberall"
+                   class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                   sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
+                   th:href="@{/admin/user-all}"
+                >
+                    All Members
+                </a>
+
             </div>
             <div>
                 <button id="login" type="submit"
@@ -51,7 +73,7 @@
                         class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-3 rounded"
                         sec:authorize="!isAuthenticated()"
                         th:onclick="|location.href='@{/sign-up}'|">
-                    Sign In
+                    Sign Up
                 </button>
                 <button id="mypage" type="button"
                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded"

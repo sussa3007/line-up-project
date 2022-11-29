@@ -8,6 +8,6 @@
     <attr sel="#phoneNumber" th:value="*{user?.phoneNumber}" th:pattern="'[0-9]{2,4}-[0-9]{3,4}-[0-9]{4}'"
           th:title="'전화번호 형식을 맞춰주세요 (ex: 000-0000-0000)'" />
     <attr sel="#memo" th:value="*{user?.memo}" />
-    <attr sel="#modify" th:form="modifyForm" th:formaction="@{/info}" th:formmethod="post" />
+    <attr sel="#modify" th:form="modifyForm" th:formaction="@{/admin/modify}" th:formmethod="post" />
     <attr sel="#cancel" th:onclick="'location.href=\'' + @{${backUrl}} + '\''" />
 </thlogic>

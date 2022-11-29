@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -40,8 +41,8 @@ public class AdminRegisterController {
 
     @GetMapping("/info")
     public ModelAndView userInfo(
-            Principal principal
-
+            Principal principal,
+            @RequestHeader("referer") String referer
     ) {
         Admin findUser = adminService.findUserByEmail(principal.getName());
         AdminResponse user = AdminResponse.of(findUser);
@@ -49,7 +50,8 @@ public class AdminRegisterController {
                 "auth/info",
                 Map.of(
                         "adminOperationStatus", AdminOperationStatus.MODIFY,
-                        "user", user
+                        "user", user,
+                        "backUrl", referer
                 )
         );
     }

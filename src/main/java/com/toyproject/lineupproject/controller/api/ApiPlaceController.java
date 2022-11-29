@@ -16,6 +16,7 @@ public class ApiPlaceController {
     public ApiDataResponse<List<PlaceResponse>> getPlaces() {
         return ApiDataResponse.of(List.of(PlaceResponse.of(
                 1L,
+                null,
                 PlaceType.COMMON,
                 "랄라배드민턴장",
                 "서울시 강남구 강남대로 1234",
@@ -39,6 +40,7 @@ public class ApiPlaceController {
 
         return ApiDataResponse.of(PlaceResponse.of(
                 1L,
+                null,
                 PlaceType.COMMON,
                 "랄라배드민턴장",
                 "서울시 강남구 강남대로 1234",
