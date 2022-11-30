@@ -22,6 +22,7 @@ public enum ErrorCode {
     NOT_FOUND_COOKIE(10004, HttpStatus.NOT_FOUND, "Not Found Cookie"),
     NOT_FOUND_MEMBER(10005, HttpStatus.NOT_FOUND, "Not Found Member"),
     MEMBER_EXISTS(10006, HttpStatus.BAD_REQUEST, "Member Exists"),
+    NICKNAME_EXISTS(10006, HttpStatus.BAD_REQUEST, "Nickname Exists"),
 
     REQUETS_DELETE_PLACE_DENIED(10007, HttpStatus.BAD_REQUEST, "Request Place Delete Denied"),
 
@@ -31,7 +32,8 @@ public enum ErrorCode {
     EXPIRED_ACCESS_TOKEN(30004,HttpStatus.FORBIDDEN ,"EXPIRED ACCESS TOKEN"),
     EXPIRED_REFRESH_TOKEN(30005,HttpStatus.FORBIDDEN ,"EXPIRED REFRESH TOKEN"),
     UNAUTHORIZED_ACCESS(30006, HttpStatus.BAD_REQUEST,"UNAUTHORIZED ACCESS"),
-    ACCESS_DENIED(30007, HttpStatus.FORBIDDEN,"Access Denied")
+    ACCESS_DENIED(30007, HttpStatus.FORBIDDEN,"Access Denied"),
+    OAUTH2_ACCESS_ERROR(30008, HttpStatus.INTERNAL_SERVER_ERROR, "OAuth2 Access Error")
     ;
 
     private final Integer code;
