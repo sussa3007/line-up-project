@@ -32,6 +32,10 @@ public class JwtAuthorityUtils {
     private final List<String> ADMIN_ROLES_STRING = List.of("ADMIN", "USER");
     private final List<String> USER_ROLES_STRING = List.of("USER");
 
+    public static final List<String> SUPER_ADMIN_ROLES_STRINGS = List.of("SUPERADMIN","ADMIN", "USER");
+    public static  final List<String> ADMIN_ROLES_STRINGS = List.of("ADMIN", "USER");
+    public static  final List<String> USER_ROLES_STRINGS = List.of("USER");
+
     public List<GrantedAuthority> createAuthorities(List<String> roles) {
         List<GrantedAuthority> result =  roles.stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_"+role))
