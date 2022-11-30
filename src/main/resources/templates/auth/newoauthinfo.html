@@ -12,35 +12,38 @@
 <div class="py-32 bg-gray-200 flex justify-center">
     <div class="w-full max-w-xs">
         <form id="modifyForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
-                <span id="infoTitle">회원 정보 수정</span>
+            <h2 class="text-xl font-bold leading-7 text-gray-900 sm:text-xl sm:truncate">
+                <span id="infoTitle">소셜 로그인 정보 수정</span>
+            </h2>
+            <h2 class="text-sm font-bold leading-7 text-gray-900 sm:text-sm sm:truncate" style="color: red">
+                <span id="infoSubTitle">비밀번호 입력 불필요</span>
             </h2>
             <div class="mb-4" style="margin-top: 1em">
                 <label for="email" class="block text-gray-700 text-sm font-bold mb-2">
                     Email
                 </label>
-                <input type="text" id="email" name="email" placeholder="이메일 주소 (ex: hello@mail.com)" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                <input type="text" id="email" name="email" placeholder="이메일 주소 (ex: hello@mail.com)" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" readonly>
             </div>
 
             <div class="mb-6">
                 <label for="nickname" class="block text-gray-700 text-sm font-bold mb-2">
                     Nickname
                 </label>
-                <input type="text" id="nickname" name="nickname" placeholder="Nickname" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" required>
+                <input type="text" id="nickname" name="nickname" placeholder="Nickname" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" readonly>
             </div>
 
             <div class="mb-6">
                 <label for="password" class="block text-gray-700 text-sm font-bold mb-2">
                     Password
                 </label>
-                <input type="password" id="password" name="password" placeholder="수정하려면 입력하세요." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" >
+                <input type="password" id="password" name="password" placeholder="******" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" readonly>
             </div>
 
             <div class="mb-6">
                 <label for="phoneNumber" class="block text-gray-700 text-sm font-bold mb-2" >
                     Phone Number
                 </label>
-                <input type="text" id="phoneNumber" name="phoneNumber" placeholder="010-0000-0000" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" required>
+                <input type="text" id="phoneNumber" name="phoneNumber" placeholder="작성해 주세요." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" required>
             </div>
 
             <div class="mb-6">
