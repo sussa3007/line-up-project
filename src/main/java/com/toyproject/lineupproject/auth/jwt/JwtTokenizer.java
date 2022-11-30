@@ -1,5 +1,6 @@
 package com.toyproject.lineupproject.auth.jwt;
 
+import com.toyproject.lineupproject.auth.jwt.utils.CookieUtils;
 import com.toyproject.lineupproject.auth.jwt.utils.JwtAuthorityUtils;
 import com.toyproject.lineupproject.auth.jwt.utils.JwtProperties;
 import com.toyproject.lineupproject.auth.jwt.utils.Token;
@@ -45,6 +46,8 @@ public class JwtTokenizer {
 
     private final JwtAuthorityUtils jwtAuthorityUtils;
 
+    private final CookieUtils cookieUtils;
+
     public String encodeBase64SecretKey(String secretKey) {
         return Encoders.BASE64.encode(secretKey.getBytes(StandardCharsets.UTF_8));
     }
@@ -72,7 +75,7 @@ public class JwtTokenizer {
 
     }
 
-    public Token delegateToken(Admin member) {
+    public void delegateToken(Admin member,HttpServletResponse response) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("username", member.getEmail());
         claims.put("roles", member.getRoles());
@@ -81,7 +84,21 @@ public class JwtTokenizer {
 
         String base64SecretKey = encodeBase64SecretKey(getSecretKey());
 
-        return generateToken(claims, subject, base64SecretKey);
+        Token token =generateToken(claims, subject, base64SecretKey);
+        String accessToken = token.getAccessToken();
+        String refreshToken = token.getRefreshToken();
+
+        // 쿠키 생성
+        Cookie accessCookie = cookieUtils.createCookie(
+                JwtProperties.COOKIE_NAME_ACCESS_TOKEN,
+                "Bearer" + accessToken,
+                JwtProperties.EXPIRATION_TIME);
+        Cookie refreshCookie = cookieUtils.createCookie(
+                JwtProperties.COOKIE_NAME_REFRESH_TOKEN,
+                refreshToken,
+                JwtProperties.EXPIRATION_TIME);
+        response.addCookie(accessCookie);
+        response.addCookie(refreshCookie);
     }
 
     private void reIssueToken(

@@ -64,8 +64,36 @@ public class AdminRegisterController {
         return new ModelAndView(
                 "auth/infoconfirm",
                 Map.of(
-                        "msg", "자동으로 로그아웃 됩니다.",
+                        "msg", "Logout!! 다시 로그인 해주세요",
                         "adminOperationStatus", AdminOperationStatus.MODIFY
+                )
+        );
+    }
+
+    @GetMapping("/new-OAuth")
+    public ModelAndView updateUserBySuperAdmin() {
+
+        return new ModelAndView(
+                "/alert",
+                Map.of(
+                        "msg", "가입 성공! 나머지 정보를 입력해 주세요.",
+                        "nextPage", "/oauth-info"
+                )
+        );
+    }
+
+    @GetMapping("/oauth-info")
+    public ModelAndView oAuthUserInfo(
+            Principal principal
+    ) {
+        Admin findUser = adminService.findUserByEmail(principal.getName());
+        AdminResponse user = AdminResponse.of(findUser);
+        return new ModelAndView(
+                "auth/newoauthinfo",
+                Map.of(
+                        "adminOperationStatus", AdminOperationStatus.MODIFY,
+                        "user", user,
+                        "backUrl", "/"
                 )
         );
     }

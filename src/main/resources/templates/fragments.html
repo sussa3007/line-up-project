@@ -15,16 +15,20 @@
             <div>
                 <a id="eventhome"
                    class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                   sec:authorize="!hasAnyRole('ROLE_SUPERADMIN')"
                    th:href="@{/}"
                 >
                     Event Home
                 </a>
                 <a id="placeshome"
                    class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                   sec:authorize="!hasAnyRole('ROLE_SUPERADMIN')"
                    th:href="@{/places}"
                 >
                     Places Home
                 </a>
+
+
                 <a id="adminpage"
                    class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
                    sec:authorize="hasAnyRole('ROLE_ADMIN')"
@@ -59,6 +63,20 @@
                    th:href="@{/admin/user-all}"
                 >
                     All Members
+                </a>
+                <a id="requestallpage"
+                   class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                   sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
+                   th:href="@{/admin/request-all}"
+                >
+                    All Request
+                </a>
+                <a id="requestpage"
+                   class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                   sec:authorize="!hasAnyRole('ROLE_SUPERADMIN') && !isAnonymous()"
+                   th:href="@{/admin/request}"
+                >
+                    User Request
                 </a>
 
             </div>

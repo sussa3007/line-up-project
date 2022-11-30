@@ -28,10 +28,12 @@ public class AdminService {
 
 
     public Admin createUser(Admin admin) {
-        Optional<Admin> byEmail = adminRepository.findByEmail(admin.getEmail());
-        if(byEmail.isPresent()){
-            throw new GeneralException(ErrorCode.MEMBER_EXISTS);
+        if (admin.getStatus() == null) {
+            admin.setStatus(Admin.Status.ACTIVE_USER);
+            admin.setLoginBase(Admin.LoginBase.BASIC_LOGIN);
         }
+
+        verifyUserInfo(admin);
 
         String encodePassword = passwordEncoder.encode(admin.getPassword());
         admin.setPassword(encodePassword);
@@ -46,8 +48,11 @@ public class AdminService {
 
     public void updateUser(Admin admin) {
         //todo update시 비밀번호 인코딩 안됨 에러
-        String encodePassword = passwordEncoder.encode(admin.getPassword());
-        admin.setPassword(encodePassword);
+        String password = admin.getPassword();
+        if (password != null) {
+            String encodePassword = passwordEncoder.encode(password);
+            admin.setPassword(encodePassword);
+        }
 
         Admin findAdmin = verifiedUser(admin);
         findAdmin.updateEntity(admin);
@@ -77,6 +82,15 @@ public class AdminService {
 
 
     // 검증 기능 로직
+
+    private void verifyUserInfo(Admin admin) {
+        if(adminRepository.findByEmail(admin.getEmail()).isPresent()){
+            throw new GeneralException(ErrorCode.MEMBER_EXISTS);
+        }
+        if(adminRepository.findByNickname(admin.getNickname()).isPresent()){
+            throw new GeneralException(ErrorCode.NICKNAME_EXISTS);
+        }
+    }
     private Admin verifiedUser(Admin admin) {
         return adminRepository.findByEmail(admin.getEmail())
                 .orElseThrow(
@@ -86,6 +100,10 @@ public class AdminService {
         return adminRepository.findByEmail(email)
                 .orElseThrow(
                         () -> new GeneralException(ErrorCode.NOT_FOUND_MEMBER));
+    }
+
+    public Optional<Admin> findUserByEmailToOptional(String email) {
+        return adminRepository.findByEmail(email);
     }
 
 }
