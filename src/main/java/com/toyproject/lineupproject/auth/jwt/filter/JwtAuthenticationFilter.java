@@ -1,9 +1,7 @@
 package com.toyproject.lineupproject.auth.jwt.filter;
 
 import com.toyproject.lineupproject.auth.jwt.JwtTokenizer;
-import com.toyproject.lineupproject.auth.jwt.utils.CookieUtils;
-import com.toyproject.lineupproject.auth.jwt.utils.JwtProperties;
-import com.toyproject.lineupproject.auth.jwt.utils.Token;
+import com.toyproject.lineupproject.constant.ErrorCode;
 import com.toyproject.lineupproject.domain.Admin;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -16,7 +14,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -29,7 +26,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private final JwtTokenizer jwtTokenizer;
 
-    private final CookieUtils cookieUtils;
 
     @SneakyThrows
     @Override
@@ -52,22 +48,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     ) throws IOException, ServletException {
         log.info("@ Login Successful");
         Admin admin = (Admin) authResult.getPrincipal();
-        Token token = jwtTokenizer.delegateToken(admin);
-        String accessToken = token.getAccessToken();
-        String refreshToken = token.getRefreshToken();
-
-        // 쿠키 생성
-        Cookie accessCookie = cookieUtils.createCookie(
-                JwtProperties.COOKIE_NAME_ACCESS_TOKEN,
-                "Bearer" + accessToken,
-                JwtProperties.EXPIRATION_TIME);
-        Cookie refreshCookie = cookieUtils.createCookie(
-                JwtProperties.COOKIE_NAME_REFRESH_TOKEN,
-                refreshToken,
-                JwtProperties.EXPIRATION_TIME);
-        response.addCookie(accessCookie);
-        response.addCookie(refreshCookie);
-
+        jwtTokenizer.delegateToken(admin,response);
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
 
@@ -78,7 +59,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             HttpServletRequest request,
             HttpServletResponse response,
             AuthenticationException failed
-    ) throws IOException {
-        response.sendRedirect("/error");
+    ) throws IOException, ServletException {
+        String referer = request.getHeader("REFERER").replace("http://localhost:8080", "");
+        request.setAttribute("msg", ErrorCode.NOT_FOUND_MEMBER.getMessage()+" Return to previous page");
+        request.setAttribute("nextPage", referer);
+        request.getRequestDispatcher("/error").forward(request, response);
     }
 }

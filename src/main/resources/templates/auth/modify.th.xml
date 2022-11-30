@@ -8,6 +8,14 @@
     <attr sel="#phoneNumber" th:value="*{user?.phoneNumber}" th:pattern="'[0-9]{2,4}-[0-9]{3,4}-[0-9]{4}'"
           th:title="'전화번호 형식을 맞춰주세요 (ex: 000-0000-0000)'" />
     <attr sel="#memo" th:value="*{user?.memo}" />
+<!--    <attr sel="#role" th:value="*{user?.role}" />-->
+<!--    <attr sel="#role" th:remove="all-but-first">-->
+<!--        <attr sel="option" th:each="status : ${roleOption}" th:value="${status}" th:text="${status}" />-->
+<!--    </attr>-->
+<!--    <attr sel="#status" th:value="*{user?.status}" />-->
+<!--    <attr sel="#status" th:remove="all-but-first">-->
+<!--        <attr sel="option" th:each="status : ${statusOption}" th:value="${status}" th:text="${status}" />-->
+<!--    </attr>-->
     <attr sel="#modify" th:form="modifyForm" th:formaction="@{/admin/modify}" th:formmethod="post" />
     <attr sel="#cancel" th:onclick="'location.href=\'' + @{${backUrl}} + '\''" />
 </thlogic>

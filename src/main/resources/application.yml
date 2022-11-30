@@ -1,0 +1,66 @@
+#spring.datasource.url=jdbc:h2:mem:testdb
+spring:
+  thymeleaf:
+    cache: false
+  thymeleaf3:
+    decoupled-logic: true
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 1000
+  h2:
+    console:
+      enabled: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/lineup
+    username: ${LINEUP_DB_ID}
+    password: ${LINEUP_DB_PW}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: always
+
+  data:
+    rest:
+      base-path: /api
+      detection-strategy: annotated
+  devtools:
+    restart:
+      quiet-period: 700ms
+      enabled: true
+    livereload:
+      enabled: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_AOUTH2_SAMPLEPROJECT_ID}
+          kakao:
+            client-id: ${KAKAO_AOUTH2_ID}
+
+debug: false
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include:
+server:
+  error:
+    whitelabel:
+      enabled: false
+
+logging.level:
+  org:
+    hibernate:
+      type:
+        descriptor:
+          sql:
+            org.hibernate.type.descriptor.sql.BasicBinder : trace
+    springframework:
+      web.servlet : debug
