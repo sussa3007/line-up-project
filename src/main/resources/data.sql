@@ -39,11 +39,15 @@ values
     (3, '오전 스키', 'OPENED', '2022-08-02 08:00:00', '2022-08-02 12:30:00', 12, 50, 'test memo6')
 ;
 
-insert into `admin` (`email`, `nickname`, `password`, `phone_number`, `memo`)
+insert into `admin` (`email`, `nickname`, `password`, `phone_number`, `memo`,`status`,`login_base`)
 values
-    ('test@test.com', '테스트', '{noop}1111!', '010-0101-0101', '안녕하세요'),
-    ('admin@gmail.com', 'admin', '{noop}1111!', '010-0101-0999', '안녕하세요'),
-    ('admin@naver.com', 'admin2', '{noop}1111!', '010-0101-0989', '안녕하세요')
+    ('test@test.com', '테스트', '{noop}1111!', '010-0101-0101', '안녕하세요', 'ACTIVE_USER', 'BASIC_LOGIN'),
+    ('admin@gmail.com', 'admin', '{noop}1111!', '010-0101-0999', '안녕하세요', 'ACTIVE_USER', 'BASIC_LOGIN'),
+    ('admin@naver.com', 'admin2', '{noop}1111!', '010-0101-0989', '안녕하세요', 'ACTIVE_USER', 'BASIC_LOGIN'),
+    ('test1@test.com', 'test11', '{noop}1111!', '010-2222-0989', '안녕하세요', 'INACTIVE_USER', 'BASIC_LOGIN'),
+    ('test2@test.com', 'test18', '{noop}1111!', '010-2222-0929', '테스트유저', 'INACTIVE_USER', 'SOCIAL_LOGIN'),
+    ('test3@test.com', 'test16', '{noop}1111!', '010-2222-0919', '테스트유저', 'INACTIVE_USER', 'SOCIAL_LOGIN'),
+    ('aaaa1', 'test22', '{noop}1111!', '010-2233-0989', '안녕하세요', 'ACTIVE_USER', 'BASIC_LOGIN')
 ;
 
 insert into `admin_roles`(`admin_id`, `roles`)
@@ -52,7 +56,13 @@ values
     (2, 'ADMIN'),
     (2, 'USER'),
     (3, 'ADMIN'),
-    (3, 'USER')
+    (3, 'USER'),
+    (4, 'USER'),
+    (5, 'USER'),
+    (6, 'USER'),
+    (7, 'SUPERADMIN'),
+    (7, 'ADMIN'),
+    (7, 'USER')
     ;
 
 insert into `admin_place_map` (`admin_id`, `place_id`)
