@@ -4,6 +4,7 @@ import com.toyproject.lineupproject.auth.jwt.JwtTokenizer;
 import com.toyproject.lineupproject.auth.jwt.utils.CookieUtils;
 import com.toyproject.lineupproject.auth.jwt.utils.JwtProperties;
 import com.toyproject.lineupproject.auth.jwt.utils.Token;
+import com.toyproject.lineupproject.constant.ErrorCode;
 import com.toyproject.lineupproject.domain.Admin;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -78,7 +79,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             HttpServletRequest request,
             HttpServletResponse response,
             AuthenticationException failed
-    ) throws IOException {
-        response.sendRedirect("/error");
+    ) throws IOException, ServletException {
+        String referer = request.getHeader("REFERER").replace("http://localhost:8080", "");
+        request.setAttribute("msg", ErrorCode.NOT_FOUND_MEMBER.getMessage()+" Return to previous page");
+        request.setAttribute("nextPage", referer);
+        request.getRequestDispatcher("/error").forward(request, response);
     }
 }

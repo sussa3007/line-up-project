@@ -158,4 +158,13 @@ Spring Boot
 
 
 
+- Error View
+
+![image](https://user-images.githubusercontent.com/110886399/204716965-d3a7eb02-a114-43c3-b490-b382d659fc3a.png)
+
+- Alert View
+
+![image](https://user-images.githubusercontent.com/110886399/204717088-b7646839-c3c8-45aa-9304-7bd2376bab69.png)
+
+
 
