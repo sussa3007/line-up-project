@@ -19,8 +19,9 @@ public record AdminResponse(
         String memo,
 
         String role,
-        LocalDateTime createAt
-
+        LocalDateTime createAt,
+        String status,
+        String loginBase
 ) {
     public static AdminResponse of(
             String email,
@@ -28,7 +29,7 @@ public record AdminResponse(
             String phoneNumber,
             String memo
     ) {
-        return new AdminResponse(null,email, nickname, null, phoneNumber, memo, null,null);
+        return new AdminResponse(null,email, nickname, null, phoneNumber, memo, null,null,null,null);
     }
 
 
@@ -43,7 +44,9 @@ public record AdminResponse(
                 admin.getPhoneNumber(),
                 admin.getMemo(),
                 checkRole(admin),
-                admin.getCreatedAt()
+                admin.getCreatedAt(),
+                admin.getStatus().getMessage(),
+                admin.getLoginBase().getMessage()
         );
 
 
