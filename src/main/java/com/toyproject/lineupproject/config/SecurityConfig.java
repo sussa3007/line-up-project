@@ -64,23 +64,27 @@ public class SecurityConfig {
         http.headers().frameOptions().sameOrigin()
                 .and()
                 .authorizeRequests()
-                // All
-                .antMatchers("/", "/error","/alert", "/events/**", "/places/**","/new-signup", "/sign-up", "/auth/reissue-token", "/new-OAuth", "/oauth-info")
-                .permitAll()
+                // Super Admin
+                .mvcMatchers(
+                        "/admin/user-all",
+                        "/admin/modify",
+                        "/admin/user/**",
+                        "/admin/events-all",
+                        "/admin/places-all",
+                        "/admin/user-all",
+                        "/requests/all"
+
+                )
+                .hasRole("SUPERADMIN")
                 .antMatchers("/logout")
                 .hasAnyRole("SUPERADMIN", "ADMIN", "USER")
                 // Register
-                .antMatchers( "/info")
+                .antMatchers( "/info","/oauth-info")
                 .hasAnyRole("SUPERADMIN", "ADMIN", "USER")
-                // Super Admin
-                .antMatchers(
-                        "/admin/user-all",
-                        "/admin/modify",
-                        "/admin/user/{userId}",
-                        "/admin/events-all",
-                        "/admin/places-all",
-                        "/admin/user-all")
-                .hasRole("SUPERADMIN")
+
+                // Requests
+                .antMatchers("/requests/**")
+                .hasAnyRole("SUPERADMIN", "ADMIN", "USER")
                 // Admin
                 .antMatchers("/admin/**").hasAnyRole("SUPERADMIN", "ADMIN")
                 .anyRequest().permitAll()
