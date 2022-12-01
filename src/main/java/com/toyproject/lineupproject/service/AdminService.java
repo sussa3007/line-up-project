@@ -7,18 +7,23 @@ import com.toyproject.lineupproject.dto.AdminResponse;
 import com.toyproject.lineupproject.exception.GeneralException;
 import com.toyproject.lineupproject.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class AdminService {
     private final AdminRepository adminRepository;
 
@@ -47,15 +52,16 @@ public class AdminService {
 
 
     public void updateUser(Admin admin) {
-        //todo update시 비밀번호 인코딩 안됨 에러
+        Admin findUser = verifiedUserByEmail(admin.getEmail());
         String password = admin.getPassword();
-        if (password != null) {
+        if (!password.equals("")) {
             String encodePassword = passwordEncoder.encode(password);
             admin.setPassword(encodePassword);
+        } else {
+            admin.setPassword(findUser.getPassword());
         }
 
-        Admin findAdmin = verifiedUser(admin);
-        findAdmin.updateEntity(admin);
+        updateEntity(findUser,admin);
     }
 
     @Transactional(readOnly = true)
@@ -77,7 +83,12 @@ public class AdminService {
 
     @Transactional(readOnly = true)
     public Page<AdminResponse> findAllUser(Pageable pageable) {
-        return adminRepository.findAll(pageable).map(AdminResponse::of);
+        return adminRepository.findAll(
+                PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                Sort.by("id").descending()))
+                .map(AdminResponse::of);
     }
 
 
@@ -104,6 +115,36 @@ public class AdminService {
 
     public Optional<Admin> findUserByEmailToOptional(String email) {
         return adminRepository.findByEmail(email);
+    }
+
+
+    public void updateEntity(Admin findUser, Admin requestUser) {
+        String roles = findUser.getRoles().toString();
+        List<String> newRoles = new ArrayList<>();
+        // TODO 영속성 user의 Roles를 설정해줘도 삭제 쿼리가 날라간다 왜그럴까?
+        // [SUPERADMIN, ADMIN, USER]
+        // [ADMIN, USER]
+        // [USER]
+        if (requestUser.getRoles().isEmpty()) {
+            if (roles.equals("[USER]")) {
+                newRoles = JwtAuthorityUtils.USER_ROLES_STRINGS;
+            } else if (roles.equals("[ADMIN, USER]")) {
+                newRoles = JwtAuthorityUtils.ADMIN_ROLES_STRINGS;
+            } else if (roles.equals("[SUPERADMIN, ADMIN, USER]")) {
+                newRoles = JwtAuthorityUtils.SUPER_ADMIN_ROLES_STRINGS;
+            } else {
+                throw new GeneralException(ErrorCode.BAD_REQUEST);
+            }
+            requestUser.setRoles(newRoles);
+        }
+        findUser.setRoles(Optional.ofNullable(requestUser.getRoles()).orElse(newRoles));
+        findUser.setEmail(Optional.ofNullable(requestUser.getEmail()).orElse(findUser.getEmail()));
+        findUser.setNickname(Optional.ofNullable(requestUser.getNickname()).orElse(findUser.getNickname()));
+        findUser.setPassword(Optional.ofNullable(requestUser.getPassword()).orElse(findUser.getPassword()));
+        findUser.setPhoneNumber(Optional.ofNullable(requestUser.getPhoneNumber()).orElse(findUser.getPhoneNumber()));
+        findUser.setMemo(Optional.ofNullable(requestUser.getMemo()).orElse(findUser.getMemo()));
+        findUser.setStatus(Optional.ofNullable(requestUser.getStatus()).orElse(findUser.getStatus()));
+        findUser.setLoginBase(Optional.ofNullable(requestUser.getLoginBase()).orElse(findUser.getLoginBase()));
     }
 
 }
