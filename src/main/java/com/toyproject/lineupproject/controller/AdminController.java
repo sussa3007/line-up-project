@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -41,7 +42,7 @@ public class AdminController {
     private final PlaceService placeService;
 
     private final AdminService adminService;
-
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     @GetMapping("/user-all")
     public ModelAndView superAdminUsers(
             /* 기본값 0 10 */
@@ -75,6 +76,7 @@ public class AdminController {
                 )
         );
     }
+
     /* todo pageable 기능 구현 예정 */
     @GetMapping("/places-all")
     public ModelAndView superAdminPlaces(
@@ -99,7 +101,7 @@ public class AdminController {
     public ModelAndView adminPlaceDetail(
             @PathVariable Long placeId,
             @PageableDefault Pageable pageable
-            ) {
+    ) {
         PlaceResponse place = placeService.getPlace(placeId)
                 .map(PlaceResponse::from)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
@@ -139,7 +141,7 @@ public class AdminController {
         return "redirect:/admin/confirm";
     }
 
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_SUPERADMIN')")
     @ResponseStatus(HttpStatus.SEE_OTHER)
     @GetMapping("/places/{placeId}/delete")
     public String deletePlace(
@@ -154,7 +156,7 @@ public class AdminController {
         return "redirect:/admin/confirm";
     }
 
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_SUPERADMIN')")
     @GetMapping("/places/{placeId}/newEvent")
     public String newEvent(@PathVariable Long placeId, Model model) {
         EventResponse event = placeService.getPlace(placeId)
@@ -283,7 +285,7 @@ public class AdminController {
     public ModelAndView updateUserBySuperAdmin(
             @Valid @ModelAttribute AdminRequest adminRequest
     ) {
-        adminService.updateUser(adminRequest.dtoToAdmin());
+        adminService.updateUser(adminRequest.dtoToAdminFull());
 
         return new ModelAndView(
                 "/alert",
@@ -293,4 +295,5 @@ public class AdminController {
                 )
         );
     }
+
 }

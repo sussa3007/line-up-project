@@ -1,7 +1,10 @@
 package com.toyproject.lineupproject.constant;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@Getter
+@RequiredArgsConstructor
 public enum RequestCode {
 
     ADMIN_REQUEST("관리자 권한 요청"),
@@ -11,9 +14,6 @@ public enum RequestCode {
     QUESTION_REQUEST("문의 사항 접수");
 
 
-    @Getter
-    private String requestMessage;
+    private final String requestMessage;
 
-    RequestCode(String requestMessage) {
-    }
 }

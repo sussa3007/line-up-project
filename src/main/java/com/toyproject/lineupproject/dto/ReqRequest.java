@@ -6,14 +6,13 @@ import com.toyproject.lineupproject.domain.Request;
 import io.micrometer.core.lang.Nullable;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Arrays;
 
 public record ReqRequest(
-        @NotBlank
-        String email,
 
         @NotBlank
         String request,
+        @NotBlank
+        String email,
 
         @Nullable
         String message
@@ -29,12 +28,17 @@ public record ReqRequest(
     public Request dtoToRequest(Admin admin) {
         return Request.of(
                 admin,
-                Arrays.stream(RequestCode.values())
-                        .filter(c -> c.getRequestMessage().equals(request))
-                        .findFirst().orElse(RequestCode.QUESTION_REQUEST),
-                message,
+                RequestCode.valueOf(request),
+                this.message,
                 Request.Status.OPEN_ISSUE
 
+        );
+    }
+    public Request dtoToRequest() {
+        return Request.of(
+                RequestCode.valueOf(request),
+                this.message,
+                Request.Status.OPEN_ISSUE
         );
     }
 

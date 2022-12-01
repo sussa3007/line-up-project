@@ -68,7 +68,7 @@ public class Admin {
     private final Set<AdminPlaceMap> adminPlaceMaps = new LinkedHashSet<>();
 
     @ToString.Exclude
-    @OrderBy("id")
+    @OrderBy("requestId")
     @OneToMany(mappedBy = "admin")
     private final Set<Request> requests = new LinkedHashSet<>();
 
@@ -127,11 +127,11 @@ public class Admin {
     }
 
     public void updateEntity(Admin admin) {
-        this.email = admin.getEmail();
-        this.nickname = admin.getNickname();
+        this.email = Optional.ofNullable(admin.getEmail()).orElse(this.email);
+        this.nickname = Optional.ofNullable(admin.getNickname()).orElse(this.nickname);
         this.password = Optional.ofNullable(admin.getPassword()).orElse(this.password);
-        this.phoneNumber = admin.getPhoneNumber();
-        this.memo = admin.getMemo();
+        this.phoneNumber = Optional.ofNullable(admin.getPhoneNumber()).orElse(this.phoneNumber);
+        this.memo = Optional.ofNullable(admin.getMemo()).orElse(this.memo);
         this.status = Optional.ofNullable(admin.getStatus()).orElse(this.status);
         this.loginBase = Optional.ofNullable(admin.getLoginBase()).orElse(this.loginBase);
         this.roles = Optional.ofNullable(admin.getRoles()).orElse(this.roles);

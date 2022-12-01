@@ -75,12 +75,12 @@ public class JwtTokenizer {
 
     }
 
-    public void delegateToken(Admin member,HttpServletResponse response) {
+    public void delegateToken(Admin user,HttpServletResponse response) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("username", member.getEmail());
-        claims.put("roles", member.getRoles());
+        claims.put("username", user.getEmail());
+        claims.put("roles", user.getRoles());
 
-        String subject = member.getEmail();
+        String subject = user.getEmail();
 
         String base64SecretKey = encodeBase64SecretKey(getSecretKey());
 

@@ -61,7 +61,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             AuthenticationException failed
     ) throws IOException, ServletException {
         String referer = request.getHeader("REFERER").replace("http://localhost:8080", "");
-        request.setAttribute("msg", ErrorCode.NOT_FOUND_MEMBER.getMessage()+" Return to previous page");
+        request.setAttribute("msg", ErrorCode.FAILED_LOGIN.getMessage()+" Return to previous page");
         request.setAttribute("nextPage", referer);
         request.getRequestDispatcher("/error").forward(request, response);
     }

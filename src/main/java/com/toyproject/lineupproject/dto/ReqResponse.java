@@ -5,9 +5,10 @@ import com.toyproject.lineupproject.domain.Admin;
 import com.toyproject.lineupproject.domain.Request;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 public record ReqResponse(
+
+        Long id,
 
         String email,
 
@@ -22,6 +23,7 @@ public record ReqResponse(
         LocalDateTime modifiedAt
 ) {
     public static ReqResponse of(
+            Long id,
             String email,
             String request,
             String message,
@@ -29,13 +31,14 @@ public record ReqResponse(
             LocalDateTime createAt,
             LocalDateTime modifiedAt
     ) {
-        return new ReqResponse(email, request, message,status,createAt,modifiedAt);
+        return new ReqResponse(id,email, request, message,status,createAt,modifiedAt);
     }
 
     public static ReqResponse of(
             Request request
     ) {
         return new ReqResponse(
+                request.getRequestId(),
                 request.getAdmin().getEmail(),
                 request.getRequestCode().getRequestMessage(),
                 request.getMessage(),
@@ -48,14 +51,9 @@ public record ReqResponse(
     public Request dtoToRequest(Admin admin) {
         return Request.of(
                 admin,
-                Arrays.stream(RequestCode.values())
-                        .filter(c -> c.getRequestMessage().equals(request))
-                        .findFirst().orElse(RequestCode.QUESTION_REQUEST),
+                RequestCode.valueOf(request),
                 message,
-                Arrays.stream(Request.Status.values())
-                        .filter(s -> s.getMessage().equals(status))
-                        .findFirst().orElse(Request.Status.IN_PROGRESS_ISSUE)
-
+                Request.Status.valueOf(status)
         );
     }
 }
