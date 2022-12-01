@@ -67,14 +67,14 @@
                 <a id="requestallpage"
                    class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
                    sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
-                   th:href="@{/admin/request-all}"
+                   th:href="@{/requests/all}"
                 >
                     All Request
                 </a>
                 <a id="requestpage"
                    class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
                    sec:authorize="!hasAnyRole('ROLE_SUPERADMIN') && !isAnonymous()"
-                   th:href="@{/admin/request}"
+                   th:href="@{/requests/new}"
                 >
                     User Request
                 </a>

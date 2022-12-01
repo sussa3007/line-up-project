@@ -4,14 +4,18 @@ import com.toyproject.lineupproject.constant.AdminOperationStatus;
 import com.toyproject.lineupproject.domain.Admin;
 import com.toyproject.lineupproject.dto.AdminRequest;
 import com.toyproject.lineupproject.dto.AdminResponse;
+import com.toyproject.lineupproject.dto.ReqResponse;
 import com.toyproject.lineupproject.service.AdminService;
+import com.toyproject.lineupproject.service.RequestService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -23,6 +27,8 @@ import java.util.Map;
 @Controller
 public class AdminRegisterController {
     private final AdminService adminService;
+
+    private final RequestService requestService;
 
     @GetMapping("/sign-up")
     public String signUp() {
@@ -42,16 +48,19 @@ public class AdminRegisterController {
     @GetMapping("/info")
     public ModelAndView userInfo(
             Principal principal,
-            @RequestHeader("referer") String referer
+            @PageableDefault Pageable pageable
     ) {
         Admin findUser = adminService.findUserByEmail(principal.getName());
         AdminResponse user = AdminResponse.of(findUser);
+        Page<ReqResponse> requests =
+                requestService.findAllByUser(pageable, findUser);
         return new ModelAndView(
                 "auth/info",
                 Map.of(
                         "adminOperationStatus", AdminOperationStatus.MODIFY,
+                        "requests", requests,
                         "user", user,
-                        "backUrl", referer
+                        "backUrl", "/events"
                 )
         );
     }
