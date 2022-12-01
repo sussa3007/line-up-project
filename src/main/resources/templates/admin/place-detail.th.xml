@@ -5,7 +5,11 @@
 <!--        <attr sel="#adminEmail" th:if = "${adminOperationStatus.getMessage().equals('수정')} " th:value= "${place?.adminEmail}"/>-->
 <!--        <attr sel="#adminEmail" th:unless = "${adminOperationStatus.getMessage().equals('수정')} " th:value= "${#authentication.principal}"/>-->
         <attr sel="#placeType" th:remove="all-but-first">
-            <attr sel="option" th:each="type : ${placeTypeOption}" th:value="${type}" th:text="${type}" th:selected="${place?.placeType == type}" />
+            <attr sel="option"
+                  th:each="type : ${placeTypeOption}"
+                  th:value="${type}"
+                  th:text="${type}"
+                  th:selected="${place?.placeType == type}" />
         </attr>
         <attr sel="#placeName" th:value="${place?.placeName}" />
         <attr sel="#address" th:value="${place?.address}" />

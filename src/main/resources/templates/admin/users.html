@@ -55,9 +55,11 @@
                 <td class="memo px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">안녕</td>
                 <td class="status px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     <span   th:if = "${user.status.equals('Active')}" th:text="${user.status}"
-                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">ACTIVE</span>
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                        ACTIVE</span>
                     <span   th:unless = "${user.status.equals('Active')}" th:text="${user.status}"
-                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">test</span>
+                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                        test</span>
                 </td>
                 <td class="loginbase px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">SOCIAL LOGIN</td>
                 <td class="createAt px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">2021-01-01 10:00:00</td>

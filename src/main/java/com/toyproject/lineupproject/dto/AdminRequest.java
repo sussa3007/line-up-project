@@ -1,7 +1,9 @@
 package com.toyproject.lineupproject.dto;
 
 import com.toyproject.lineupproject.auth.jwt.utils.JwtAuthorityUtils;
+import com.toyproject.lineupproject.constant.ErrorCode;
 import com.toyproject.lineupproject.domain.Admin;
+import com.toyproject.lineupproject.exception.GeneralException;
 import io.micrometer.core.lang.Nullable;
 
 import javax.validation.constraints.NotBlank;
@@ -26,10 +28,10 @@ public record AdminRequest(
         @Nullable
         String memo,
 
-        @NotBlank
+        @Nullable
         String role,
 
-        @NotBlank
+        @Nullable
         String status
 
 ) {
@@ -85,8 +87,10 @@ public record AdminRequest(
             of.setRoles(JwtAuthorityUtils.USER_ROLES_STRINGS);
         } else if (JwtAuthorityUtils.ADMIN_ROLES_STRINGS.contains(this.role)) {
             of.setRoles(JwtAuthorityUtils.ADMIN_ROLES_STRINGS);
-        } else {
+        } else if (JwtAuthorityUtils.SUPER_ADMIN_ROLES_STRINGS.contains(this.role)) {
             of.setRoles(JwtAuthorityUtils.SUPER_ADMIN_ROLES_STRINGS);
+        } else {
+            throw new GeneralException(ErrorCode.BAD_REQUEST);
         }
 
         return of;

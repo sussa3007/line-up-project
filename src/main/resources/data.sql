@@ -44,10 +44,31 @@ values
     ('test@test.com', '테스트', '{noop}1111!', '010-0101-0101', '안녕하세요', 'ACTIVE_USER', 'BASIC_LOGIN'),
     ('admin@gmail.com', 'admin', '{noop}1111!', '010-0101-0999', '안녕하세요', 'ACTIVE_USER', 'BASIC_LOGIN'),
     ('admin@naver.com', 'admin2', '{noop}1111!', '010-0101-0989', '안녕하세요', 'ACTIVE_USER', 'BASIC_LOGIN'),
-    ('test1@test.com', 'test11', '{noop}1111!', '010-2222-0989', '안녕하세요', 'INACTIVE_USER', 'BASIC_LOGIN'),
-    ('test2@test.com', 'test18', '{noop}1111!', '010-2222-0929', '테스트유저', 'INACTIVE_USER', 'SOCIAL_LOGIN'),
-    ('test3@test.com', 'test16', '{noop}1111!', '010-2222-0919', '테스트유저', 'INACTIVE_USER', 'SOCIAL_LOGIN'),
-    ('aaaa1', 'test22', '{noop}1111!', '010-2233-0989', '안녕하세요', 'ACTIVE_USER', 'BASIC_LOGIN')
+    ('test1@test.com', 'test11', '{noop}1111!', '010-2222-0981', '안녕하세요', 'INACTIVE_USER', 'BASIC_LOGIN'),
+    ('test2@test.com', 'test12', '{noop}1111!', '010-2222-0922', '테스트유저', 'ACTIVE_USER', 'SOCIAL_LOGIN'),
+    ('test3@test.com', 'test13', '{noop}1111!', '010-2222-0923', '테스트유저', 'ACTIVE_USER', 'SOCIAL_LOGIN'),
+    ('test4@test.com', 'test14', '{noop}1111!', '010-2222-0924', '테스트유저', 'INACTIVE_USER', 'BASIC_LOGIN'),
+    ('test5@test.com', 'test15', '{noop}1111!', '010-2222-0925', '테스트유저', 'ACTIVE_USER', 'BASIC_LOGIN'),
+    ('test6@test.com', 'test16', '{noop}1111!', '010-2222-0926', '테스트유저', 'INACTIVE_USER', 'BASIC_LOGIN'),
+    ('test7@test.com', 'test17', '{noop}1111!', '010-2222-0917', '테스트유저', 'ACTIVE_USER', 'SOCIAL_LOGIN'),
+    ('super@test.com', 'test22', '{noop}1111!', '010-2233-0989', '안녕하세요', 'ACTIVE_USER', 'BASIC_LOGIN')
+;
+
+insert into `request` (`admin_id`, `request_code`, `message`, `status`)
+values
+    (1,'ADMIN_REQUEST','관리자 요청합니다!','OPEN_ISSUE'),
+    (1,'ADMIN_REQUEST','관리자 요청합니다!','OPEN_ISSUE'),
+    (1,'USER_REQUEST','일반 회원 만들어주세요!','OPEN_ISSUE'),
+    (2,'ADMIN_REQUEST','관리자 요청합니다!','CLOSE_ISSUE'),
+    (2,'USER_INACTIVE_REQUEST','탈퇴해주세요!','IN_PROGRESS_ISSUE'),
+    (2,'ADMIN_REQUEST','관리자 요청합니다!','CLOSE_ISSUE'),
+    (3,'ADMIN_REQUEST','관리자 요청합니다!','OPEN_ISSUE'),
+    (4,'COMPLAIN_REQUEST','불만있습니다!','IN_PROGRESS_ISSUE'),
+    (5,'ADMIN_REQUEST','관리자 요청합니다!','OPEN_ISSUE'),
+    (5,'QUESTION_REQUEST','문의합니다!','OPEN_ISSUE'),
+    (5,'USER_INACTIVE_REQUEST','탈퇴해주세요!','OPEN_ISSUE'),
+    (6,'QUESTION_REQUEST','문의합니다!','CLOSE_ISSUE')
+
 ;
 
 insert into `admin_roles`(`admin_id`, `roles`)
@@ -60,9 +81,13 @@ values
     (4, 'USER'),
     (5, 'USER'),
     (6, 'USER'),
-    (7, 'SUPERADMIN'),
-    (7, 'ADMIN'),
-    (7, 'USER')
+    (7, 'USER'),
+    (8, 'USER'),
+    (9, 'USER'),
+    (10, 'USER'),
+    (11, 'SUPERADMIN'),
+    (11, 'ADMIN'),
+    (11, 'USER')
     ;
 
 insert into `admin_place_map` (`admin_id`, `place_id`)

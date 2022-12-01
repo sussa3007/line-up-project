@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<thlogic>
+    <attr sel="#requestTable" th:object = "${requestInfo}">
+        <attr sel="#email" th:value="*{email} ?: _"  />
+        <attr sel="#request" th:value="*{request} ?: _" />
+        <attr sel="#message" th:text="*{message} ?: _ " />
+        <attr sel="#adminMessage" th:text="'관리자 메세지 : ' " />
+        <attr sel="#createAt" th:value="${#temporals.format(requestInfo.createAt, 'M/d ha', 'US')}" />
+        <attr sel="#modifyAt" th:value="${#temporals.format(requestInfo.modifiedAt, 'M/d ha', 'US')}" />
+    </attr>
+    <attr sel="#modify" th:form="modifyForm" th:formaction="@{'/requests/' + ${requestInfo.id}+'/modify'}" th:formmethod="post"/>
+    <attr sel="#cancel" th:onclick="'location.href=\'' + @{${backUrl}} + '\''"/>
+    <attr sel="#csrf" th:value="${_csrf.token}" th:name="${_csrf.parameterName}"/>
+    <attr sel="#requestTitle" th:text="'문의 사항 수정'"/>
+</thlogic>
