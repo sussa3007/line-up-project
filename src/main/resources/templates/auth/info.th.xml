@@ -10,4 +10,14 @@
     <attr sel="#memo" th:value="*{user?.memo}" />
     <attr sel="#modify" th:form="modifyForm" th:formaction="@{/info}" th:formmethod="post" />
     <attr sel="#cancel" th:onclick="'location.href=\'' + @{${backUrl}} + '\''" />
+    <attr sel="#requestsTable">
+        <attr sel="tbody">
+            <attr sel="tr[0]" th:each="request : ${requests}">
+                <attr sel="td.email" th:text="${request.email}" />
+                <attr sel="td.request" th:text="${request.request}" />
+                <attr sel="td.requestStatus/span" th:text="${request.status}" />
+                <attr sel="td/a" th:text="'Detail'" th:href="@{'/requests/' + ${request.id}}" />
+            </attr>
+        </attr>
+    </attr>
 </thlogic>

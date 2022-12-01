@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<thlogic>
+    <attr sel="#csrf" th:value="${_csrf.token}" th:name="${_csrf.parameterName}"/>
+    <attr sel="#requestsTitle" th:text="'요청 목록'" />
+    <attr sel="#requestsTable">
+        <attr sel="tbody">
+            <attr sel="tr[0]" th:each="request : ${requests}">
+                <attr sel="td.email" th:text="${request.email}" />
+                <attr sel="td.request" th:text="${request.request}" />
+                <attr sel="td.requestStatus/span" th:text="${request.status}" />
+                <attr sel="td.createAt" th:text="${#temporals.format(request.createAt, 'M/d (ha)', 'US')}" />
+                <attr sel="td.modifiedAt" th:text="${#temporals.format(request.modifiedAt, 'M/d (ha)', 'US')}" />
+                <attr sel="td/a" th:text="'Message'" th:href="@{'/requests/' + ${request.id} +'/modify'}" />
+            </attr>
+        </attr>
+    </attr>
+</thlogic>
