@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <title>pagebar</title>
+</head>
+<body class="max-w-6xl mx-auto px-4 ">
+<div th:fragment="pagebar">
+    <nav style="text-align: center;">
+        <th:block th:each="page:${#numbers.sequence(startPage,endPage)}" >
+            <a class="text-gray-500 font-bold text-xl sm:text-2xl sm:truncate"
+                    th:if="${page != nowPage}" th:href="@{${currentPage}(page=${page-1})}" th:text ="${page}"></a>
+            <strong class="font-bold text-xl sm:text-2xl sm:truncate"
+                    th:if="${page==nowPage}" th:text ="${page}" style="color:red"></strong>
+        </th:block>
+    </nav>
+</div>
+</body>
+</html>
+
+<!--<header th:insert="searchbar.html::nav"></header>-->
