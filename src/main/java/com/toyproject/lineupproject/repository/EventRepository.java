@@ -1,5 +1,6 @@
 package com.toyproject.lineupproject.repository;
 
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.ComparableExpression;
 import com.querydsl.core.types.dsl.StringExpression;
 import com.toyproject.lineupproject.domain.Event;
@@ -31,6 +32,7 @@ public interface EventRepository extends
         bindings.bind(root.eventEndDatetime).first(ComparableExpression::loe);
     }
 
+    Page<Event> findAll(Predicate predicate,Pageable pageable);
     Page<Event> findByPlace(Place place, Pageable pageable);
     List<Event> findAllByPlace(Place place);
 }
