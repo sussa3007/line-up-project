@@ -10,6 +10,9 @@ import com.toyproject.lineupproject.exception.GeneralException;
 import com.toyproject.lineupproject.repository.AdminPlaceMapRepository;
 import com.toyproject.lineupproject.repository.PlaceRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,13 +57,14 @@ public class PlaceService {
         }
     }
     @Transactional(readOnly = true)
-    public List<PlaceDto> getPlacesAll() {
+    public Page<PlaceDto> getPlacesAll(Predicate predicate, Pageable pageable) {
         try {
-            return StreamSupport.stream(
-                            placeRepository.findAll().spliterator(),
+            Page<Place> all = placeRepository.findAll(predicate, pageable);
+            List<PlaceDto> placeDtos = StreamSupport.stream(
+                            all.spliterator(),
                             false)
-                    .map(PlaceDto::of)
-                    .collect(Collectors.toList());
+                    .map(PlaceDto::of).toList();
+            return new PageImpl<>(placeDtos, all.getPageable(), all.getTotalElements());
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR);
         }

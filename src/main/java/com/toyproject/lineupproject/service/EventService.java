@@ -49,8 +49,23 @@ public class EventService {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
     }
+
     @Transactional(readOnly = true)
-    public List<EventDto> getEventsByEmail(String  email) {
+    public Page<EventDto> getEvents(Predicate predicate, Pageable pageable) {
+        try {
+            Page<Event> all = eventRepository.findAll(predicate, pageable);
+            List<EventDto> eventDtos = StreamSupport.stream(
+                            all.spliterator(), false)
+                    .map(EventDto::of)
+                    .toList();
+            return new PageImpl<>(eventDtos, all.getPageable(), all.getTotalElements());
+        } catch (Exception e) {
+            throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public List<EventDto> getEventsByEmail(String email) {
         try {
             Admin findUser = adminService.findUserByEmail(email);
             List<AdminPlaceMap> all = adminPlaceMapRepository.findAllByAdmin(findUser);
@@ -64,6 +79,7 @@ public class EventService {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
     }
+
     @Transactional(readOnly = true)
     public Page<EventViewResponse> getEventViewResponse(
             String placeName,
@@ -86,6 +102,7 @@ public class EventService {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
     }
+
     @Transactional(readOnly = true)
     public Optional<EventDto> getEvent(Long eventId) {
         try {
