@@ -13,9 +13,11 @@ import com.toyproject.lineupproject.exception.GeneralException;
 import com.toyproject.lineupproject.service.AdminService;
 import com.toyproject.lineupproject.service.EventService;
 import com.toyproject.lineupproject.service.PlaceService;
+import com.toyproject.lineupproject.utils.SearchUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -27,9 +29,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.security.Principal;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -42,57 +46,126 @@ public class AdminController {
     private final PlaceService placeService;
 
     private final AdminService adminService;
+
+    private final SearchUtils searchUtils;
+
+
+    @GetMapping("/searchPlace")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMIN')")
+    public String searchSuperAdminPlace(
+            @RequestParam HashMap<String, Object> param
+    ) throws UnsupportedEncodingException {
+        String uri = searchUtils.getSearchUri(param);
+
+        return "redirect:/admin/places-all" + (uri == null ? "" : uri);
+
+    }
+
+    @GetMapping("/searchEvent")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMIN')")
+    public String searchSuperAdminEvents(
+            @RequestParam HashMap<String, Object> param
+    ) throws UnsupportedEncodingException {
+        String uri = searchUtils.getSearchUri(param);
+
+        return "redirect:/admin/events-all" + (uri == null ? "" : uri);
+
+    }
+
+    @GetMapping("/searchUser")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMIN')")
+    public String searchSuperAdminUsers(
+            @RequestParam HashMap<String, Object> param
+    ) throws UnsupportedEncodingException {
+        String uri = searchUtils.getSearchUri(param);
+
+        return "redirect:/admin/user-all" + (uri == null ? "" : uri);
+
+    }
+
+    @GetMapping("/searchAdminPlace")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_SUPERADMIN')")
+    public String searchAdminPlace(
+            @RequestParam HashMap<String, Object> param,
+            Principal principal
+    ) throws UnsupportedEncodingException {
+        param.put("email", principal.getName());
+        String uri = searchUtils.getSearchUri(param);
+
+        return "redirect:/admin/places" + (uri == null ? "" : uri);
+
+    }
+
+    @GetMapping("/searchAdminEvent")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_SUPERADMIN')")
+    public String searchAdminEvent(
+            @RequestParam HashMap<String, Object> param,
+            Principal principal
+    ) throws UnsupportedEncodingException {
+        param.put("email", principal.getName());
+        String uri = searchUtils.getSearchUri(param);
+
+        return "redirect:/admin/events" + (uri == null ? "" : uri);
+
+    }
+
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     @GetMapping("/user-all")
     public ModelAndView superAdminUsers(
-            /* 기본값 0 10 */
-            @PageableDefault Pageable pageable
+            @RequestParam HashMap<String, Object> param,
+            @QuerydslPredicate(root = Admin.class) Predicate predicate,
+            @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
+            Pageable pageable,
+            HttpServletRequest request
+
     ) {
-        Page<AdminResponse> allUser = adminService.findAllUser(pageable);
+        Page<AdminResponse> allUser = adminService.finderUsers(
+                (String) param.get("statusKey"),
+                predicate,
+                pageable
+        );
+        Map<String, Object> searchUserPageInfo = searchUtils.getSearchUserPageInfo(request,allUser);
         return new ModelAndView(
                 "admin/users",
-                Map.of(
-                        "allUser", allUser
-                )
+                searchUserPageInfo
         );
     }
 
     @GetMapping("/places")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_SUPERADMIN')")
     public ModelAndView adminPlaces(
-//            @QuerydslPredicate(root = Place.class) Predicate predicate
-            Principal principal
+            @QuerydslPredicate(root = Place.class) Predicate predicate,
+            Principal principal,
+            @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
+            Pageable pageable,
+            HttpServletRequest request
     ) {
-
-        List<PlaceResponse> places = placeService.getPlacesByEmail(principal.getName())
-                .stream()
-                .map(PlaceResponse::from)
-                .toList();
+        Page<PlaceDto> findDtos = placeService.getPlacesByAdmin(principal.getName(), pageable, predicate);
+        Map<String, Object> placePageInfo = searchUtils.getAdminPlacePageInfo(request, findDtos);
+        placePageInfo.put("placeTypeOption", PlaceType.values());
 
         return new ModelAndView(
                 "admin/places",
-                Map.of(
-                        "places", places,
-                        "placeTypeOption", PlaceType.values()
-                )
+                placePageInfo
         );
     }
 
-    /* todo pageable 기능 구현 예정 */
     @GetMapping("/places-all")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMIN')")
     public ModelAndView superAdminPlaces(
-            @QuerydslPredicate(root = Place.class) Predicate predicate
+            @QuerydslPredicate(root = Place.class) Predicate predicate,
+            @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
+            Pageable pageable,
+            HttpServletRequest request
     ) {
-        List<PlaceResponse> places = placeService.getPlaces(predicate)
-                .stream()
-                .map(PlaceResponse::from)
-                .toList();
+        Page<PlaceDto> findDtos = placeService.getPlacesAll(predicate, pageable);
+        Map<String, Object> placePageInfo = searchUtils.getSuperAdminPlacePageInfo(request,findDtos);
+        placePageInfo.put("placeTypeOption", PlaceType.values());
+
 
         return new ModelAndView(
                 "admin/places",
-                Map.of(
-                        "places", places,
-                        "placeTypeOption", PlaceType.values()
-                )
+                placePageInfo
         );
     }
 
@@ -202,40 +275,50 @@ public class AdminController {
 
     @GetMapping("/events")
     public ModelAndView adminEvents(
-//            @QuerydslPredicate(root = Event.class) Predicate predicate
-            Principal principal
+            @QuerydslPredicate(root = Event.class) Predicate predicate,
+            Principal principal,
+            @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
+            Pageable pageable,
+            HttpServletRequest request
     ) {
 
-        List<EventResponse> events = eventService.getEventsByEmail(principal.getName())
-                .stream()
-                .map(EventResponse::from)
-                .toList();
+        Page<EventDto> findDto =
+                eventService.getEventsByAdmin(principal.getName(), predicate, pageable);
+        Map<String, Object> adminEventPageInfo =
+                searchUtils.getAdminEventPageInfo(request, findDto);
+        adminEventPageInfo.put("eventStatusOption", EventStatus.values());
 
         return new ModelAndView(
                 "admin/events",
-                Map.of(
-                        "events", events,
-                        "eventStatusOption", EventStatus.values()
-                )
+                adminEventPageInfo
         );
     }
 
     /* todo 페이지 구현 예정*/
     @GetMapping("/events-all")
     public ModelAndView adminEvents(
-            @QuerydslPredicate(root = Event.class) Predicate predicate
+            @RequestParam HashMap<String, Object> param,
+            @QuerydslPredicate(root = Event.class) Predicate predicate,
+            @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
+            Pageable pageable,
+            HttpServletRequest request
     ) {
-        List<EventResponse> events = eventService.getEvents(predicate)
-                .stream()
-                .map(EventResponse::from)
-                .toList();
+        String statusKey = (String) param.get("statusKey");
+        Page<EventDto> findDtos;
+        if (statusKey != null) {
+            EventStatus eventStatus = EventStatus.valueOf(statusKey.toUpperCase());
+            findDtos = eventService.getEventsAllByStatus(eventStatus, pageable);
+        } else {
+            findDtos = eventService.getEventsAll(predicate, pageable);
+        }
+        Map<String, Object> eventPageInfo =
+                searchUtils.getSuperAdminEventPageInfo(
+                        request,findDtos);
+        eventPageInfo.put("placeTypeOption", PlaceType.values());
 
         return new ModelAndView(
                 "admin/events",
-                Map.of(
-                        "events", events,
-                        "eventStatusOption", EventStatus.values()
-                )
+                eventPageInfo
         );
     }
 
