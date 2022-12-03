@@ -5,6 +5,7 @@
         <attr sel="tbody">
             <attr sel="tr[0]" th:each="place : ${places}">
                 <attr sel="td.placeName" th:text="${place.placeName}" />
+                <attr sel="td.address" th:text="${place.address}" />
                 <attr sel="td.phoneNumber" th:text="${place.phoneNumber}" />
                 <attr sel="td/a" th:text="'상세'" th:href="@{'/admin/places/' + ${place.id}}" />
             </attr>
