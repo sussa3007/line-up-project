@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +37,7 @@ public class PlaceController {
 
 
     @GetMapping("/searchPlace")
-    public String searchEvent(
+    public String searchPlace(
             @RequestParam HashMap<String, Object> param
     ) throws UnsupportedEncodingException {
         String uri = searchUtils.getSearchUri(param);
@@ -48,11 +49,12 @@ public class PlaceController {
     public ModelAndView places(
             @QuerydslPredicate(root = Place.class) Predicate predicate,
             @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
-            Pageable pageable
+            Pageable pageable,
+            HttpServletRequest request
             ){
 
         Page<PlaceDto> findDtos = placeService.getPlacesAll(predicate, pageable);
-        Map<String, Object> placePageInfo = searchUtils.getPlacePageInfo(findDtos);
+        Map<String, Object> placePageInfo = searchUtils.getPlacePageInfo(request,findDtos);
         return new ModelAndView("place/index",placePageInfo);
     }
 

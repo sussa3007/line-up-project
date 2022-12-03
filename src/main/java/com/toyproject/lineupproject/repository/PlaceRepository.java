@@ -20,10 +20,11 @@ public interface PlaceRepository extends
     @Override
     default void customize(QuerydslBindings bindings, QPlace root) {
         bindings.excludeUnlistedProperties(true);
-        bindings.including(root.placeName, root.address, root.phoneNumber);
+        bindings.including(root.placeName, root.address, root.phoneNumber,root.adminEmail);
         bindings.bind(root.placeName).first(StringExpression::containsIgnoreCase);
         bindings.bind(root.address).first(StringExpression::containsIgnoreCase);
         bindings.bind(root.phoneNumber).first(StringExpression::containsIgnoreCase);
+        bindings.bind(root.adminEmail).as("email").first(StringExpression::containsIgnoreCase);
     }
 
     Page<Place> findAll(Predicate predicate, Pageable pageable);

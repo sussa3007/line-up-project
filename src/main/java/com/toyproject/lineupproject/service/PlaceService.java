@@ -46,12 +46,17 @@ public class PlaceService {
         }
     }
     @Transactional(readOnly = true)
-    public List<PlaceDto> getPlacesByEmail(String email) {
+    public Page<PlaceDto> getPlacesByAdmin(String email,Pageable pageable, Predicate predicate) {
         try {
-            Admin findUser = adminService.findUserByEmail(email);
-            List<AdminPlaceMap> all = adminPlaceMapRepository.findAllByAdmin(findUser);
-            return all.stream().map(a -> PlaceDto.of(a.getPlace()))
-                    .collect(Collectors.toList());
+            Page<AdminPlaceMap> all = adminPlaceMapRepository.findAll(predicate, pageable);
+            if (!all.isEmpty()) {
+                if (!all.getContent().get(0).getAdmin().getEmail().equals(email)) {
+                    throw new GeneralException(ErrorCode.BAD_REQUEST);
+                }
+            }
+            List<PlaceDto> placeDtos = all.getContent().stream()
+                    .map(a -> PlaceDto.of(a.getPlace())).toList();
+            return new PageImpl<>(placeDtos, all.getPageable(), all.getTotalElements());
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR);
         }
