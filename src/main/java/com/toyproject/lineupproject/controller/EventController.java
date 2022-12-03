@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Size;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
@@ -55,13 +56,21 @@ public class EventController {
 
     @GetMapping
     public ModelAndView events(
+            @RequestParam HashMap<String, Object> param,
             @QuerydslPredicate(root = Event.class) Predicate predicate,
             @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
-            Pageable pageable
+            Pageable pageable,
+            HttpServletRequest request
     ) {
-
-        Page<EventDto> findDtos = eventService.getEvents(predicate, pageable);
-        Map<String, Object> eventPageInfo = searchUtils.getEventPageInfo(findDtos);
+        String statusKey = (String) param.get("statusKey");
+        Page<EventDto> findDtos;
+        if (statusKey != null) {
+            EventStatus eventStatus = EventStatus.valueOf(statusKey.toUpperCase());
+            findDtos = eventService.getEventsAllByStatus(eventStatus, pageable);
+        } else {
+            findDtos = eventService.getEventsAll(predicate, pageable);
+        }
+        Map<String, Object> eventPageInfo = searchUtils.getEventPageInfo(request,findDtos);
 
         return new ModelAndView("event/index", eventPageInfo);
     }
