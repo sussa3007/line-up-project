@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,23 +23,32 @@ public class JwtAuthorityUtils {
     private final AdminRepository adminRepository;
 
 
-    public static final List<GrantedAuthority> SUPER_ADMIN_ROLES = AuthorityUtils.createAuthorityList("ROLE_SUPERADMIN","ROLE_ADMIN", "ROLE_USER");
+    public static final List<GrantedAuthority> SUPER_ADMIN_ROLES = AuthorityUtils.createAuthorityList("ROLE_SUPERADMIN", "ROLE_ADMIN", "ROLE_USER");
 
     public static final List<GrantedAuthority> ADMIN_ROLES = AuthorityUtils.createAuthorityList("ROLE_ADMIN", "ROLE_USER");
 
     public static final List<GrantedAuthority> USER_ROLES = AuthorityUtils.createAuthorityList("ROLE_USER");
 
-    private final List<String> SUPER_ADMIN_ROLES_STRING = List.of("SUPERADMIN","ADMIN", "USER");
+    private final List<String> SUPER_ADMIN_ROLES_STRING = List.of("SUPERADMIN", "ADMIN", "USER");
     private final List<String> ADMIN_ROLES_STRING = List.of("ADMIN", "USER");
     private final List<String> USER_ROLES_STRING = List.of("USER");
 
-    public static final List<String> SUPER_ADMIN_ROLES_STRINGS = List.of("SUPERADMIN","ADMIN", "USER");
-    public static  final List<String> ADMIN_ROLES_STRINGS = List.of("ADMIN", "USER");
-    public static  final List<String> USER_ROLES_STRINGS = List.of("USER");
+    public static final List<String> SUPER_ADMIN_ROLES_STRINGS = List.of("SUPERADMIN", "ADMIN", "USER");
+    public static final List<String> ADMIN_ROLES_STRINGS = List.of("ADMIN", "USER");
+    public static final List<String> USER_ROLES_STRINGS = List.of("USER");
+
+
+    public static List<String> findRoles(String string) {
+        HashMap<String, List<String>> map = new HashMap<>();
+        map.put("SUPERADMIN", SUPER_ADMIN_ROLES_STRINGS);
+        map.put("ADMIN", ADMIN_ROLES_STRINGS);
+        map.put("USER", USER_ROLES_STRINGS);
+        return map.get(string);
+    }
 
     public List<GrantedAuthority> createAuthorities(List<String> roles) {
-        List<GrantedAuthority> result =  roles.stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_"+role))
+        List<GrantedAuthority> result = roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                 .collect(Collectors.toList());
         return result;
     }
