@@ -1,5 +1,6 @@
 package com.toyproject.lineupproject.service;
 
+import com.querydsl.core.types.Predicate;
 import com.toyproject.lineupproject.auth.jwt.utils.JwtAuthorityUtils;
 import com.toyproject.lineupproject.constant.ErrorCode;
 import com.toyproject.lineupproject.domain.Admin;
@@ -9,9 +10,8 @@ import com.toyproject.lineupproject.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,15 +80,58 @@ public class AdminService {
     public Admin findUserByEmail(String  email) {
         return verifiedUserByEmail(email);
     }
-
     @Transactional(readOnly = true)
-    public Page<AdminResponse> findAllUser(Pageable pageable) {
-        return adminRepository.findAll(
-                PageRequest.of(
-                pageable.getPageNumber(),
-                pageable.getPageSize(),
-                Sort.by("id").descending()))
-                .map(AdminResponse::of);
+    public Page<AdminResponse> finderUsers(
+            String statusKey,
+            Predicate predicate ,
+            Pageable pageable
+    ) {
+        Page<AdminResponse> allUser = null;
+        if (statusKey != null) {
+            if(statusKey.equals("active")){
+                allUser = findAllUserByStatus(
+                        Admin.Status.valueOf((statusKey + "_user").toUpperCase()),
+                        pageable);
+            } else if(statusKey.equals("inActive")){
+                allUser = findAllUserByStatus(
+                        Admin.Status.valueOf((statusKey + "_user").toUpperCase()),
+                        pageable);
+            } else {
+                allUser = findAllUserByRoles(
+                        statusKey.toUpperCase(),
+                        pageable
+                );
+            }
+        } else {
+            allUser = findAllUser(predicate,pageable);
+        }
+
+        return allUser;
+    }
+
+    private Page<AdminResponse> findAllUser(Predicate predicate, Pageable pageable) {
+        Page<Admin> all = adminRepository.findAll(predicate, pageable);
+        List<AdminResponse> list = all.getContent()
+                .stream().map(AdminResponse::of).toList();
+        return new PageImpl<>(list, all.getPageable(), all.getTotalElements());
+    }
+    private Page<AdminResponse> findAllUserByStatus(
+            Admin.Status status,
+            Pageable pageable) {
+
+        Page<Admin> all = adminRepository.findAllByStatus(status,pageable);
+        List<AdminResponse> list = all.getContent()
+                .stream().map(AdminResponse::of).toList();
+        return new PageImpl<>(list, all.getPageable(), all.getTotalElements());
+    }
+    private Page<AdminResponse> findAllUserByRoles(
+            String roles,
+            Pageable pageable) {
+
+        Page<Admin> all = adminRepository.findByRolesIn(List.of(roles),pageable);
+        List<AdminResponse> list = all.getContent()
+                .stream().map(AdminResponse::of).toList();
+        return new PageImpl<>(list, all.getPageable(), all.getTotalElements());
     }
 
 
