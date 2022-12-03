@@ -9,7 +9,7 @@
     <title>searchBar</title>
 </head>
 <body class="max-w-6xl mx-auto px-4 ">
-<div th:fragment="searchBar">
+<div th:fragment="nav">
     <nav style="margin: 0.5em" class="flex-column-reverse">
         <div class="flex align-baseline justify-between ">
             <div>
@@ -36,15 +36,55 @@
                             >
                         </div>
                     </div>
+                    <div style="margin-left: 1em" >
+                        <select
+                                th:id="statusKey" th:name="statusKey"
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" >
+                            <option th:if = "${allUser eq null && places eq null}" value=""
+                                    sec:authorize="!hasAnyRole('ROLE_SUPERADMIN')">이벤트 상태</option>
+                            <option th:if = "${places eq null && events eq null}" value=""
+                                    sec:authorize="hasAnyRole('ROLE_SUPERADMIN')" >==UserStatus==</option>
+                            <option th:if = "${places eq null && events eq null}" th:value="active"
+                                    sec:authorize="hasAnyRole('ROLE_SUPERADMIN')" > Active </option>
+                            <option th:if = "${places eq null && events eq null}" th:value="inActive"
+                                    sec:authorize="hasAnyRole('ROLE_SUPERADMIN')" > InActive </option>
+                            <option th:if = "${places eq null && events eq null}" value=""
+                                    sec:authorize="hasAnyRole('ROLE_SUPERADMIN')">==UserAuth==</option>
+                            <option th:if = "${places eq null && events eq null}" th:value="superAdmin"
+                                    sec:authorize="hasAnyRole('ROLE_SUPERADMIN')" > SUPERADMIN </option>
+                            <option th:if = "${places eq null && events eq null}" th:value="admin"
+                                    sec:authorize="hasAnyRole('ROLE_SUPERADMIN')" > ADMIN </option>
+                            <option th:if = "${places eq null && events eq null}" th:value="user"
+                                    sec:authorize="hasAnyRole('ROLE_SUPERADMIN')" > USER </option>
+                            <option th:if = "${allUser eq null && places eq null}" value=""
+                                    sec:authorize="hasAnyRole('ROLE_SUPERADMIN')">==EventStatus==</option>
+                            <option th:if = "${allUser eq null && places eq null}"
+                                    th:value="opened"  >OPENED</option>
+                            <option th:if = "${allUser eq null && places eq null}"
+                                    th:value="pending"  >PENDING</option>
+                            <option th:if = "${allUser eq null && places eq null}"
+                                    th:value="closed"  >CLOSED</option>
+                            <option th:if = "${allUser eq null && places eq null}"
+                                    th:value="cancelled"  >CANCELLED</option>
+                            <option th:if = "${allUser eq null && places eq null}"
+                                    th:value="aborted"  >ABORTED</option>
+                        </select>
+                    </div>
 
-                    <div style="margin-left: 6em" class="flex align-baseline justify-between ">
+                    <div style="margin-left: 1em" class="flex align-baseline justify-between ">
                             <select th:id="kewWord" th:name="kewWord"
                                     class="shadow appearance-none border rounded w-1/3 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" >
-                                <option value="" >전체</option>
+                                <option value="" >전체 검색</option>
                                 <option th:value="placeName"  >장소명</option>
                                 <option th:value="eventName" >이벤트명 </option>
+                                <option th:value="email" >이메일 </option>
+                                <option th:value="address" >주소 </option>
+                                <option th:value="phoneNumber" >
+                                    Phone </option>
+                                <option th:value="nickname" sec:authorize="hasAnyRole('ROLE_SUPERADMIN')" > 닉네임 </option>
                             </select>
                         <input type="text" th:id="searchWord" th:name="searchWord"
+                               placeholder="검색어 입력"
                                class="shadow appearance-none border rounded w-2/3 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         >
                     </div>

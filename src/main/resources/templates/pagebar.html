@@ -13,7 +13,7 @@
     <nav style="text-align: center;">
         <th:block th:each="page:${#numbers.sequence(startPage,endPage)}" >
             <a class="text-gray-500 font-bold text-xl sm:text-2xl sm:truncate"
-                    th:if="${page != nowPage}" th:href="@{${currentPage}(page=${page-1})}" th:text ="${page}"></a>
+                    th:if="${page != nowPage}" th:href="@{${forPage}(page=${page-1})}" th:text ="${page}"></a>
             <strong class="font-bold text-xl sm:text-2xl sm:truncate"
                     th:if="${page==nowPage}" th:text ="${page}" style="color:red"></strong>
         </th:block>
@@ -22,4 +22,4 @@
 </body>
 </html>
 
-<!--<header th:insert="searchbar.html::nav"></header>-->
+<!--<header th:insert="pagebar.html::nav"></header>-->
