@@ -40,4 +40,5 @@ public interface EventRepository extends
     List<Event> findAllByPlace(Place place);
 
     Page<Event> findAllByEventStatus(EventStatus status, Pageable pageable);
+
 }

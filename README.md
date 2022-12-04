@@ -58,6 +58,7 @@ Spring Boot
     - 데이터 수정 요청시 Confirm 페이지 만들어 자동 이전 페이지 이동 구현.
     - 슈퍼 관리자가 사용자의 정보 수정시에는 상단 브라우저 알림창 표시 하도록 추가.
     - 장소 등록 및 조회 시 관리자의 이메일 정보를 표시하도록 수정. 
+    - 모든 페이지 페이지네이션 구현 완료.
 - Auth : Srping Security + JWT 구현. 토큰 관리는 Cookie하고 있으며, Access 토큰 만료시 Refresh 토큰 조회하여 자동 토큰 재발급 되도록 구현.
     - 기존 어드민 한명만 관리하도록 설계하였지만 여러명의 어드민이 관리할 수 있도록 개발.
     - 일반 회원, 비 회원 모두 서비스를 이용할 수 있도록 회원 가입 구현.
@@ -79,15 +80,18 @@ Spring Boot
     - 사용자의 관리자 권한, 회원 탈퇴, 클레임, 문의사항 접수 가능하도록 별도 Ticket 페이지 만들어 구현.
     - 기존 회원 정보만 볼수 있었던 마이 페이지에서 사용자가 접수한 요청사항을 리스트와 상세 내역을 볼수 있도록 구현.
     - Super Admin은 전체 사용자의 요청을 확인할 수 있으며, 요청에 대한 관리자 메세지도 보낼수 있도록 구현.
+- 검색 기능 추가
+    - 각 페이지별 검색요소 모두 적용하여 다중 검색으로 검색할 수 있도록 구현.
+    - 다중 검색은 QueryDSL 동적 쿼리 작성하여 구현.
   
 
 ## 추가 개발 예정
 
-- 조회시 페이징 기능 구현 예정.
-    - 다수 정보 조회시 페이지로 리턴하도록 구현되어 있음 View와 Request만 수정하면 됨.
+- 공지사항 기능 추가 예정.
 - 회원 가입과 수정시 Email 알림 서비스 기능 추가 구현 예정.
 - 일반 회원의 이벤트 방문 예약 기능 구현 예정.(엔티티와 서비스 로직 수정사항이 많아 별도 브런치 개발 예정)
     - 일반 회원의 마이 페이지에 방문 예약한 이벤트 리스트 확인 및 취소 기능 구현 예정. 
+- 방문지 리뷰 게시판 구현 예정.
 
 
 
@@ -107,90 +111,124 @@ Spring Boot
 
 - 로그인 페이지
 
-![로그인](https://user-images.githubusercontent.com/110886399/204592365-ae52cccc-1d3c-48dc-a09b-8721f4df37cf.png)
+![image](https://user-images.githubusercontent.com/110886399/205495756-4318ac89-d2a1-48ab-9059-75d551468c70.png)
+
 
 - 회원 가입 페이지
 
-![회원가입](https://user-images.githubusercontent.com/110886399/204592474-373ed057-dc03-4da0-97b6-626f7d74ab87.png)
+
+![image](https://user-images.githubusercontent.com/110886399/205495775-a2c1f0e3-5e39-4a7b-bdb7-bdddf723a9e8.png)
 
 
 - 회원 정보 수정 페이지
 
-![회원 정보수정](https://user-images.githubusercontent.com/110886399/205122273-89cc8f8f-438e-4bb3-ae31-81562bc10aa8.png)
+
+![image](https://user-images.githubusercontent.com/110886399/205495810-eaab8e73-1477-49f5-ab03-d8d8dbe55e1a.png)
 
 
 - 일반 / 비회원 이벤트 리스트 조회 페이지
 
-![이벤트리스트](https://user-images.githubusercontent.com/110886399/204592924-c1c52b2f-62f8-4e23-8dfd-3113cf19e8d3.png)
-
+![image](https://user-images.githubusercontent.com/110886399/205495833-2bdf1dab-0611-4f0a-9d8e-47d92de17baf.png)
 
 - 일반 / 비회원 장소 리스트 조회 페이지
 
-![장소리스트](https://user-images.githubusercontent.com/110886399/204592996-64897f00-db63-469e-891f-cb866d385d88.png)
+
+![image](https://user-images.githubusercontent.com/110886399/205495859-76215979-e64f-403f-a325-7713884e8f1e.png)
+
 
 
 - 일반 회원 / 관리자 문의사항 접수 페이지
 
-![문의사항](https://user-images.githubusercontent.com/110886399/205122389-a9ac0b8f-ce08-4374-98da-cdbd1ac15cda.png)
+
+![image](https://user-images.githubusercontent.com/110886399/205495885-da01c2bd-d67b-4538-b1e1-d91aebb2be64.png)
+
 
 - 일반 회원 / 관리자 문의사항 상세 페이지
 
-![문의사항 상세](https://user-images.githubusercontent.com/110886399/205122521-d60dd85e-1f6b-415a-ab2f-732b0907ffb4.png)
+![image](https://user-images.githubusercontent.com/110886399/205495931-dea06e54-7f55-499d-a8c4-933d9ca7ca0d.png)
 
 
 - 관리자 장소 리스트 조회 페이지
 
-![관리자 장소](https://user-images.githubusercontent.com/110886399/205122593-3f90e107-e1bd-4504-b000-2fad63c4b1c5.png)
+
+
+
+![image](https://user-images.githubusercontent.com/110886399/205496197-f7e6dabd-a8bf-417e-8dcb-ba5f479f8992.png)
+
+
 
 - 관리자 이벤트 리스트 조회 페이지
 
-![관리자 이벤트](https://user-images.githubusercontent.com/110886399/205122654-9fed9a37-8b06-484c-bb69-5a1863827fc8.png)
+
+
+![image](https://user-images.githubusercontent.com/110886399/205496219-84908f1f-f8a9-421a-875b-6275eddb470a.png)
+
 
 
 - 관리자 새 장소 등록 페이지
 
-![관리자 장소등록](https://user-images.githubusercontent.com/110886399/205122745-75542784-0cbb-4d9e-9557-ef5ff7ec6eb9.png)
+
+![image](https://user-images.githubusercontent.com/110886399/205496264-3f0f3229-cf04-4ef7-bf59-f9b36b1c04bd.png)
+
 
 
 - 관리자 새 이벤트 등록 페이지
 
-![관리자 이벤트 등록](https://user-images.githubusercontent.com/110886399/205122803-471e59fa-b6e4-4710-af3e-1b190aea9c89.png)
+
+![image](https://user-images.githubusercontent.com/110886399/205496309-4cf85902-2ffd-4645-8e7d-8c3970e599c7.png)
+
 
 
 - 관리자 장소 수정 페이지
 
-![관리자 장소 수정](https://user-images.githubusercontent.com/110886399/205122984-3972e6fb-f42a-47bd-961a-28da0ce15e8e.png)
+
+![image](https://user-images.githubusercontent.com/110886399/205496337-d108bc71-8ccf-4528-9d2e-cf08ff52593a.png)
+
 
 
 
 - 관리자 이벤트 수정 페이지
 
-![관리자 이벤트 수정](https://user-images.githubusercontent.com/110886399/205122895-4b141345-b9c3-4626-acbd-cb6d9f7acfc4.png)
+
+![image](https://user-images.githubusercontent.com/110886399/205496371-fbdd32dd-30b7-4a2e-81eb-00d6f3cc5999.png)
 
 
 - Super 관리자 전체 장소 조회 페이지
 
-![슈퍼어드민 장소조회](https://user-images.githubusercontent.com/110886399/205123170-4f741af1-ef7f-45b2-abbd-b220a76df332.png)
+
+![image](https://user-images.githubusercontent.com/110886399/205496413-0d397ce9-04b5-420d-9f37-d50ebcc301e3.png)
+
 
 - Super 관리자 전체 이벤트 조회 페이지
 
-![슈퍼어드민 이벤트조회](https://user-images.githubusercontent.com/110886399/205123255-e2792714-8a22-46ae-bdc1-8a21cb3d4bb5.png)
+
+![image](https://user-images.githubusercontent.com/110886399/205496424-0adc333d-30f6-4a20-a602-d8f9d66f38e6.png)
+
+
 
 - Super 관리자 전체 회원 조회 페이지
 
-![슈퍼어드민 회원 조회](https://user-images.githubusercontent.com/110886399/205123346-f86c7e7f-8e41-404f-9cd1-13fa3afc7abd.png)
+
+![image](https://user-images.githubusercontent.com/110886399/205496452-618aca86-9443-465c-8626-a28c9cfeabb7.png)
+
 
 - Super 관리자 회원 수정 페이지
 
-![슈퍼어드민 회원 수정](https://user-images.githubusercontent.com/110886399/205123473-8e285993-1d28-4bb1-b75c-f3978e956b21.png)
+
+![image](https://user-images.githubusercontent.com/110886399/205496486-8da2f2eb-ca0c-46e6-87fa-2f1454a88893.png)
+
 
 - Super 관리자 전체 요청 조회 페이지
 
-![슈퍼어드민 요청 조회](https://user-images.githubusercontent.com/110886399/205123555-2a5c6e8a-d990-4c52-9364-e1d3416d75b2.png)
+
+![image](https://user-images.githubusercontent.com/110886399/205496531-d46906b9-1494-4a97-93ee-1c584c990e58.png)
+
 
 - Super 관리자 요청 처리 페이지
 
-![슈퍼어드민 요청 처리](https://user-images.githubusercontent.com/110886399/205123633-2d6007e2-a1b4-4db6-8d98-cac56ed134cb.png)
+
+![image](https://user-images.githubusercontent.com/110886399/205496554-0941224f-b912-4122-86c9-d114b673bb6d.png)
+
 
 - Error View
 

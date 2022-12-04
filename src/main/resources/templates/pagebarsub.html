@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <title>pagebar</title>
+</head>
+<body class="max-w-6xl mx-auto px-4 ">
+<div th:fragment="pagebar">
+    <nav style="justify-content: center; display: flex;">
+        <div style="margin-top: 0.3em; margin-right: 0.5em;">
+           <button th:if="${nowPage != 0}"
+                 th:onclick="'location.href=\'' + @{${forPage}(page=${nowPage-2})}+ '\''"
+                 th:text="Prev"
+                 class="px-2 inline-flex text-sm leading-5 font-semibold rounded-20 bg-yellow-100 text-gray-800">
+                </button>
+        </div>
+        <th:block th:if="${page != 0}"
+                  th:each="page:${#numbers.sequence(startPage,endPage)}">
+            <a class="text-gray-500 font-bold text-xl sm:text-2xl sm:truncate"
+               style="margin-left: 0.2em; margin-right: 0.2em;"
+               th:if="${page != nowPage}" th:href="@{${forPage}(page=${page-1})}" th:text="${page}"></a>
+            <strong class="font-bold text-xl sm:text-2xl sm:truncate"
+                    th:if="${page==nowPage}" th:text="${page}"
+                    style="color:red; margin-left: 0.5em; margin-right: 0.5em"></strong>
+        </th:block>
+        <div style="margin-top: 0.3em; margin-left: 0.5em;">
+            <button th:if="${nowPage != endPage}"
+                    th:text="Next" th:onclick="'location.href=\'' + @{${forPage}(page=${nowPage})}+ '\''"
+                    class="px-2 inline-flex text-sm leading-5 font-semibold rounded-20 bg-yellow-100 text-gray-800">
+            </button>
+        </div>
+    </nav>
+</div>
+</body>
+</html>
+
+<!--<header th:insert="pagebar.html::nav"></header>-->

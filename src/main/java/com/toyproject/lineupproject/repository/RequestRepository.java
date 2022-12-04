@@ -19,13 +19,14 @@ public interface RequestRepository extends JpaRepository<Request, Long>,
     default void customize(QuerydslBindings bindings, QRequest root) {
         bindings.excludeUnlistedProperties(true);
         bindings.including(root.admin.email,root.admin.nickname);
-        bindings.bind(root.admin.email).first(StringExpression::containsIgnoreCase);
-        bindings.bind(root.admin.nickname).first(StringExpression::containsIgnoreCase);
-//        bindings.bind(root.status).first();
+        bindings.bind(root.admin.email).as("email").first(StringExpression::containsIgnoreCase);
+        bindings.bind(root.admin.nickname).as("nickname").first(StringExpression::containsIgnoreCase);
     }
     Page<Request> findAll(Pageable pageable);
     Page<Request> findAll(Predicate predicate, Pageable pageable);
 
     Page<Request> findAllByAdmin(Pageable pageable, Admin admin);
+
+    Page<Request> findAllByStatus(Request.Status status, Pageable pageable);
 
 }

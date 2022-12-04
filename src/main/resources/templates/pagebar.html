@@ -10,14 +10,59 @@
 </head>
 <body class="max-w-6xl mx-auto px-4 ">
 <div th:fragment="pagebar">
-    <nav style="text-align: center;">
-        <th:block th:each="page:${#numbers.sequence(startPage,endPage)}" >
-            <a class="text-gray-500 font-bold text-xl sm:text-2xl sm:truncate"
-                    th:if="${page != nowPage}" th:href="@{${forPage}(page=${page-1})}" th:text ="${page}"></a>
-            <strong class="font-bold text-xl sm:text-2xl sm:truncate"
-                    th:if="${page==nowPage}" th:text ="${page}" style="color:red"></strong>
-        </th:block>
-    </nav>
+    <div class="flex justify-center">
+        <nav aria-label="Page navigation example" >
+            <div class="flex justify-center">
+            <ul class="flex list-style-none">
+                <li class="page-item" th:if="${nowPage-1 != 0}"
+                ><a
+                        th:text="Prev"
+                        class="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
+                        th:href="@{${forPage}(page=${nowPage-2})}"
+                >Prev</a></li>
+                <li class="page-item" th:if="${startPage != 0}">
+                    <a
+                       th:text="${startPage}"
+                       class="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
+                       th:href="@{${forPage}(page=${startPage-1})}"
+                    > </a></li>
+                <li class="page-item">
+                    <a
+                            th:text="${nowPage}"
+                            class="page-link relative block py-1.5 px-3 rounded border-0 bg-blue-600 outline-none transition-all duration-300 rounded text-white hover:text-white hover:bg-blue-600 shadow-md focus:shadow-md"
+                            th:href="@{${forPage}(page=${nowPage-1})}"
+                    > </a>
+                </li>
+                <li class="page-item" th:if="${endPage != 0 }">
+                    <a
+                       th:text="${endPage}"
+                       class="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
+                       th:href="@{${forPage}(page=${endPage-1})}"
+                    ></a>
+                </li>
+                <li class=" page-item" th:if="${nowPage != totalPage && endPage != 0 }">
+                    <a
+                       class="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
+                       th:href="@{${forPage}(page=${nowPage})}"
+                    >Next</a>
+                </li>
+            </ul>
+            </div>
+            <div style="float: right; margin-right: 3em"
+            >
+                <p class="text-sm text-gray-700">
+                    Showing
+                    <span th:text = "${nowPage}"
+                          class="font-medium">1</span>
+                    Page of
+                    <span th:text = "${totalPage}"
+                          class="font-medium">97</span>
+                    TotalPage
+                </p>
+            </div>
+        </nav>
+
+    </div>
 </div>
 </body>
 </html>
