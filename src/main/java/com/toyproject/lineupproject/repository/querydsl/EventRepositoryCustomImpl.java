@@ -6,7 +6,6 @@ import com.toyproject.lineupproject.constant.ErrorCode;
 import com.toyproject.lineupproject.constant.EventStatus;
 import com.toyproject.lineupproject.domain.Event;
 import com.toyproject.lineupproject.domain.QEvent;
-import com.toyproject.lineupproject.dto.EventDto;
 import com.toyproject.lineupproject.dto.EventViewResponse;
 import com.toyproject.lineupproject.exception.GeneralException;
 import org.springframework.data.domain.Page;
@@ -75,7 +74,7 @@ public class EventRepositoryCustomImpl extends QuerydslRepositorySupport impleme
         return new PageImpl<>(events, pageable, query.fetchCount());
     }
     @Override
-    public Page<EventDto> findEventPageBySearchParams(
+    public Page<Event> findEventPageBySearchParams(
             String placeName,
             String eventName,
             EventStatus eventStatus,
@@ -86,9 +85,9 @@ public class EventRepositoryCustomImpl extends QuerydslRepositorySupport impleme
     ) {
         QEvent event = QEvent.event;
 
-        JPQLQuery<EventDto> query = from(event)
+        JPQLQuery<Event> query = from(event)
                 .select(Projections.constructor(
-                        EventDto.class,
+                        Event.class,
                         event.id,
                         event.place,
                         event.eventName,
@@ -121,7 +120,7 @@ public class EventRepositoryCustomImpl extends QuerydslRepositorySupport impleme
             query.where(event.eventEndDatetime.loe(eventEndDatetime));
         }
 
-        List<EventDto> events = Optional.ofNullable(getQuerydsl())
+        List<Event> events = Optional.ofNullable(getQuerydsl())
                 .orElseThrow(() -> new GeneralException(
                         ErrorCode.DATA_ACCESS_ERROR,
                         "Spring Date JPA로 부터 QueryDsl 인스턴스를 받을수 없다."))

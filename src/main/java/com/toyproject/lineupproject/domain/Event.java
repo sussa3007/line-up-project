@@ -99,6 +99,31 @@ public class Event {
         this.capacity = capacity;
         this.memo = memo;
     }
+    public Event(
+            Long id,
+            Place place,
+            String eventName,
+            EventStatus eventStatus,
+            LocalDateTime eventStartDatetime,
+            LocalDateTime eventEndDatetime,
+            Integer currentNumberOfPeople,
+            Integer capacity,
+            String memo,
+            LocalDateTime createdAt,
+            LocalDateTime modifiedAt
+    ) {
+        this.id = id;
+        this.place = place;
+        this.eventName = eventName;
+        this.eventStatus = eventStatus;
+        this.eventStartDatetime = eventStartDatetime;
+        this.eventEndDatetime = eventEndDatetime;
+        this.currentNumberOfPeople = currentNumberOfPeople;
+        this.capacity = capacity;
+        this.memo = memo;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
+    }
 
     public static Event of(
             Place place,

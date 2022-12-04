@@ -1,9 +1,7 @@
 package com.toyproject.lineupproject.controller;
 
-import com.querydsl.core.types.Predicate;
 import com.toyproject.lineupproject.constant.ErrorCode;
 import com.toyproject.lineupproject.constant.EventStatus;
-import com.toyproject.lineupproject.domain.Event;
 import com.toyproject.lineupproject.dto.EventDto;
 import com.toyproject.lineupproject.dto.EventResponse;
 import com.toyproject.lineupproject.dto.EventViewResponse;
@@ -14,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -57,19 +54,11 @@ public class EventController {
     @GetMapping
     public ModelAndView events(
             @RequestParam HashMap<String, Object> param,
-            @QuerydslPredicate(root = Event.class) Predicate predicate,
             @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
             Pageable pageable,
             HttpServletRequest request
     ) {
-        String statusKey = (String) param.get("statusKey");
-        Page<EventDto> findDtos;
-        if (statusKey != null) {
-            EventStatus eventStatus = EventStatus.valueOf(statusKey.toUpperCase());
-            findDtos = eventService.getEventsAllByStatus(eventStatus, pageable);
-        } else {
-            findDtos = eventService.getEventsAll(predicate, pageable);
-        }
+        Page<EventDto> findDtos = eventService.getEventsParams(param, pageable);
         Map<String, Object> eventPageInfo = searchUtils.getEventPageInfo(request,findDtos);
 
         return new ModelAndView("event/index", eventPageInfo);

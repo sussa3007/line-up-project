@@ -116,7 +116,7 @@ public class EventService {
             if (statusKey != null) {
                 status = EventStatus.valueOf(statusKey.toUpperCase());
             }
-            return eventRepository.findEventPageBySearchParams(
+            Page<Event> events = eventRepository.findEventPageBySearchParams(
                     (String) param.get("placeName"),
                     (String) param.get("eventName"),
                     status,
@@ -125,6 +125,11 @@ public class EventService {
                     (String) param.get("email"),
                     pageable
             );
+            List<EventDto> eventDtos = StreamSupport.stream(
+                            events.spliterator(), false)
+                    .map(EventDto::of)
+                    .toList();
+            return new PageImpl<>(eventDtos, events.getPageable(), events.getTotalElements());
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }

@@ -6,7 +6,6 @@ import com.toyproject.lineupproject.constant.ErrorCode;
 import com.toyproject.lineupproject.constant.EventStatus;
 import com.toyproject.lineupproject.constant.PlaceType;
 import com.toyproject.lineupproject.domain.Admin;
-import com.toyproject.lineupproject.domain.Event;
 import com.toyproject.lineupproject.domain.Place;
 import com.toyproject.lineupproject.dto.*;
 import com.toyproject.lineupproject.exception.GeneralException;
@@ -276,8 +275,6 @@ public class AdminController {
     @GetMapping("/events")
     public ModelAndView adminEvents(
             @RequestParam HashMap<String, Object> param,
-            @QuerydslPredicate(root = Event.class) Predicate predicate,
-            Principal principal,
             @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
             Pageable pageable,
             HttpServletRequest request
@@ -297,21 +294,14 @@ public class AdminController {
 
     /* todo 페이지 구현 예정*/
     @GetMapping("/events-all")
-    public ModelAndView adminEvents(
+    public ModelAndView superAdminEvents(
             @RequestParam HashMap<String, Object> param,
-            @QuerydslPredicate(root = Event.class) Predicate predicate,
             @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
             Pageable pageable,
             HttpServletRequest request
     ) {
         String statusKey = (String) param.get("statusKey");
-        Page<EventDto> findDtos;
-        if (statusKey != null) {
-            EventStatus eventStatus = EventStatus.valueOf(statusKey.toUpperCase());
-            findDtos = eventService.getEventsAllByStatus(eventStatus, pageable);
-        } else {
-            findDtos = eventService.getEventsAll(predicate, pageable);
-        }
+        Page<EventDto> findDtos = eventService.getEventsParams(param, pageable);
         Map<String, Object> eventPageInfo =
                 searchUtils.getSuperAdminEventPageInfo(
                         request, findDtos);

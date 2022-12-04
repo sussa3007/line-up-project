@@ -1,6 +1,7 @@
 package com.toyproject.lineupproject.repository.querydsl;
 
 import com.toyproject.lineupproject.constant.EventStatus;
+import com.toyproject.lineupproject.domain.Event;
 import com.toyproject.lineupproject.dto.EventDto;
 import com.toyproject.lineupproject.dto.EventViewResponse;
 import org.springframework.data.domain.Page;
@@ -18,7 +19,7 @@ public interface EventRepositoryCustom {
             Pageable pageable
     );
 
-    Page<EventDto> findEventPageBySearchParams(
+    Page<Event> findEventPageBySearchParams(
             String placeName,
             String eventName,
             EventStatus eventStatus,
