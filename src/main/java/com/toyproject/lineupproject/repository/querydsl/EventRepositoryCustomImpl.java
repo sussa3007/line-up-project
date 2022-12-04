@@ -90,21 +90,22 @@ public class EventRepositoryCustomImpl extends QuerydslRepositorySupport impleme
                 .select(Projections.constructor(
                         EventDto.class,
                         event.id,
-                        event.place.adminEmail,
-                        event.place.placeName,
+                        event.place,
                         event.eventName,
                         event.eventStatus,
                         event.eventStartDatetime,
                         event.eventEndDatetime,
                         event.currentNumberOfPeople,
                         event.capacity,
-                        event.memo
+                        event.memo,
+                        event.createdAt,
+                        event.modifiedAt
                 ));
         if (placeName != null && !placeName.isBlank()) {
             query.where(event.place.placeName.containsIgnoreCase(placeName));
         }
         if (email != null && !email.isBlank()) {
-            query.where(event.place.placeName.containsIgnoreCase(email));
+            query.where(event.place.adminEmail.containsIgnoreCase(email));
         }
 
         if (eventName != null && !eventName.isBlank()) {
@@ -120,7 +121,7 @@ public class EventRepositoryCustomImpl extends QuerydslRepositorySupport impleme
             query.where(event.eventEndDatetime.loe(eventEndDatetime));
         }
 
-        List<EventViewResponse> events = Optional.ofNullable(getQuerydsl())
+        List<EventDto> events = Optional.ofNullable(getQuerydsl())
                 .orElseThrow(() -> new GeneralException(
                         ErrorCode.DATA_ACCESS_ERROR,
                         "Spring Date JPA로 부터 QueryDsl 인스턴스를 받을수 없다."))

@@ -106,7 +106,7 @@ public class EventService {
     }
 
     @Transactional(readOnly = true)
-    public Page<EventViewResponse> getEventsParams(
+    public Page<EventDto> getEventsParams(
             HashMap<String, Object> param,
             Pageable pageable
     ) {
