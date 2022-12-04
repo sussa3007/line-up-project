@@ -7,9 +7,11 @@ import com.toyproject.lineupproject.dto.AdminResponse;
 import com.toyproject.lineupproject.dto.ReqResponse;
 import com.toyproject.lineupproject.service.AdminService;
 import com.toyproject.lineupproject.service.RequestService;
+import com.toyproject.lineupproject.utils.SearchUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Map;
@@ -29,6 +32,8 @@ public class AdminRegisterController {
     private final AdminService adminService;
 
     private final RequestService requestService;
+
+    private final SearchUtils searchUtils;
 
     @GetMapping("/sign-up")
     public String signUp() {
@@ -47,21 +52,21 @@ public class AdminRegisterController {
 
     @GetMapping("/info")
     public ModelAndView userInfo(
+            HttpServletRequest request,
             Principal principal,
-            @PageableDefault Pageable pageable
+            @PageableDefault(page = 0, size = 8, sort = "requestId", direction = Sort.Direction.DESC)
+            Pageable pageable
     ) {
         Admin findUser = adminService.findUserByEmail(principal.getName());
         AdminResponse user = AdminResponse.of(findUser);
         Page<ReqResponse> requests =
                 requestService.findAllByUser(pageable, findUser);
+        Map<String, Object> requestPageInfo =
+                searchUtils.getRequestPageInfo(request, requests, user);
+
         return new ModelAndView(
                 "auth/info",
-                Map.of(
-                        "adminOperationStatus", AdminOperationStatus.MODIFY,
-                        "requests", requests,
-                        "user", user,
-                        "backUrl", "/events"
-                )
+                requestPageInfo
         );
     }
 

@@ -17,4 +17,14 @@ public interface EventRepositoryCustom {
             Pageable pageable
     );
 
+    Page<EventViewResponse> findEventPageBySearchParams(
+            String placeName,
+            String eventName,
+            EventStatus eventStatus,
+            LocalDateTime eventStartDatetime,
+            LocalDateTime eventEndDatetime,
+            String adminEmail,
+            Pageable pageable
+    );
+
 }

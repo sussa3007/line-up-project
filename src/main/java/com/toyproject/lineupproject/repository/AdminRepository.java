@@ -1,6 +1,7 @@
 package com.toyproject.lineupproject.repository;
 
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.ComparableExpression;
 import com.querydsl.core.types.dsl.StringExpression;
 import com.toyproject.lineupproject.domain.Admin;
 import com.toyproject.lineupproject.domain.QAdmin;
@@ -24,10 +25,11 @@ public interface AdminRepository extends
     default void customize(QuerydslBindings bindings, QAdmin root) {
         bindings.excludeUnlistedProperties(true);
         bindings.including(root.email, root.nickname,
-                root.phoneNumber,root.status);
+                root.phoneNumber,root.createdAt);
         bindings.bind(root.email).first(StringExpression::containsIgnoreCase);
         bindings.bind(root.nickname).first(StringExpression::containsIgnoreCase);
         bindings.bind(root.phoneNumber).first(StringExpression::containsIgnoreCase);
+        bindings.bind(root.createdAt).as("eventStartDatetime").first(ComparableExpression::goe);
 
     }
     Optional<Admin> findByEmail(String  email);

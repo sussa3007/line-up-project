@@ -124,7 +124,7 @@ public class AdminController {
                 predicate,
                 pageable
         );
-        Map<String, Object> searchUserPageInfo = searchUtils.getSearchUserPageInfo(request,allUser);
+        Map<String, Object> searchUserPageInfo = searchUtils.getSearchUserPageInfo(request, allUser);
         return new ModelAndView(
                 "admin/users",
                 searchUserPageInfo
@@ -159,7 +159,7 @@ public class AdminController {
             HttpServletRequest request
     ) {
         Page<PlaceDto> findDtos = placeService.getPlacesAll(predicate, pageable);
-        Map<String, Object> placePageInfo = searchUtils.getSuperAdminPlacePageInfo(request,findDtos);
+        Map<String, Object> placePageInfo = searchUtils.getSuperAdminPlacePageInfo(request, findDtos);
         placePageInfo.put("placeTypeOption", PlaceType.values());
 
 
@@ -275,15 +275,16 @@ public class AdminController {
 
     @GetMapping("/events")
     public ModelAndView adminEvents(
+            @RequestParam HashMap<String, Object> param,
             @QuerydslPredicate(root = Event.class) Predicate predicate,
             Principal principal,
             @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
             Pageable pageable,
             HttpServletRequest request
     ) {
+        Page<EventDto> findDto;
 
-        Page<EventDto> findDto =
-                eventService.getEventsByAdmin(principal.getName(), predicate, pageable);
+        findDto = eventService.getEventsParams(param, pageable);
         Map<String, Object> adminEventPageInfo =
                 searchUtils.getAdminEventPageInfo(request, findDto);
         adminEventPageInfo.put("eventStatusOption", EventStatus.values());
@@ -313,7 +314,7 @@ public class AdminController {
         }
         Map<String, Object> eventPageInfo =
                 searchUtils.getSuperAdminEventPageInfo(
-                        request,findDtos);
+                        request, findDtos);
         eventPageInfo.put("placeTypeOption", PlaceType.values());
 
         return new ModelAndView(

@@ -1,5 +1,7 @@
 package com.toyproject.lineupproject.utils;
 
+import com.toyproject.lineupproject.constant.AdminOperationStatus;
+import com.toyproject.lineupproject.domain.Request;
 import com.toyproject.lineupproject.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -99,6 +101,18 @@ public class SearchUtils {
         String uri = stringBuilder.toString();
         return uri;
     }
+    public Map<String, Object> getRequestPageInfo(
+            HttpServletRequest request,
+            Page<ReqResponse> findDtos,
+            AdminResponse user
+    ) {
+        String forPage = getRequestUriParam(request);
+        Map<String, Object> map = getRequestPageMap(forPage, findDtos);
+        map.put("adminOperationStatus", AdminOperationStatus.MODIFY);
+        map.put("user", user);
+        map.put("backUrl", "/events");
+        return map;
+    }
 
     public Map<String, Object> getSearchUserPageInfo(
             HttpServletRequest request,
@@ -165,6 +179,16 @@ public class SearchUtils {
         String forPage = getRequestUriParam(request);
         Map<String, Object> map = getPlacePageMap(forPage, findDtos);
         map.put("currentPage", "/admin/searchPlace");
+
+        return map;
+    }
+    public Map<String, Object> getSuperAdminRequestPageInfo(
+            HttpServletRequest request,
+            Page<ReqResponse> findDtos
+    ) {
+        String forPage = getRequestUriParam(request);
+        Map<String, Object> map = getRequestPageMap(forPage, findDtos);
+        map.put("currentPage", "/requests/searchRequest");
 
         return map;
     }
@@ -236,17 +260,41 @@ public class SearchUtils {
         return map;
     }
 
+    private static Map<String, Object> getRequestPageMap(
+            String forPage,
+            Page<ReqResponse> findDtos
+    ) {
+        List<ReqResponse> toResponse = findDtos.getContent();
+        int nowPage = findDtos.getPageable().getPageNumber() + 1;
+        Map<String, Object> map = new HashMap<>();
+        map.put("requests", findDtos);
+        map.put("list", findDtos);
+        map.put("nowPage", nowPage);
+        map.put("startPage", Math.max(nowPage - 4, 1));
+        map.put("endPage", Math.min(nowPage + 9, findDtos.getTotalPages()));
+        map.put("forPage", forPage);
+        map.put("requestStatus", Request.Status.values());
+        return map;
+    }
+
     public String refererGetUri(String string) {
         String replace = string.replace("http://localhost:8080", "");
         return replace;
     }
 
     public String getRequestUriParam(HttpServletRequest request) {
-        if (request.getQueryString() == null) {
-            return request.getRequestURI().split("page")[0];
+        String queryString = request.getQueryString();
+        String requestUri = request.getRequestURI();
+        if (queryString == null) {
+            return requestUri;
         } else {
-            return request.getRequestURI() + "?" + request.getQueryString()
-                    .split("page")[0];
+            if (queryString.contains("&page")) {
+                return requestUri + "?" + queryString
+                        .split("&page")[0];
+            } else {
+                return requestUri + "?" + queryString
+                        .split("page")[0];
+            }
         }
 
     }
