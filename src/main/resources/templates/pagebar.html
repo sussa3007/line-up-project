@@ -11,7 +11,8 @@
 <body class="max-w-6xl mx-auto px-4 ">
 <div th:fragment="pagebar">
     <nav style="text-align: center;">
-        <th:block th:each="page:${#numbers.sequence(startPage,endPage)}" >
+        <th:block th:if="${page != 0}"
+                th:each="page:${#numbers.sequence(startPage,endPage)}" >
             <a class="text-gray-500 font-bold text-xl sm:text-2xl sm:truncate"
                     th:if="${page != nowPage}" th:href="@{${forPage}(page=${page-1})}" th:text ="${page}"></a>
             <strong class="font-bold text-xl sm:text-2xl sm:truncate"

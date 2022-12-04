@@ -10,7 +10,7 @@
                 <attr sel="td.requestStatus/span" th:text="${request.status}" />
                 <attr sel="td.createAt" th:text="${#temporals.format(request.createAt, 'M/d (ha)', 'US')}" />
                 <attr sel="td.modifiedAt" th:text="${#temporals.format(request.modifiedAt, 'M/d (ha)', 'US')}" />
-                <attr sel="td/a" th:text="'Message'" th:href="@{'/requests/' + ${request.id} +'/modify'}" />
+                <attr sel="td/a" th:text="'Detail'" th:href="@{'/requests/' + ${request.id} +'/modify'}" />
             </attr>
         </attr>
     </attr>
