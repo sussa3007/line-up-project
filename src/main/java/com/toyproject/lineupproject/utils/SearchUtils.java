@@ -203,23 +203,9 @@ public class SearchUtils {
                 toResponse,
                 findDtos.getPageable(),
                 findDtos.getTotalElements());
-        int nowPage = findDtos.getPageable().getPageNumber() + 1;
-        Map<String, Object> map = new HashMap<>();
-        int startPage = nowPage-1;
-        int endPage = nowPage+1;
-        if (nowPage == findDtos.getTotalPages()) {
-            map.put("endPage", 0);
-        } else {
-            map.put("endPage", endPage);
-        }
+        Map<String, Object> map = getPageMap(forPage, findDtos);
 
-        map.put("totalPage", findDtos.getTotalPages());
         map.put("allUser", allUser);
-        map.put("list", findDtos);
-        map.put("nowPage", nowPage);
-        map.put("startPage", startPage);
-        map.put("endPage", endPage);
-        map.put("forPage", forPage);
         return map;
     }
 
@@ -235,25 +221,9 @@ public class SearchUtils {
                 toResponse,
                 findDtos.getPageable(),
                 findDtos.getTotalElements());
-        int nowPage = findDtos.getPageable().getPageNumber() + 1;
-        Map<String, Object> map = new HashMap<>();
-        int startPage = nowPage-1;
-        int endPage = nowPage+1;
-        int totalPages = findDtos.getTotalPages();
+        Map<String, Object> map = getPageMap(forPage, findDtos);
 
-        if (nowPage == totalPages || totalPages == 0) {
-            map.put("endPage", 0);
-        } else {
-            map.put("endPage", endPage);
-        }
-
-
-        map.put("totalPage", totalPages);
         map.put("places", places);
-        map.put("list", findDtos);
-        map.put("nowPage", nowPage);
-        map.put("startPage", startPage);
-        map.put("forPage", forPage);
         return map;
     }
 
@@ -269,51 +239,46 @@ public class SearchUtils {
                 toResponse,
                 findDtos.getPageable(),
                 findDtos.getTotalElements());
-        int nowPage = findDtos.getPageable().getPageNumber() + 1;
-        Map<String, Object> map = new HashMap<>();
-        int startPage = nowPage-1;
-        int endPage = nowPage+1;
-        int totalPages = findDtos.getTotalPages();
 
-        if (nowPage == totalPages || totalPages == 0) {
-            map.put("endPage", 0);
-        } else {
-            map.put("endPage", endPage);
-        }
+        Map<String, Object> map = getPageMap(forPage, findDtos);
 
-        map.put("totalPage", totalPages);
         map.put("events", events);
-        map.put("list", findDtos);
-        map.put("nowPage", nowPage);
-        map.put("startPage", startPage);
-        map.put("forPage", forPage);
+
         return map;
     }
+
+
 
     private static Map<String, Object> getRequestPageMap(
             String forPage,
             Page<ReqResponse> findDtos
     ) {
         List<ReqResponse> toResponse = findDtos.getContent();
+
+        Map<String, Object> map = getPageMap(forPage, findDtos);
+
+        map.put("requests", findDtos);
+        map.put("requestStatus", Request.Status.values());
+        return map;
+    }
+
+    private static Map<String, Object> getPageMap(String forPage, Page findDtos) {
         int nowPage = findDtos.getPageable().getPageNumber() + 1;
         Map<String, Object> map = new HashMap<>();
         int startPage = nowPage-1;
         int endPage = nowPage+1;
-
         int totalPages = findDtos.getTotalPages();
+
         if (nowPage == totalPages || totalPages == 0) {
             map.put("endPage", 0);
         } else {
             map.put("endPage", endPage);
         }
-
-        map.put("totalPage", totalPages);
-        map.put("requests", findDtos);
-        map.put("list", findDtos);
-        map.put("nowPage", nowPage);
         map.put("startPage", startPage);
+        map.put("nowPage", nowPage);
+        map.put("totalPage", totalPages);
+        map.put("list", findDtos);
         map.put("forPage", forPage);
-        map.put("requestStatus", Request.Status.values());
         return map;
     }
 
