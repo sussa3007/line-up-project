@@ -18,10 +18,12 @@
                 <span
                         class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Zulseoza</span>
             </a>
-            <div class="flex items-center" style="margin-right: 2em">
-                <span sec:authentication="name"
+            <div class="flex items-center" style="margin-right: 2em" >
+                <span sec:authentication="name" sec:authorize="isAuthenticated()"
                    class="mr-6 text-sm font-medium text-gray-500 dark:text-white hover:underline"></span>
-                <span class="mr-6 text-sm font-medium text-gray-500 dark:text-white hover:underline">
+                <span class="mr-6 text-sm font-medium text-gray-500 dark:text-white hover:underline"
+                      sec:authorize="isAuthenticated()"
+                >
                     님 안녕하세요!
                 </span>
                 <button id="login" type="submit"
