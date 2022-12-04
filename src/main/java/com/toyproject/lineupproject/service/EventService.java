@@ -3,8 +3,6 @@ package com.toyproject.lineupproject.service;
 import com.querydsl.core.types.Predicate;
 import com.toyproject.lineupproject.constant.ErrorCode;
 import com.toyproject.lineupproject.constant.EventStatus;
-import com.toyproject.lineupproject.domain.Admin;
-import com.toyproject.lineupproject.domain.AdminPlaceMap;
 import com.toyproject.lineupproject.domain.Event;
 import com.toyproject.lineupproject.domain.Place;
 import com.toyproject.lineupproject.dto.EventDto;
@@ -22,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -49,12 +48,15 @@ public class EventService {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
     }
+
     @Transactional(readOnly = true)
     public Page<EventDto> getEventsByAdmin(String email, Predicate predicate, Pageable pageable) {
         try {
             Page<Event> all = eventRepository.findAll(predicate, pageable);
             if (!all.isEmpty()) {
-                if (!all.getContent().get(0).getPlace().getAdminEmail().equals(email)) {
+                if (all.getContent().stream().filter(event ->
+                                !(event.getPlace().getAdminEmail().equals(email)))
+                        .collect(Collectors.toList()).size() != 0) {
                     return new PageImpl<>(new ArrayList<>(),
                             pageable,
                             0L);
@@ -85,6 +87,7 @@ public class EventService {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
     }
+
     @Transactional(readOnly = true)
     public Page<EventDto> getEventsAllByStatus(
             EventStatus status,
@@ -103,20 +106,35 @@ public class EventService {
     }
 
     @Transactional(readOnly = true)
-    public List<EventDto> getEventsByEmail(String email) {
+    public Page<EventDto> getEventsParams(
+            HashMap<String, Object> param,
+            Pageable pageable
+    ) {
         try {
-            Admin findUser = adminService.findUserByEmail(email);
-            List<AdminPlaceMap> all = adminPlaceMapRepository.findAllByAdmin(findUser);
-            List<Place> places = all.stream().map(AdminPlaceMap::getPlace).collect(Collectors.toList());
-            List<Event> events = new ArrayList<>();
-            places.forEach(p -> events.addAll(eventRepository.findAllByPlace(p)));
-            return StreamSupport.stream(events.spliterator(), false)
+            String statusKey = (String) param.get("statusKey");
+            EventStatus status = null;
+            if (statusKey != null) {
+                status = EventStatus.valueOf(statusKey.toUpperCase());
+            }
+            Page<Event> events = eventRepository.findEventPageBySearchParams(
+                    (String) param.get("placeName"),
+                    (String) param.get("eventName"),
+                    status,
+                    (LocalDateTime) param.get("eventStartDatetime"),
+                    (LocalDateTime) param.get("eventEndDatetime"),
+                    (String) param.get("email"),
+                    pageable
+            );
+            List<EventDto> eventDtos = StreamSupport.stream(
+                            events.spliterator(), false)
                     .map(EventDto::of)
                     .toList();
+            return new PageImpl<>(eventDtos, events.getPageable(), events.getTotalElements());
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
     }
+
 
     @Transactional(readOnly = true)
     public Page<EventViewResponse> getEventViewResponse(

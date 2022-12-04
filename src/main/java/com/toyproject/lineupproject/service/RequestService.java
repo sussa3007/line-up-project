@@ -1,5 +1,6 @@
 package com.toyproject.lineupproject.service;
 
+import com.querydsl.core.types.Predicate;
 import com.toyproject.lineupproject.constant.ErrorCode;
 import com.toyproject.lineupproject.domain.Admin;
 import com.toyproject.lineupproject.domain.Request;
@@ -22,13 +23,32 @@ public class RequestService {
     private final RequestRepository requestRepository;
 
     @Transactional(readOnly = true)
-    public Page<ReqResponse> findAll(Pageable pageable) {
+    public Page<ReqResponse> findAll(Predicate predicate, Pageable pageable) {
         try {
-            Page<Request> requests = requestRepository.findAll(
-                    PageRequest.of(
-                            pageable.getPageNumber(),
-                            pageable.getPageSize(),
-                            Sort.by("requestId").descending()));
+            Page<Request> requests = requestRepository.findAll(predicate, pageable);
+            return new PageImpl<>(
+                    requests.getContent()
+                            .stream()
+                            .map(ReqResponse::of)
+                            .toList(),
+                    requests.getPageable(),
+                    requests.getTotalElements()
+            );
+        } catch (Exception e) {
+            throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
+        }
+
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ReqResponse> findByStatus(
+            Request.Status status,
+            Pageable pageable
+    ) {
+        try {
+            Page<Request> requests =
+                    requestRepository.findAllByStatus(status, pageable);
+
             return new PageImpl<>(
                     requests.getContent()
                             .stream()
@@ -46,10 +66,7 @@ public class RequestService {
     @Transactional(readOnly = true)
     public Page<ReqResponse> findAllByUser(Pageable pageable, Admin user) {
         Page<Request> requests = requestRepository.findAllByAdmin(
-                PageRequest.of(
-                        pageable.getPageNumber(),
-                        pageable.getPageSize(),
-                        Sort.by("requestId").descending()),
+                pageable,
                 user
         );
         return new PageImpl<>(

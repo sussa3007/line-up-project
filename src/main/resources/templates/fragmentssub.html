@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <title>fragments</title>
+</head>
+<body class="max-w-6xl mx-auto px-4 ">
+<div th:fragment="nav">
+    <nav style="margin: 0.5em" class="flex-column-reverse">
+        <div class="flex align-baseline justify-between ">
+            <div>
+                <a id="eventhome"
+                   class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                   sec:authorize="!hasAnyRole('ROLE_SUPERADMIN')"
+                   th:href="@{/}"
+                >
+                    Event Home
+                </a>
+                <a id="placeshome"
+                   class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                   sec:authorize="!hasAnyRole('ROLE_SUPERADMIN')"
+                   th:href="@{/places}"
+                >
+                    Places Home
+                </a>
+
+
+                <a id="adminpage"
+                   class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                   sec:authorize="hasAnyRole('ROLE_ADMIN')"
+                   th:href="@{/admin/searchAdminPlace}"
+                >
+                    Admin Places
+                </a>
+                <a id="adminevents"
+                   class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                   sec:authorize="hasAnyRole('ROLE_ADMIN')"
+                   th:href="@{/admin/searchAdminEvent}"
+                >
+                    Admin Events
+                </a>
+                <a id="adminpageall"
+                   class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                   sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
+                   th:href="@{/admin/places-all}"
+                >
+                    All Places
+                </a>
+                <a id="admineventsall"
+                   class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                   sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
+                   th:href="@{/admin/events-all}"
+                >
+                    All Events
+                </a>
+                <a id="memberall"
+                   class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                   sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
+                   th:href="@{/admin/user-all}"
+                >
+                    All Members
+                </a>
+                <a id="requestallpage"
+                   class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                   sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
+                   th:href="@{/requests/all}"
+                >
+                    All Request
+                </a>
+                <a id="requestpage"
+                   class="hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                   sec:authorize="!hasAnyRole('ROLE_SUPERADMIN') && !isAnonymous()"
+                   th:href="@{/requests/new}"
+                >
+                    User Request
+                </a>
+
+            </div>
+            <div>
+                <button id="login" type="submit"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded"
+                        sec:authorize="!isAuthenticated()"
+                        th:onclick="|location.href='@{/login}'|">
+                    Login
+                </button>
+                <button id="signup" type="submit"
+                        class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-3 rounded"
+                        sec:authorize="!isAuthenticated()"
+                        th:onclick="|location.href='@{/sign-up}'|">
+                    Sign Up
+                </button>
+                <button id="mypage" type="button"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded"
+                        sec:authorize="isAuthenticated()"
+                        th:onclick="|location.href='@{/info}'|"
+                >
+                    MyPage
+                </button>
+                <button id="logout" type="button"
+                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded"
+                        sec:authorize="isAuthenticated()"
+                        th:onclick="|location.href='@{/logout}'|"
+                >
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+</div>
+</body>
+</html>
