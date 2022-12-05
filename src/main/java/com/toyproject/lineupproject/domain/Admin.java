@@ -69,6 +69,11 @@ public class Admin {
     private final Set<AdminPlaceMap> adminPlaceMaps = new LinkedHashSet<>();
 
     @ToString.Exclude
+    @OrderBy("id")
+    @OneToMany(mappedBy = "admin")
+    private final Set<Post> posts = new LinkedHashSet<>();
+
+    @ToString.Exclude
     @OrderBy("requestId")
     @OneToMany(mappedBy = "admin")
     private final Set<Request> requests = new LinkedHashSet<>();
@@ -82,6 +87,10 @@ public class Admin {
         requests.add(request);
     }
 
+    public void addPost(Post post) {
+        posts.add(post);
+    }
+
     @Column(nullable = false, insertable = false, updatable = false,
             columnDefinition = "datetime default CURRENT_TIMESTAMP")
     @CreatedDate
@@ -91,6 +100,7 @@ public class Admin {
     @Column(nullable = false, insertable = false, updatable = false,
             columnDefinition = "datetime default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP")
     @LastModifiedDate
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime modifiedAt;
 
 
