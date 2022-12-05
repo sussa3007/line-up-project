@@ -1,6 +1,7 @@
 package com.toyproject.lineupproject.controller;
 
 import com.querydsl.core.types.Predicate;
+import com.toyproject.lineupproject.auth.jwt.utils.JwtAuthorityUtils;
 import com.toyproject.lineupproject.constant.AdminOperationStatus;
 import com.toyproject.lineupproject.constant.ErrorCode;
 import com.toyproject.lineupproject.constant.EventStatus;
@@ -21,6 +22,7 @@ import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -163,7 +165,7 @@ public class AdminController {
 
 
         return new ModelAndView(
-                "admin/places",
+                "admin/place-all",
                 placePageInfo
         );
     }
@@ -172,28 +174,43 @@ public class AdminController {
     @GetMapping("/places/{placeId}")
     public ModelAndView adminPlaceDetail(
             @PathVariable Long placeId,
-            @PageableDefault Pageable pageable
+            @PageableDefault Pageable pageable,
+            Authentication authentication
     ) {
         PlaceResponse place = placeService.getPlace(placeId)
                 .map(PlaceResponse::from)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
         Page<EventViewResponse> events = eventService.getEvent(placeId, pageable);
+        Map<String, Object> result = new HashMap<>(Map.of(
+                "adminOperationStatus", AdminOperationStatus.MODIFY,
+                "place", place,
+                "events", events,
+                "placeTypeOption", PlaceType.values()
+        ));
+        if (authentication.getAuthorities().equals(JwtAuthorityUtils.SUPER_ADMIN_ROLES)) {
+            result.put("backUrl", "/admin/places-all");
+        } else {
+            result.put("backUrl", "/admin/searchAdminPlace");
+        }
         return new ModelAndView(
                 "admin/place-detail",
-                Map.of(
-                        "adminOperationStatus", AdminOperationStatus.MODIFY,
-                        "place", place,
-                        "events", events,
-                        "placeTypeOption", PlaceType.values()
-                )
+                result
+
         );
     }
 
     @GetMapping("/places/new")
-    public String newPlace(Model model) {
+    public String newPlace(
+            Model model,
+            Authentication authentication
+    ) {
         model.addAttribute("adminOperationStatus", AdminOperationStatus.CREATE);
         model.addAttribute("placeTypeOption", PlaceType.values());
-
+        if (authentication.getAuthorities().equals(JwtAuthorityUtils.SUPER_ADMIN_ROLES)) {
+            model.addAttribute("backUrl", "/admin/places-all");
+        } else {
+            model.addAttribute("backUrl", "/admin/searchAdminPlace");
+        }
         return "admin/place-detail";
     }
 
@@ -202,13 +219,17 @@ public class AdminController {
     public String upsertPlace(
             @Valid PlaceRequest placeRequest,
             RedirectAttributes redirectAttributes,
-            Principal principal
+            Authentication authentication
     ) {
         AdminOperationStatus status = placeRequest.id() != null ? AdminOperationStatus.MODIFY : AdminOperationStatus.CREATE;
         placeService.upsertPlace(placeRequest.toDto());
 
         redirectAttributes.addFlashAttribute("adminOperationStatus", status);
-        redirectAttributes.addFlashAttribute("redirectUrl", "/admin/places");
+        if (authentication.getAuthorities().equals(JwtAuthorityUtils.SUPER_ADMIN_ROLES)) {
+            redirectAttributes.addFlashAttribute("redirectUrl", "/admin/places-all");
+        } else {
+            redirectAttributes.addFlashAttribute("redirectUrl", "/admin/searchAdminPlace");
+        }
 
         return "redirect:/admin/confirm";
     }
@@ -218,12 +239,17 @@ public class AdminController {
     @GetMapping("/places/{placeId}/delete")
     public String deletePlace(
             @PathVariable Long placeId,
-            RedirectAttributes redirectAttributes
+            RedirectAttributes redirectAttributes,
+            Authentication authentication
     ) {
         placeService.removePlace(placeId);
 
         redirectAttributes.addFlashAttribute("adminOperationStatus", AdminOperationStatus.DELETE);
-        redirectAttributes.addFlashAttribute("redirectUrl", "/admin/places");
+        if (authentication.getAuthorities().equals(JwtAuthorityUtils.SUPER_ADMIN_ROLES)) {
+            redirectAttributes.addFlashAttribute("redirectUrl", "/admin/places-all");
+        } else {
+            redirectAttributes.addFlashAttribute("redirectUrl", "/admin/searchAdminPlace");
+        }
 
         return "redirect:/admin/confirm";
     }
@@ -236,7 +262,7 @@ public class AdminController {
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
 
         model.addAttribute("adminOperationStatus", AdminOperationStatus.CREATE);
-        model.addAttribute("eventStatusOption", EventStatus.values());
+        model.addAttribute("event'StatusOption", EventStatus.values());
         model.addAttribute("event", event);
 
         return "admin/event-detail";
