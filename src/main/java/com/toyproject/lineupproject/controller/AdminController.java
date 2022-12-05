@@ -175,26 +175,25 @@ public class AdminController {
     public ModelAndView adminPlaceDetail(
             @PathVariable Long placeId,
             @PageableDefault Pageable pageable,
+            HttpServletRequest request,
             Authentication authentication
     ) {
         PlaceResponse place = placeService.getPlace(placeId)
                 .map(PlaceResponse::from)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
-        Page<EventViewResponse> events = eventService.getEvent(placeId, pageable);
-        Map<String, Object> result = new HashMap<>(Map.of(
-                "adminOperationStatus", AdminOperationStatus.MODIFY,
-                "place", place,
-                "events", events,
-                "placeTypeOption", PlaceType.values()
-        ));
+        Page<EventDto> findDtos = eventService.getEvent(placeId, pageable);
+        Map<String, Object> map = searchUtils.getEventPageInfo(request, findDtos);
+        map.put("adminOperationStatus", AdminOperationStatus.MODIFY);
+        map.put("place", place);
+        map.put("placeTypeOption", PlaceType.values());
         if (authentication.getAuthorities().equals(JwtAuthorityUtils.SUPER_ADMIN_ROLES)) {
-            result.put("backUrl", "/admin/places-all");
+            map.put("backUrl", "/admin/places-all");
         } else {
-            result.put("backUrl", "/admin/searchAdminPlace");
+            map.put("backUrl", "/admin/searchAdminPlace");
         }
         return new ModelAndView(
                 "admin/place-detail",
-                result
+                map
 
         );
     }
