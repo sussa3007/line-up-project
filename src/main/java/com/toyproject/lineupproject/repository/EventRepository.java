@@ -3,7 +3,6 @@ package com.toyproject.lineupproject.repository;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.ComparableExpression;
 import com.querydsl.core.types.dsl.StringExpression;
-import com.toyproject.lineupproject.constant.EventStatus;
 import com.toyproject.lineupproject.domain.Event;
 import com.toyproject.lineupproject.domain.Place;
 import com.toyproject.lineupproject.domain.QEvent;
@@ -14,8 +13,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
-
-import java.util.List;
 
 public interface EventRepository extends
         JpaRepository<Event, Long>,
@@ -37,8 +34,5 @@ public interface EventRepository extends
 
     Page<Event> findAll(Predicate predicate,Pageable pageable);
     Page<Event> findByPlace(Place place, Pageable pageable);
-    List<Event> findAllByPlace(Place place);
-
-    Page<Event> findAllByEventStatus(EventStatus status, Pageable pageable);
 
 }
