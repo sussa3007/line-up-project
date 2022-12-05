@@ -19,11 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @RequiredArgsConstructor
@@ -44,62 +42,6 @@ public class EventService {
             return StreamSupport.stream(eventRepository.findAll(predicate).spliterator(), false)
                     .map(EventDto::of)
                     .toList();
-        } catch (Exception e) {
-            throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
-        }
-    }
-
-    @Transactional(readOnly = true)
-    public Page<EventDto> getEventsByAdmin(String email, Predicate predicate, Pageable pageable) {
-        try {
-            Page<Event> all = eventRepository.findAll(predicate, pageable);
-            if (!all.isEmpty()) {
-                if (all.getContent().stream().filter(event ->
-                                !(event.getPlace().getAdminEmail().equals(email)))
-                        .collect(Collectors.toList()).size() != 0) {
-                    return new PageImpl<>(new ArrayList<>(),
-                            pageable,
-                            0L);
-                }
-            }
-            List<EventDto> eventDtos = StreamSupport.stream(
-                            all.spliterator(), false)
-                    .map(EventDto::of)
-                    .toList();
-            return new PageImpl<>(eventDtos, all.getPageable(), all.getTotalElements());
-        } catch (GeneralException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
-        }
-    }
-
-    @Transactional(readOnly = true)
-    public Page<EventDto> getEventsAll(Predicate predicate, Pageable pageable) {
-        try {
-            Page<Event> all = eventRepository.findAll(predicate, pageable);
-            List<EventDto> eventDtos = StreamSupport.stream(
-                            all.spliterator(), false)
-                    .map(EventDto::of)
-                    .toList();
-            return new PageImpl<>(eventDtos, all.getPageable(), all.getTotalElements());
-        } catch (Exception e) {
-            throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
-        }
-    }
-
-    @Transactional(readOnly = true)
-    public Page<EventDto> getEventsAllByStatus(
-            EventStatus status,
-            Pageable pageable
-    ) {
-        try {
-            Page<Event> all = eventRepository.findAllByEventStatus(status, pageable);
-            List<EventDto> eventDtos = StreamSupport.stream(
-                            all.spliterator(), false)
-                    .map(EventDto::of)
-                    .toList();
-            return new PageImpl<>(eventDtos, all.getPageable(), all.getTotalElements());
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
@@ -169,19 +111,16 @@ public class EventService {
     }
 
     @Transactional(readOnly = true)
-    public Page<EventViewResponse> getEvent(Long placeId, Pageable pageable) {
+    public Page<EventDto> getEvent(Long placeId, Pageable pageable) {
         try {
             Place place = placeRepository.findById(placeId)
                     .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
-            Page<Event> eventPage = eventRepository.findByPlace(place, pageable);
-
+            Page<Event> byPlace = eventRepository.findByPlace(place, pageable);
+            List<EventDto> eventPage = byPlace.map(EventDto::of).toList();
             return new PageImpl<>(
-                    eventPage.getContent()
-                            .stream()
-                            .map(event -> EventViewResponse.from(EventDto.of(event)))
-                            .toList(),
-                    eventPage.getPageable(),
-                    eventPage.getTotalElements()
+                    eventPage,
+                    byPlace.getPageable(),
+                    byPlace.getTotalElements()
             );
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);

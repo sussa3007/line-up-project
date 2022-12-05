@@ -75,7 +75,7 @@ public class Place {
 
     @ToString.Exclude
     @OrderBy("id")
-    @OneToMany(mappedBy = "place")
+    @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     private final Set<Event> events = new LinkedHashSet<>();
 
     @ToString.Exclude
@@ -83,13 +83,26 @@ public class Place {
     @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
     private final Set<AdminPlaceMap> adminPlaceMaps = new LinkedHashSet<>();
 
+    @ToString.Exclude
+    @OrderBy("id")
+    @OneToMany(mappedBy = "place", cascade = CascadeType.REMOVE)
+    private final Set<Post> posts = new LinkedHashSet<>();
+
+    public void addPost(Post post) {
+        posts.add(post);
+    }
+
+    public void setIdForMock(Long id) {
+        this.id = id;
+    }
+
     public void addAdminPlaceMaps(Admin admin) {
         AdminPlaceMap apm = AdminPlaceMap.of(admin, this);
         adminPlaceMaps.add(apm);
         admin.addAdminPlaceMaps(apm);
     }
 
-    protected Place() {}
+    public Place() {}
 
     protected Place(
             PlaceType placeType,

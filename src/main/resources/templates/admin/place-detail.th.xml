@@ -20,9 +20,10 @@
     </attr>
     <attr sel="#placeId" th:value="${place?.id}" />
     <attr sel="#csrf" th:value="${_csrf.token}" th:name="${_csrf.parameterName}" />
+    <attr sel="#csrfa" th:value="${_csrf.token}" th:name="${_csrf.parameterName}" />
     <attr sel="#savePlace" th:form="placeForm" th:formaction="@{/admin/places}" th:formmethod="post" />
     <attr sel="#removePlace" th:if="${place?.id} != null" th:onclick="'location.href=\'' + @{/admin/places/{placeId}/delete(placeId=${place?.id})} + '\''" />
-    <attr sel="#backToPlaces" th:onclick="'location.href=\'' + @{/admin/places} + '\''" />
+    <attr sel="#backToPlaces" th:onclick="'location.href=\'' + @{${backUrl}} + '\''" />
 
     <attr sel="#eventTable" th:if="${place?.id} != null">
         <attr sel="tbody" th:remove="all-but-first">
