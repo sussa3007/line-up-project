@@ -1,6 +1,7 @@
 package com.toyproject.lineupproject.utils;
 
 import com.toyproject.lineupproject.constant.AdminOperationStatus;
+import com.toyproject.lineupproject.domain.Post;
 import com.toyproject.lineupproject.domain.Request;
 import com.toyproject.lineupproject.dto.*;
 import org.springframework.data.domain.Page;
@@ -18,7 +19,7 @@ import java.util.Optional;
 @Component
 public class SearchUtils {
 
-    public String getSearchUri(HashMap<String, Object> param) {
+    public String getSearchUri(Map<String, Object> param) {
         String eventStartDatetimeEncode =
                 URLEncoder.encode(
                         Optional.ofNullable((String) param.get("eventStartDatetime"))
@@ -64,6 +65,15 @@ public class SearchUtils {
                         Optional.ofNullable((String) param.get("statusKey"))
                                 .orElse(""), StandardCharsets.UTF_8);
 
+        String titleEncode =
+                URLEncoder.encode(
+                        Optional.ofNullable((String) param.get("title"))
+                                .orElse(""), StandardCharsets.UTF_8);
+        String postEncode =
+                URLEncoder.encode(
+                        Optional.ofNullable((String) param.get("post"))
+                                .orElse(""), StandardCharsets.UTF_8);
+
 
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -95,12 +105,20 @@ public class SearchUtils {
         if (!statusKeyEncode.isEmpty())
             stringBuilder.append("&").append("statusKey").append("=").append(statusKeyEncode);
 
+        if (!statusKeyEncode.isEmpty())
+            stringBuilder.append("&").append("title").append("=").append(titleEncode);
+
+        if (!statusKeyEncode.isEmpty())
+            stringBuilder.append("&").append("post").append("=").append(postEncode);
+
         if (!pageEncode.isEmpty())
             stringBuilder.append("&").append("page").append("=").append(pageEncode);
 
         String uri = stringBuilder.toString();
         return uri;
     }
+
+    /* 컨트롤러 호출 부 */
     public Map<String, Object> getRequestPageInfo(
             HttpServletRequest request,
             Page<ReqResponse> findDtos,
@@ -110,9 +128,81 @@ public class SearchUtils {
         Map<String, Object> map = getRequestPageMap(forPage, findDtos);
         map.put("adminOperationStatus", AdminOperationStatus.MODIFY);
         map.put("user", user);
-        map.put("backUrl", "/events");
+        map.put("backUrl", "/");
         return map;
     }
+    public Map<String, Object> getSuperAdminRequestPageInfo(
+            HttpServletRequest request,
+            Page<ReqResponse> findDtos
+    ) {
+        String forPage = getRequestUriParam(request);
+        Map<String, Object> map = getRequestPageMap(forPage, findDtos);
+        map.put("currentPage", "/requests/searchRequest");
+
+        return map;
+    }
+
+    public Map<String, Object> getPostPageInfo(
+            HttpServletRequest request,
+            Page<PostResponse> findDtos,
+            AdminResponse user
+    ) {
+        String forPage = getRequestUriParam(request);
+        Map<String, Object> map = getPostPageMap(forPage, findDtos);
+        map.put("adminOperationStatus", AdminOperationStatus.MODIFY);
+        map.put("user", user);
+        map.put("backUrl", "/");
+        return map;
+    }
+    public Map<String, Object> getSearchPostPageInfo(
+            HttpServletRequest request,
+            Page<PostResponse> findDtos
+    ) {
+        String forPage = getRequestUriParam(request);
+        Map<String, Object> map = getPostPageMap(forPage, findDtos);
+        map.put("currentPage", "/posts/searchPost");
+        return map;
+    }
+    public Map<String, Object> getSearchNoticePageInfo(
+            HttpServletRequest request,
+            Page<PostResponse> findDtos
+    ) {
+        String forPage = getRequestUriParam(request);
+        Map<String, Object> map = getPostPageMap(forPage, findDtos);
+        map.put("currentPage", "/posts/searchNotice");
+        map.put("statusKey", "NOTICE");
+        return map;
+    }
+    public Map<String, Object> getSearchReviewPageInfo(
+            HttpServletRequest request,
+            Page<PostResponse> findDtos
+    ) {
+        String forPage = getRequestUriParam(request);
+        Map<String, Object> map = getPostPageMap(forPage, findDtos);
+        map.put("currentPage", "/posts/searchReview");
+        return map;
+    }
+    public Map<String, Object> getUserPostPageInfo(
+            HttpServletRequest request,
+            Page<PostResponse> findDtos
+    ) {
+        String forPage = getRequestUriParam(request);
+        Map<String, Object> map = getPostPageMap(forPage, findDtos);
+        map.put("currentPage", "/posts/searchUserPost");
+        return map;
+    }
+
+    public Map<String, Object> getSuperAdminPostPageInfo(
+            HttpServletRequest request,
+            Page<PostResponse> findDtos
+    ) {
+        String forPage = getRequestUriParam(request);
+        Map<String, Object> map = getPostPageMap(forPage, findDtos);
+        map.put("currentPage", "/posts/searchPost");
+        return map;
+    }
+
+
 
     public Map<String, Object> getSearchUserPageInfo(
             HttpServletRequest request,
@@ -124,7 +214,7 @@ public class SearchUtils {
         return map;
     }
 
-    public Map<String, Object> getEventPageInfo(
+    public Map<String, Object> getSearchEventPageInfo(
             HttpServletRequest request,
             Page<EventDto> findDtos
     ) {
@@ -182,18 +272,10 @@ public class SearchUtils {
 
         return map;
     }
-    public Map<String, Object> getSuperAdminRequestPageInfo(
-            HttpServletRequest request,
-            Page<ReqResponse> findDtos
-    ) {
-        String forPage = getRequestUriParam(request);
-        Map<String, Object> map = getRequestPageMap(forPage, findDtos);
-        map.put("currentPage", "/requests/searchRequest");
-
-        return map;
-    }
 
 
+
+    /* 검색과 페이지 맵 반환*/
     private static Map<String, Object> getUserPageMap(
             String forPage,
             Page<AdminResponse> findDtos) {
@@ -259,6 +341,19 @@ public class SearchUtils {
 
         map.put("requests", findDtos);
         map.put("requestStatus", Request.Status.values());
+        return map;
+    }
+
+    private static Map<String, Object> getPostPageMap(
+            String forPage,
+            Page<PostResponse> findDtos
+    ) {
+        List<PostResponse> toResponse = findDtos.getContent();
+
+        Map<String, Object> map = getPageMap(forPage, findDtos);
+
+        map.put("posts", findDtos);
+        map.put("postStatus", Post.Status.values());
         return map;
     }
 
