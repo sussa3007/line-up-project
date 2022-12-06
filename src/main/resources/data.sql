@@ -104,6 +104,11 @@ values
 
 ;
 
+insert into `post`(`title`, `post`, `admin_id`, `status`)
+values
+    ('[공지사항] 안녕하세요 반갑습니다!!!!!ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ', 'ㅁㅇ', 11, 'NOTICE')
+;
+
 insert into `admin_roles`(`admin_id`, `roles`)
 values
     (1, 'USER'),
