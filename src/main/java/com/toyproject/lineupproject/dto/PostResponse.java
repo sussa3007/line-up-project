@@ -12,6 +12,8 @@ public record PostResponse(
 
         Long placeId,
 
+        String placeName,
+
         String email,
 
         String nickName,
@@ -32,6 +34,7 @@ public record PostResponse(
         return new PostResponse(
                 post.getId(),
                 Optional.ofNullable(post.getPlace()).orElse(place).getId(),
+                Optional.ofNullable(post.getPlace()).orElse(place).getPlaceName(),
                 post.getAdmin().getEmail(),
                 post.getAdmin().getNickname(),
                 post.getTitle(),
