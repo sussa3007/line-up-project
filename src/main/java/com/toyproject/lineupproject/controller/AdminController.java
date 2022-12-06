@@ -182,7 +182,7 @@ public class AdminController {
                 .map(PlaceResponse::from)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
         Page<EventDto> findDtos = eventService.getEvent(placeId, pageable);
-        Map<String, Object> map = searchUtils.getEventPageInfo(request, findDtos);
+        Map<String, Object> map = searchUtils.getSearchEventPageInfo(request, findDtos);
         map.put("adminOperationStatus", AdminOperationStatus.MODIFY);
         map.put("place", place);
         map.put("placeTypeOption", PlaceType.values());
