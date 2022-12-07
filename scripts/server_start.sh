@@ -3,7 +3,7 @@ cd /home/ubuntu/build
 
 
 # 실행중이라면 프로세스를 종료합니다.
-ps -ef | grep "line-up-project-0.1.3-SNAPSHOT.jar" | grep -v grep | awk '{print $2}' | xargs kill -9 2> /dev/null
+sudo ps -ef | grep "line-up-project-0.1.3-SNAPSHOT.jar" | grep -v grep | awk '{print $2}' | xargs kill -9 2> /dev/null
 
 # 종료 이력을 파악하여 적절한 문구를 출력합니다.
 if [ $? -eq 0 ];then
@@ -18,3 +18,5 @@ echo $1
 
 # nohup 명령어를 통해 백그라운드에서 실행합니다.
 nohup java -jar line-up-project-0.1.3-SNAPSHOT.jar > /dev/null 2>&1 &
+
+echo "my-application Running!"

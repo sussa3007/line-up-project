@@ -22,6 +22,7 @@ project.ext {
 }
 
 dependencies {
+//	implementation 'org.springframework.cloud:spring-cloud-starter-aws-parameter-store-config'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -84,8 +85,13 @@ sourceSets {
 clean {
 	delete file(generated)
 }
+//dependencyManagement { // 블록 추가
+//	imports {
+//		mavenBom "org.springframework.cloud:spring-cloud-starter-parent:Hoxton.SR12"
+//	}
+//}
 
-// Heroku 설정
+// Heroku 설정  & 빌드시 plain jar 파일 만들지 않도록 설정
 jar {
 //	manifest {
 //		attributes('Main-Class': 'com.toyproject.lineupproject.LineUpProjectApplication')
