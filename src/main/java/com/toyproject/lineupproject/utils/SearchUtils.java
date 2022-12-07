@@ -173,6 +173,16 @@ public class SearchUtils {
         map.put("statusKey", "NOTICE");
         return map;
     }
+    public Map<String, Object> getSearchPlaceNoticePageInfo(
+            HttpServletRequest request,
+            Page<PostResponse> findDtos
+    ) {
+        String forPage = getRequestUriParam(request);
+        Map<String, Object> map = getPostPageMap(forPage, findDtos);
+        map.put("currentPage", "/posts/searchNotice");
+        map.put("statusKey", "PLACE_NOTICE");
+        return map;
+    }
     public Map<String, Object> getSearchReviewPageInfo(
             HttpServletRequest request,
             Page<PostResponse> findDtos
@@ -180,6 +190,7 @@ public class SearchUtils {
         String forPage = getRequestUriParam(request);
         Map<String, Object> map = getPostPageMap(forPage, findDtos);
         map.put("currentPage", "/posts/searchReview");
+        map.put("statusKey", "REVIEW");
         return map;
     }
     public Map<String, Object> getUserPostPageInfo(

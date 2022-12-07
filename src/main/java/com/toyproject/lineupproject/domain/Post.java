@@ -42,6 +42,7 @@ public class Post {
 
     @Setter
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id", nullable = true,insertable = false,updatable = false)
     private Place place;
 
     @Setter

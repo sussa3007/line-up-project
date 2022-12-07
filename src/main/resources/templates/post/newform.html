@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <title>New Post</title>
+</head>
+<body class="bg-gray-200">
+<header th:insert="fragments.html::nav"></header>
+
+<div class="heading text-center font-bold text-2xl m-5 text-gray-800">New Post</div>
+<style>
+    body {
+        background: white !important;
+    }
+</style>
+<div>
+    <form id="postForm"
+          class="editor mx-auto w-10/12 flex  flex-col text-gray-800 border border-gray-300 p-4 shadow-lg max-w-5xl p-full rounded">
+        <table id="postTable">
+            <select id="status" name="status"
+                    class="bg-gray-50  border border-gray-300 text-gray-700 text-sm font-bold mb-2 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-3/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    required>
+                <option value = "NOTICE">공지사항</option>
+                <option value = "REVIEW">장소 리뷰</option>
+                <option value = "PLACE_NOTICE">장소 공지사항</option>
+            </select>
+            <input id = "email"
+                   class="title bg-gray-300 w-1/2 border border-gray-300 p-2 mb-4  outline-none rounded"
+                   spellcheck="false" placeholder="Email" th:value= "${#authentication.principal}"
+                   type="text" readonly>
+            <input id = "title"
+                    class="title bg-gray-100 border border-gray-300 p-2 mb-4  outline-none rounded"
+                   spellcheck="false" placeholder="Title"
+                   type="text">
+
+            <textarea style="height: 33em" id = "post"
+                      class="post bg-gray-100 sec p-3 border border-gray-300 outline-none rounded mb-4" spellcheck="false"
+                      placeholder="Describe everything about this post here"></textarea>
+            <input id = "password"
+                    class="password w-3/12 bg-gray-100  border border-gray-300 p-2  outline-none rounded"
+                   spellcheck="false" placeholder="Password"
+                   type="text">
+
+
+            <!-- icons -->
+            <div class="icons flex text-gray-500 m-2">
+
+            </div>
+            <!-- buttons -->
+
+        </table>
+        <div class="buttons flex">
+            <button id="cancel" type="button"
+                    class="btn border border-gray-300 p-1 px-4 font-semibold cursor-pointer text-gray-500 ml-auto">
+                Cancel
+            </button>
+            <button id="newPost" type="submit"
+                    class="btn border border-indigo-500 p-1 px-4 font-semibold cursor-pointer text-gray-200 ml-2 bg-indigo-500">
+                Post
+            </button>
+        </div>
+    </form>
+</div>
+
+
+</body>
+</html>

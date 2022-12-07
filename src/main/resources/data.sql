@@ -104,9 +104,9 @@ values
 
 ;
 
-insert into `post`(`title`, `post`, `admin_id`, `status`)
+insert into `post`(`title`, `post`, `admin_id`, `status`, `password`)
 values
-    ('[공지사항] 안녕하세요 반갑습니다!!!!!ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ', 'ㅁㅇ', 11, 'NOTICE')
+    ('[공지사항] 안녕하세요 반갑습니다!!!!!ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ', 'ㅁㅇ', 11, 'NOTICE', '1234')
 ;
 
 insert into `admin_roles`(`admin_id`, `roles`)
