@@ -44,4 +44,6 @@ env.properties
 application-oauth.properties
 
 ### data ###
-data.sql
+
+### yml ###
+application-local.yml

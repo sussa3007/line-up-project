@@ -17,8 +17,7 @@ spring:
     console:
       enabled: false
   datasource:
-#    url: ${LINEUP_DB_URL}
-    url: jdbc:mysql://zulseoza-db.c3tfzg21eqej.ap-northeast-2.rds.amazonaws.com:13306/zulseoza?useSSL=false&characterEncoding=UTP-8&serverTimezone=UTC
+    url: ${LINEUP_DB_URL}
     username: ${LINEUP_DB_ID}
     password: ${LINEUP_DB_PW}
     driver-class-name: com.mysql.cj.jdbc.Driver
