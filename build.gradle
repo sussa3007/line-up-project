@@ -87,7 +87,8 @@ clean {
 
 // Heroku 설정
 jar {
-	manifest {
-		attributes('Main-Class': 'com.toyproject.lineupproject.LineUpProjectApplication')
-	}
+//	manifest {
+//		attributes('Main-Class': 'com.toyproject.lineupproject.LineUpProjectApplication')
+//	}
+	enabled = false
 }
