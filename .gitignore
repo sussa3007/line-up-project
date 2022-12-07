@@ -42,3 +42,6 @@ out/
 env.yml
 env.properties
 application-oauth.properties
+
+### data ###
+data.sql
