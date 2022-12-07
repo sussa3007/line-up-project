@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<thlogic>
+    <attr sel="#csrf" th:value="${_csrf.token}" th:name="${_csrf.parameterName}"/>
+    <attr sel="#postTable">
+        <attr sel="tbody">
+            <attr sel="tr[0]" th:each="post : ${posts}">
+                <attr sel="td.id" th:text="${post.id}" />
+                <attr sel="td.title" th:text="${post.title}" />
+                <attr sel="td.nickName" th:text="${post.nickName}" />
+                <attr sel="td.createAt" th:text="${#temporals.format(post.createAt, 'M/d (ha)', 'US')}" />
+                <attr sel="td/a" th:text="'수정'" th:href="@{'/posts/' + ${post.id} +'/modify'}" />
+            </attr>
+        </attr>
+    </attr>
+</thlogic>

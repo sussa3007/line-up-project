@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<thlogic>
+    <attr sel="#newPost" th:form="postForm" th:formaction="@{/posts/new}" th:formmethod="post" />
+    <attr sel="#cancel"  th:onclick="'location.href=\'' + @{${backUrl}} + '\''" />
+    <attr sel="#csrf" th:value="${_csrf.token}" th:name="${_csrf.parameterName}"/>
+    <attr sel="#requestTitle" th:text="'문의 사항 등록'"/>
+
+</thlogic>

@@ -59,7 +59,7 @@ public class EventController {
             HttpServletRequest request
     ) {
         Page<EventDto> findDtos = eventService.getEventsParams(param, pageable);
-        Map<String, Object> eventPageInfo = searchUtils.getEventPageInfo(request,findDtos);
+        Map<String, Object> eventPageInfo = searchUtils.getSearchEventPageInfo(request,findDtos);
 
         return new ModelAndView("event/index", eventPageInfo);
     }
