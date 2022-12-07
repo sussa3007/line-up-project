@@ -1,10 +1,9 @@
 package com.toyproject.lineupproject.dto;
 
-import com.toyproject.lineupproject.domain.Admin;
-import com.toyproject.lineupproject.domain.Place;
 import com.toyproject.lineupproject.domain.Post;
 
 import javax.validation.constraints.NotBlank;
+
 
 public record PostRequest(
 
@@ -34,19 +33,10 @@ public record PostRequest(
         return new PostRequest(email,title, post, password, status);
     }
 
-    public Post dtoToPost(Admin admin) {
+    public Post dtoToPost() {
         return Post.of(
-                admin,
-                this.title,
-                this.post,
-                this.password,
-                Post.Status.valueOf(status)
-        );
-    }
-    public Post dtoToPost(Admin admin, Place place) {
-        return Post.of(
-                admin,
-                place,
+                null,
+                null,
                 this.title,
                 this.post,
                 this.password,

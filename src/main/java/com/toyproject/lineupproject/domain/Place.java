@@ -93,6 +93,7 @@ public class Place {
     }
 
     public void setIdForMock(Long id) {
+        this.placeName = "NO";
         this.id = id;
     }
 

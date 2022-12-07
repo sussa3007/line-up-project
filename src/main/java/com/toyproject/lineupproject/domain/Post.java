@@ -42,6 +42,7 @@ public class Post {
 
     @Setter
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id", nullable = true,insertable = false,updatable = false)
     private Place place;
 
     @Setter
@@ -75,7 +76,7 @@ public class Post {
         admin.addPost(this);
     }
 
-    public void addAdmin(Place place) {
+    public void addPlace(Place place) {
         this.place = place;
         place.addPost(this);
     }
@@ -84,7 +85,10 @@ public class Post {
         this.admin = Optional.ofNullable(post.getAdmin()).orElse(this.admin);
         this.title = Optional.ofNullable(post.getTitle()).orElse(this.title);
         this.post = Optional.ofNullable(post.getPost()).orElse(this.post);
-        this.place = Optional.ofNullable(post.getPlace()).orElse(this.place);
+        Place findPlace = Optional.ofNullable(post.getPlace()).orElse(this.place);
+        if (!findPlace.equals(this.place)) {
+            this.addPlace(findPlace);
+        }
         this.status = Optional.ofNullable(post.getStatus()).orElse(this.status);
     }
 

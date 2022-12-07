@@ -19,8 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
@@ -49,7 +49,7 @@ public class EventService {
 
     @Transactional(readOnly = true)
     public Page<EventDto> getEventsParams(
-            HashMap<String, Object> param,
+            Map<String, Object> param,
             Pageable pageable
     ) {
         try {

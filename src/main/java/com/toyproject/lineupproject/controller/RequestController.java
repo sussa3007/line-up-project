@@ -46,7 +46,7 @@ public class RequestController {
     @GetMapping("/searchRequest")
     @PreAuthorize("hasAnyRole('ROLE_SUPERADMIN')")
     public String searchSuperRequestEvents(
-            @RequestParam HashMap<String, Object> param
+            @RequestParam Map<String, Object> param
     ) throws UnsupportedEncodingException {
         String uri = searchUtils.getSearchUri(param);
 
