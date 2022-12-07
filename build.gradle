@@ -22,7 +22,6 @@ project.ext {
 }
 
 dependencies {
-	implementation 'org.springframework.cloud:spring-cloud-starter-aws-parameter-store-config'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -74,11 +73,7 @@ def generated='src/main/generated'
 tasks.withType(JavaCompile) {
 	options.getGeneratedSourceOutputDirectory().set(file(generated))
 }
-dependencyManagement { // 블록 추가
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-starter-parent:Hoxton.SR12"
-	}
-}
+
 
 // java source set 에 querydsl QClass 위치 추가
 sourceSets {

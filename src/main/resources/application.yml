@@ -17,10 +17,10 @@ spring:
     console:
       enabled: false
   datasource:
-#    url: jdbc:mysql://localhost:3306/lineup
-#    url: jdbc:mysql://zulseoza-db.c3tfzg21eqej.ap-northeast-2.rds.amazonaws.com:13306/zulseoza?useSSL=false&characterEncoding=UTP-8&serverTimezone=UTC
-#    username: ${LINEUP_DB_ID}
-#    password: ${LINEUP_DB_PW}
+#    url: ${LINEUP_DB_URL}
+    url: jdbc:mysql://zulseoza-db.c3tfzg21eqej.ap-northeast-2.rds.amazonaws.com:13306/zulseoza?useSSL=false&characterEncoding=UTP-8&serverTimezone=UTC
+    username: ${LINEUP_DB_ID}
+    password: ${LINEUP_DB_PW}
     driver-class-name: com.mysql.cj.jdbc.Driver
   sql:
     init:
@@ -41,9 +41,9 @@ spring:
       client:
         registration:
           google:
-            client-id: 96781809157-5ek215a9ggvq3tuhpnc7r5o1tsukg1pd.apps.googleusercontent.com
+            client-id: ${GOOGLE_AOUTH2_SAMPLEPROJECT_ID}
           kakao:
-            client-id: 535d186fd8ce43114bfa72ded42ffc58
+            client-id: ${KAKAO_AOUTH2_ID}
 
 debug: false
 #management:
