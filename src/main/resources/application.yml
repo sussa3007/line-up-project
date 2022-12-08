@@ -17,9 +17,9 @@ spring:
     console:
       enabled: false
   datasource:
-    url: ${LINEUP_DB_URL}
-    username: ${LINEUP_DB_ID}
-    password: ${LINEUP_DB_PW}
+#    url: ${LINEUP_DB_URL}
+#    username: ${LINEUP_DB_ID}
+#    password: ${LINEUP_DB_PW}
     driver-class-name: com.mysql.cj.jdbc.Driver
   sql:
     init:
