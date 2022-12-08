@@ -32,34 +32,34 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-#      # Github Repository Secrets를 통해 환경 변수 파일을 생성합니다.
-#    - name: Generate Environment Variables File for Production
-#      run: |
-#        echo "LINEUP_DB_URL=$LINEUP_DB_URL" >> ./src/main/resources/env.yml
-#        echo "LINEUP_DB_ID=$LINEUP_DB_ID" >> ./src/main/resources/env.yml
-#        echo "LINEUP_DB_PW=$LINEUP_DB_PW" >> ./src/main/resources/env.yml
-#        echo "KAKAO_AOUTH2_ID=$KAKAO_AOUTH2_ID" >> ./src/main/resources/env.yml
-#        echo "KAKAO_AOUTH2_SECRETKEY=$KAKAO_AOUTH2_SECRETKEY" >> ./src/main/resources/env.yml
-#        echo "GOOGLE_AOUTH2_SAMPLEPROJECT_ID=$GOOGLE_AOUTH2_SAMPLEPROJECT_ID" >> ./src/main/resources/env.yml
-#        echo "GOOGLE_AOUTH2_SAMPLEPROJECT_SECRETKEY=$GOOGLE_AOUTH2_SAMPLEPROJECT_SECRETKEY" >> ./src/main/resources/env.yml
-#        echo "ACCESS_TOKEN_EXPIRATION_MINUTES=$ACCESS_TOKEN_EXPIRATION_MINUTES" >> ./src/main/resources/env.yml
-#        echo "REFRESH_TOKEN_EXPIRATION_MINUTES=$REFRESH_TOKEN_EXPIRATION_MINUTES" >> ./src/main/resources/env.yml
-#        echo "JWT_SECRET_KEY=$JWT_SECRET_KEY" >> ./src/main/resources/env.yml
-#        echo "SERVICE_URL=$SERVICE_URL" >> ./src/main/resources/env.yml
-#        echo "ADMIN_EMAIL=$ADMIN_EMAIL" >> ./src/main/resources/env.yml
-#      env:
-#        LINEUP_DB_URL: ${{ secrets.LINEUP_DB_URL }}
-#        LINEUP_DB_ID: ${{ secrets.LINEUP_DB_ID }}
-#        LINEUP_DB_PW: ${{ secrets.LINEUP_DB_PW }}
-#        KAKAO_AOUTH2_ID: ${{ secrets.KAKAO_AOUTH2_ID }}
-#        KAKAO_AOUTH2_SECRETKEY: ${{ secrets.KAKAO_AOUTH2_SECRETKEY }}
-#        GOOGLE_AOUTH2_SAMPLEPROJECT_ID: ${{ secrets.GOOGLE_AOUTH2_SAMPLEPROJECT_ID }}
-#        GOOGLE_AOUTH2_SAMPLEPROJECT_SECRETKEY: ${{ secrets.GOOGLE_AOUTH2_SAMPLEPROJECT_SECRETKEY }}
-#        ACCESS_TOKEN_EXPIRATION_MINUTES: ${{ secrets.ACCESS_TOKEN_EXPIRATION_MINUTES }}
-#        REFRESH_TOKEN_EXPIRATION_MINUTES: ${{ secrets.REFRESH_TOKEN_EXPIRATION_MINUTES }}
-#        JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
-#        SERVICE_URL: ${{ secrets.SERVICE_URL }}
-#        ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+      # Github Repository Secrets를 통해 환경 변수 파일을 생성합니다.
+    - name: Generate Environment Variables File for Production
+      run: |
+        echo "LINEUP_DB_URL=$LINEUP_DB_URL" >> ./src/main/resources/env.yml
+        echo "LINEUP_DB_ID=$LINEUP_DB_ID" >> ./src/main/resources/env.yml
+        echo "LINEUP_DB_PW=$LINEUP_DB_PW" >> ./src/main/resources/env.yml
+        echo "KAKAO_AOUTH2_ID=$KAKAO_AOUTH2_ID" >> ./src/main/resources/env.yml
+        echo "KAKAO_AOUTH2_SECRETKEY=$KAKAO_AOUTH2_SECRETKEY" >> ./src/main/resources/env.yml
+        echo "GOOGLE_AOUTH2_SAMPLEPROJECT_ID=$GOOGLE_AOUTH2_SAMPLEPROJECT_ID" >> ./src/main/resources/env.yml
+        echo "GOOGLE_AOUTH2_SAMPLEPROJECT_SECRETKEY=$GOOGLE_AOUTH2_SAMPLEPROJECT_SECRETKEY" >> ./src/main/resources/env.yml
+        echo "ACCESS_TOKEN_EXPIRATION_MINUTES=$ACCESS_TOKEN_EXPIRATION_MINUTES" >> ./src/main/resources/env.yml
+        echo "REFRESH_TOKEN_EXPIRATION_MINUTES=$REFRESH_TOKEN_EXPIRATION_MINUTES" >> ./src/main/resources/env.yml
+        echo "JWT_SECRET_KEY=$JWT_SECRET_KEY" >> ./src/main/resources/env.yml
+        echo "SERVICE_URL=$SERVICE_URL" >> ./src/main/resources/env.yml
+        echo "ADMIN_EMAIL=$ADMIN_EMAIL" >> ./src/main/resources/env.yml
+      env:
+        LINEUP_DB_URL: ${{ secrets.LINEUP_DB_URL }}
+        LINEUP_DB_ID: ${{ secrets.LINEUP_DB_ID }}
+        LINEUP_DB_PW: ${{ secrets.LINEUP_DB_PW }}
+        KAKAO_AOUTH2_ID: ${{ secrets.KAKAO_AOUTH2_ID }}
+        KAKAO_AOUTH2_SECRETKEY: ${{ secrets.KAKAO_AOUTH2_SECRETKEY }}
+        GOOGLE_AOUTH2_SAMPLEPROJECT_ID: ${{ secrets.GOOGLE_AOUTH2_SAMPLEPROJECT_ID }}
+        GOOGLE_AOUTH2_SAMPLEPROJECT_SECRETKEY: ${{ secrets.GOOGLE_AOUTH2_SAMPLEPROJECT_SECRETKEY }}
+        ACCESS_TOKEN_EXPIRATION_MINUTES: ${{ secrets.ACCESS_TOKEN_EXPIRATION_MINUTES }}
+        REFRESH_TOKEN_EXPIRATION_MINUTES: ${{ secrets.REFRESH_TOKEN_EXPIRATION_MINUTES }}
+        JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+        SERVICE_URL: ${{ secrets.SERVICE_URL }}
+        ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
 
     - name: Run chmod to make gradlew executable
       run: chmod +x ./gradlew
