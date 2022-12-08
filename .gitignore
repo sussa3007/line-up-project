@@ -39,7 +39,7 @@ out/
 /src/main/generated
 
 ### env ###
-env.yml
+src/main/resources/env.yml
 env.properties
 application-oauth.properties
 
