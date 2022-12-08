@@ -95,7 +95,7 @@ public class PostController {
         Post post = request.dtoToPost();
         PostResponse response = postService.createPost(post, findUser, null);
         return new ModelAndView(
-                "/alert",
+                "alert",
                 Map.of(
                         "msg", "정상적으로 작성 되었습니다.",
                         "nextPage", "/posts/" + response.id()
@@ -112,7 +112,7 @@ public class PostController {
         Post post = request.dtoToPost();
         PostResponse response = postService.createPost(post, findUser, placeId);
         return new ModelAndView(
-                "/alert",
+                "alert",
                 Map.of(
                         "msg", "정상적으로 작성 되었습니다.",
                         "nextPage", "/posts/" + response.id()

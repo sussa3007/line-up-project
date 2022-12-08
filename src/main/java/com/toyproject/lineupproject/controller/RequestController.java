@@ -74,7 +74,7 @@ public class RequestController {
         ReqResponse response =
                 requestService.createRequest(request.dtoToRequest(findUser));
         return new ModelAndView(
-                "/alert",
+                "alert",
                 Map.of(
                         "msg", "정상적으로 요청 되었습니다.",
                         "nextPage", "/requests/"+response.id()
@@ -107,7 +107,7 @@ public class RequestController {
     ) {
         ReqResponse requestInfo = requestService.findRequest(requestId);
         return new ModelAndView(
-                "/request/modifyform",
+                "request/modifyform",
                 Map.of(
                         "requestInfo", requestInfo,
                         "backUrl", "/requests/all"
@@ -124,7 +124,7 @@ public class RequestController {
         requestService.updateRequest(requestId, request.dtoToRequest());
 
         return new ModelAndView(
-                "/alert",
+                "alert",
                 Map.of(
                         "msg", "정상적으로 수정 되었습니다.",
                         "nextPage", "/requests/all"

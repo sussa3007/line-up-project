@@ -88,7 +88,7 @@ public class AdminRegisterController {
     public ModelAndView updateUserBySuperAdmin() {
 
         return new ModelAndView(
-                "/alert",
+                "alert",
                 Map.of(
                         "msg", "가입 성공! 나머지 정보를 입력해 주세요.",
                         "nextPage", "/oauth-info"
