@@ -1,22 +1,27 @@
-#!/usr/bin/env bash
-cd /home/ubuntu/build
+#!/bin/bash
+BUILD_JAR=$(ls /home/ubuntu/build/libs/line-up-project-0.1.3-SNAPSHOT.jar)
+JAR_NAME=$(basename $BUILD_JAR)
 
+echo "> 현재 시간: $(date)" >> /home/ubuntu/deploy.log
 
-# 실행중이라면 프로세스를 종료합니다.
-sudo ps -ef | grep "line-up-project-0.1.3-SNAPSHOT.jar" | grep -v grep | awk '{print $2}' | xargs kill -9 2> /dev/null
+echo "> build 파일명: $JAR_NAME" >> /home/ubuntu/deploy.log
 
-# 종료 이력을 파악하여 적절한 문구를 출력합니다.
-if [ $? -eq 0 ];then
-    echo "my-application Stop Success"
+echo "> build 파일 복사" >> /home/ubuntu/deploy.log
+DEPLOY_PATH=/home/ubuntu/
+cp $BUILD_JAR $DEPLOY_PATH
+
+echo "> 현재 실행중인 애플리케이션 pid 확인" >> /home/ubuntu/deploy.log
+CURRENT_PID=$(pgrep -f $JAR_NAME)
+
+if [ -z $CURRENT_PID ]
+then
+  echo "> 현재 구동중인 애플리케이션이 없으므로 종료하지 않습니다." >> /home/ubuntu/deploy.log
 else
-    echo "my-application Not Running"
+  echo "> kill -9 $CURRENT_PID" >> /home/ubuntu/deploy.log
+  sudo kill -9 $CURRENT_PID
+  sleep 5
 fi
 
-# 다시 실행하기 위한 과정을 진행합니다.
-echo "my-application Restart!"
-echo $1
-
-# nohup 명령어를 통해 백그라운드에서 실행합니다.
-nohup java -jar line-up-project-0.1.3-SNAPSHOT.jar > /dev/null 2>&1 &
-
-echo "my-application Running!"
+DEPLOY_JAR=$DEPLOY_PATH$JAR_NAME
+echo "> DEPLOY_JAR 배포"    >> /home/ubuntu/action/deploy.log
+sudo nohup java -jar $DEPLOY_JAR >> /home/ubuntu/deploy.log 2>/home/ubuntu/action/deploy_err.log &
