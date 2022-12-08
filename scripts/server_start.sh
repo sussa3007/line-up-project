@@ -1,5 +1,5 @@
 #!/bin/bash
-BUILD_JAR=$(ls /home/ubuntu/build/libs/line-up-project-0.1.3-SNAPSHOT.jar)
+BUILD_JAR=$(ls /home/ubuntu/build/line-up-project-0.1.3-SNAPSHOT.jar)
 JAR_NAME=$(basename $BUILD_JAR)
 
 echo "> 현재 시간: $(date)" >> /home/ubuntu/deploy.log
@@ -23,5 +23,5 @@ else
 fi
 
 DEPLOY_JAR=$DEPLOY_PATH$JAR_NAME
-echo "> DEPLOY_JAR 배포"    >> /home/ubuntu/action/deploy.log
-sudo nohup java -jar $DEPLOY_JAR >> /home/ubuntu/deploy.log 2>/home/ubuntu/action/deploy_err.log &
+echo "> DEPLOY_JAR 배포"    >> /home/ubuntu/deploy.log
+sudo nohup java -jar $DEPLOY_JAR >> /home/ubuntu/deploy.log 2>/home/ubuntu/deploy_err.log &
