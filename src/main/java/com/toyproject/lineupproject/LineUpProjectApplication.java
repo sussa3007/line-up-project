@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 @ConfigurationPropertiesScan
 @SpringBootApplication
+//@PropertySource("classpath:env.yml")
 public class LineUpProjectApplication {
 
 	public static void main(String[] args) {
