@@ -15,12 +15,9 @@ spring:
         format_sql: true
         default_batch_fetch_size: 1000
   datasource:
-#    url: ${LINEUP_DB_URL}
-#    url: jdbc:mysql://zulseoza-db.c3tfzg21eqej.ap-northeast-2.rds.amazonaws.com:13306/zulseoza?allowPublicKeyRetrieval=true&useUnicode=yes&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
-#    username: admin
-#    username: ${LINEUP_DB_ID}
-#    password: tndud1933
-#    password: ${LINEUP_DB_PW}
+    url: ${LINEUP_DB_URL}
+    username: ${LINEUP_DB_ID}
+    password: ${LINEUP_DB_PW}
     driver-class-name: com.mysql.cj.jdbc.Driver
   sql:
     init:
