@@ -56,3 +56,11 @@ jobs:
       # 압축한 프로젝트를 S3로 전송합니다.
     - name: Upload to S3
       run: aws s3 cp --region ap-northeast-2 ./line-up-project.zip s3://$S3_BUCKET_NAME/line-up-project.zip
+
+      # CodeDeploy에게 배포 명령.
+    - name: Code Deploy
+      run: >
+        aws deploy create-deployment --application-name zulseoza
+        --deployment-config-name CodeDeployDefault.AllAtOnce
+        --deployment-group-name zulseoza-group
+        --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=line-up-project.zip
