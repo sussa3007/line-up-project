@@ -1,5 +1,7 @@
 package com.toyproject.lineupproject.domain;
 
+import com.toyproject.lineupproject.constant.ErrorCode;
+import com.toyproject.lineupproject.exception.GeneralException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -26,6 +28,7 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter
     private Long id;
 
     @Setter
@@ -33,7 +36,7 @@ public class Post {
     private String title;
 
     @Setter
-    @Column(nullable = false)
+    @Column(nullable = false, length = 5000)
     private String post;
 
     @Setter
@@ -41,8 +44,7 @@ public class Post {
     private Admin admin;
 
     @Setter
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", nullable = true,insertable = false,updatable = false)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private Place place;
 
     @Setter
@@ -82,14 +84,19 @@ public class Post {
     }
 
     public void updateEntity(Post post) {
-        this.admin = Optional.ofNullable(post.getAdmin()).orElse(this.admin);
-        this.title = Optional.ofNullable(post.getTitle()).orElse(this.title);
-        this.post = Optional.ofNullable(post.getPost()).orElse(this.post);
-        Place findPlace = Optional.ofNullable(post.getPlace()).orElse(this.place);
-        if (!findPlace.equals(this.place)) {
-            this.addPlace(findPlace);
+        if (this.password.equals(post.password)) {
+            this.admin = Optional.ofNullable(post.getAdmin()).orElse(this.admin);
+            this.title = Optional.ofNullable(post.getTitle()).orElse(this.title);
+            this.post = Optional.ofNullable(post.getPost()).orElse(this.post);
+            Place findPlace = Optional.ofNullable(post.getPlace()).orElse(this.place);
+            if (!findPlace.equals(this.place)) {
+                this.addPlace(findPlace);
+            }
+            this.status = Optional.ofNullable(post.getStatus()).orElse(this.status);
+        } else {
+            throw new GeneralException(ErrorCode.POST_ACCESS_DENIED);
         }
-        this.status = Optional.ofNullable(post.getStatus()).orElse(this.status);
+
     }
 
     public Post() {

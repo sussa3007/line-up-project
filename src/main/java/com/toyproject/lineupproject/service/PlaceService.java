@@ -83,6 +83,16 @@ public class PlaceService {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR);
         }
     }
+    @Transactional(readOnly = true)
+    public Place getPlaceEntity(Long placeId) {
+        try {
+            return placeRepository.findById(placeId).orElseThrow(
+                    () -> new GeneralException(ErrorCode.NOT_FOUND)
+            );
+        } catch (Exception e) {
+            throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR);
+        }
+    }
 
     public boolean upsertPlace(PlaceDto placeDto) {
         try {

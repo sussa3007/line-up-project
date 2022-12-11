@@ -47,7 +47,8 @@ public class PostRepositoryCustomImpl extends QuerydslRepositorySupport implemen
                         post1.title,
                         post1.post,
                         post1.createdAt,
-                        post1.modifiedAt
+                        post1.modifiedAt,
+                        post1.status
                 ));
         if (title != null && !title.isBlank()) {
             query.where(post1.title.containsIgnoreCase(title));

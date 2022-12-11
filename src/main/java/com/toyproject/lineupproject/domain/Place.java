@@ -92,10 +92,6 @@ public class Place {
         posts.add(post);
     }
 
-    public void setIdForMock(Long id) {
-        this.placeName = "NO";
-        this.id = id;
-    }
 
     public void addAdminPlaceMaps(Admin admin) {
         AdminPlaceMap apm = AdminPlaceMap.of(admin, this);

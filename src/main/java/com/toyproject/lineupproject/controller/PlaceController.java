@@ -7,6 +7,7 @@ import com.toyproject.lineupproject.dto.PlaceDto;
 import com.toyproject.lineupproject.dto.PlaceResponse;
 import com.toyproject.lineupproject.exception.GeneralException;
 import com.toyproject.lineupproject.service.PlaceService;
+import com.toyproject.lineupproject.service.PostService;
 import com.toyproject.lineupproject.utils.SearchUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -35,6 +36,8 @@ public class PlaceController {
 
     private final SearchUtils searchUtils;
 
+    private final PostService postService;
+
 
     @GetMapping("/searchPlace")
     public String searchPlace(
@@ -59,8 +62,11 @@ public class PlaceController {
     }
 
     @GetMapping("/{placeId}")
-    public ModelAndView placeDetail(@PathVariable Long placeId) {
+    public ModelAndView placeDetail(
+            @PathVariable Long placeId
+    ) {
         HashMap<String , Object> map = new HashMap<>();
+        Place placeEntity = placeService.getPlaceEntity(placeId);
         PlaceResponse place =
                 placeService.getPlace(placeId)
                         .map(PlaceResponse::from)

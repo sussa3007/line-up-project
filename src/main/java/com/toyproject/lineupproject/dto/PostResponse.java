@@ -4,7 +4,6 @@ import com.toyproject.lineupproject.domain.Place;
 import com.toyproject.lineupproject.domain.Post;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 public record PostResponse(
 
@@ -24,23 +23,32 @@ public record PostResponse(
 
         LocalDateTime createAt,
 
-        LocalDateTime modifiedAt
+        LocalDateTime modifiedAt,
+
+        Post.Status status
+
 
 ) {
 
     public static PostResponse of(Post post) {
-        Place place = new Place();
-        place.setIdForMock(0L);
+        Place postPlace = post.getPlace();
+        Long placeId = null;
+        String placeName = null;
+        if (postPlace != null) {
+            placeId = postPlace.getId();
+            placeName = postPlace.getPlaceName();
+        }
         return new PostResponse(
                 post.getId(),
-                Optional.ofNullable(post.getPlace()).orElse(place).getId(),
-                Optional.ofNullable(post.getPlace()).orElse(place).getPlaceName(),
+                placeId,
+                placeName,
                 post.getAdmin().getEmail(),
                 post.getAdmin().getNickname(),
                 post.getTitle(),
                 post.getPost(),
                 post.getCreatedAt(),
-                post.getModifiedAt()
+                post.getModifiedAt(),
+                post.getStatus()
         );
     }
 
