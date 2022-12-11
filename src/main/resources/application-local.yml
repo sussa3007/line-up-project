@@ -54,6 +54,7 @@ server:
   error:
     whitelabel:
       enabled: false
+  port: 80
 
 logging.level:
   org:
