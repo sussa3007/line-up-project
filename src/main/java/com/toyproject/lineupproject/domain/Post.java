@@ -36,7 +36,7 @@ public class Post {
     private String title;
 
     @Setter
-    @Column(nullable = false, length = 5000)
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String post;
 
     @Setter
