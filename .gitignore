@@ -43,7 +43,6 @@ src/main/resources/env.yml
 env.properties
 application-oauth.properties
 
-### data ###
-LineUpProjectApplicationLocal.java
+
 ### yml ###
 application-local.yml
