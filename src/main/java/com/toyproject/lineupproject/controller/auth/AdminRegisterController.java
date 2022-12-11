@@ -41,13 +41,19 @@ public class AdminRegisterController {
     }
 
     @PostMapping("/new-signup")
-    public String register(
+    public ModelAndView register(
             @Valid @ModelAttribute AdminRequest adminRequest
     ) {
 
         adminService.createUser(adminRequest.dtoToAdmin());
 
-        return "redirect:login";
+        return new ModelAndView(
+                "alert",
+                Map.of(
+                        "msg", "가입 성공! 다시 로그인 해주세요!.",
+                        "nextPage", "/login"
+                )
+        );
     }
 
     @GetMapping("/info")
