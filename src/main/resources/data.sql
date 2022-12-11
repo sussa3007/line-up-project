@@ -2,6 +2,7 @@
 
 insert into `place` (`place_type`, `admin_email`,`place_name`, `address`, `phone_number`, `capacity`, `memo`)
 values
+    ('COMMON', 'super@test.com','test', 'aaadfga', '010-1111-2222', 1, 'test'),
     ('SPORTS', 'admin@gmail.com','스포츠 센터', '경기도 성남시 판교로 999', '010-9999-0000', 20, '스포츠 센터 예약 가능'),
     ('RESTAURANT', 'admin@gmail.com','스프링 식당', '서울시 강남구 가나대로 123', '010-1234-5678', 10, '테스트 메모'),
     ('SPORTS', 'admin@gmail.com','스프링 스키장', '하늘 천국 천국로 555', '010-1004-1004', 9000, null),
@@ -185,7 +186,7 @@ values
 </ul>
 <p><img src="https://user-images.githubusercontent.com/110886399/206844039-58b24212-abfb-42f5-b570-70c5c311898c.png" alt="image" /></p>
 <p>The end ...</p>
-', 2, 'PLACE_NOTICE', '1111',1)
+', 2, 'PLACE_NOTICE', '1111',2)
 ;
 
 insert into `admin_roles`(`admin_id`, `roles`)
@@ -209,17 +210,18 @@ values
 
 insert into `admin_place_map` (`admin_id`, `place_id`)
 values
-    (2, 1),
+    (11, 1),
     (2, 2),
     (2, 3),
     (2, 4),
     (2, 5),
     (2, 6),
-    (3, 7),
+    (2, 7),
     (3, 8),
     (3, 9),
     (3, 10),
     (3, 11),
-    (3, 12)
+    (3, 12),
+    (3, 13)
 
 ;

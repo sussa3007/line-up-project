@@ -122,7 +122,7 @@ public class PostController {
 
         Admin findUser = adminService.findUserByEmail(request.email());
         Post post = request.dtoToPost(result);
-        PostResponse response = postService.createPost(post, findUser, null);
+        PostResponse response = postService.createPost(post, findUser, 1L);
         return new ModelAndView(
                 "alert",
                 Map.of(
