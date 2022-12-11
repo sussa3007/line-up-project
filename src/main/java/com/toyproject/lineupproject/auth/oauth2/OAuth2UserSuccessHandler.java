@@ -66,7 +66,8 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
             HttpServletResponse response
     ) throws IOException {
         log.info(" #### redirect ");
-        String uri = createUri("/").toString();
+//        String uri = createUri("/").toString();
+        String uri = "http://zulseoza.site";
         getRedirectStrategy().sendRedirect(request, response, uri);
     }
     private void redirectNewUser(
@@ -74,7 +75,8 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
             HttpServletResponse response
     ) throws IOException {
         log.info(" #### redirectNewUser ");
-        String uri = createUri("/new-OAuth").toString();
+//        String uri = createUri("/new-OAuth").toString();
+        String uri = "http://zulseoza.site/new-OAuth";
         getRedirectStrategy().sendRedirect(request, response, uri);
     }
 
