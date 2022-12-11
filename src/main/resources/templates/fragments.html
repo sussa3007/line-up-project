@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.5/dist/flowbite.min.css" />
+    <title>fragments</title>
+</head>
+<body class="max-w-xxl mx-auto px-4 ">
+<div th:fragment="nav">
+    <nav class="bg-white border-gray-200 dark:bg-gray-900">
+        <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xxl px-4 md:px-6 py-2.5">
+            <a th:href="@{/}" class="flex items-center" style="margin-left: 2em">
+                <img src="https://user-images.githubusercontent.com/110886399/205493206-3cb0d862-8352-42b2-b14d-e1652eb1ceab.png"
+                     class="h-6 mr-3 sm:h-9" alt="Flowbite Logo" />
+                <span
+                        class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Zulseoza</span>
+            </a>
+            <div class="flex items-center" style="margin-right: 2em" >
+                <span sec:authentication="name" sec:authorize="isAuthenticated()"
+                   class="mr-6 text-sm font-medium text-gray-500 dark:text-white hover:underline"></span>
+                <span class="mr-6 text-sm font-medium text-gray-500 dark:text-white hover:underline"
+                      sec:authorize="isAuthenticated()"
+                >
+                    님 안녕하세요!
+                </span>
+                <button id="login" type="submit"
+                        style="margin-left: 1em"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded"
+                        sec:authorize="!isAuthenticated()"
+                        th:onclick="|location.href='@{/login}'|">
+                    Login
+                </button>
+                <button id="signup" type="submit"
+                        style="margin-left: 1em"
+                        class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-3 rounded"
+                        sec:authorize="!isAuthenticated()"
+                        th:onclick="|location.href='@{/sign-up}'|">
+                    Sign Up
+                </button>
+                <button id="mypage" type="button"
+                        style="margin-left: 1em"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded"
+                        sec:authorize="isAuthenticated()"
+                        th:onclick="|location.href='@{/info}'|"
+                >
+                    MyPage
+                </button>
+                <button id="logout" type="button"
+                        style="margin-left: 1em"
+                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded"
+                        sec:authorize="isAuthenticated()"
+                        th:onclick="|location.href='@{/logout}'|"
+                >
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <nav class="bg-white border-gray-200 dark:border-gray-600 dark:bg-gray-900">
+        <div class="flex flex-wrap justify-center items-center mx-auto max-w-screen-xl px-4 md:px-6 py-2.5">
+
+            <div id="mega-menu-full" class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1">
+                <ul class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                    <li>
+                        <a id="home"
+                           class="flex justify-between w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                           th:href="@{/}"
+                        >
+                            Home
+                        </a>
+                    </li>
+                    <li sec:authorize="!hasAnyRole('ROLE_SUPERADMIN')" >
+                        <a id="notice"
+                           class="flex justify-between w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                           th:href="@{/posts/searchNotice}"
+                        >
+                            Notice
+                        </a>
+                    </li>
+                    <li sec:authorize="!hasAnyRole('ROLE_SUPERADMIN')" >
+                        <a id="placenotice"
+                           class="flex justify-between w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                           th:href="@{/posts/searchPlaceNotice}"
+                        >
+                            Place Notice
+                        </a>
+                    </li>
+                    <li sec:authorize="!hasAnyRole('ROLE_SUPERADMIN')">
+                        <a id="eventhome"
+                           class="flex justify-between w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                           th:href="@{/}"
+                        >
+                            Event
+                        </a>
+                    </li>
+                    <li sec:authorize="!hasAnyRole('ROLE_SUPERADMIN')">
+                        <a id="placeshome"
+                           class="flex justify-between w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                           th:href="@{/places}"
+                        >
+                            Place
+                        </a>
+                    </li>
+                    <li sec:authorize="!hasAnyRole('ROLE_SUPERADMIN','ROLE_ADMIN') && !isAnonymous()">
+                        <a id="messagepage"
+                           class="flex justify-between w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                           th:href="@{/}"
+                        >
+                            My Message
+                        </a>
+                    </li>
+                    <li sec:authorize="!hasAnyRole('ROLE_SUPERADMIN') && !isAnonymous()">
+                        <a id="requestpage"
+                           class="flex justify-between w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                           th:href="@{/requests/new}"
+                        >
+                            Q&A
+                        </a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ROLE_SUPERADMIN','ROLE_ADMIN')">
+                        <button id="mega-menu-full-dropdown-button"
+                                class="flex justify-between w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded dropdown-toggle"
+                                th:onclick="'location.href=\'' + @{/admin/management} + '\''"
+                                >
+                            Management
+                            <svg class="w-5 h-5 ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd">
+
+                                </path>
+                            </svg>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="mega-menu-full-dropdown" style="display: none"
+             class=" mt-1 border-gray-200 shadow-sm bg-gray-50 md:bg-white border-y dark:bg-gray-800 dark:border-gray-600">
+            <div class="grid max-w-screen-xl px-4 py-5 mx-auto text-gray-900 dark:text-white sm:grid-cols-2 md:px-6">
+                <ul>
+                    <li sec:authorize="hasAnyRole('ROLE_ADMIN')">
+                        <a id="adminpage"
+                           class="block p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                           th:href="@{/admin/searchAdminPlace}"
+                        >
+                            <div class="font-semibold">My Place</div>
+                            <span class="text-sm font-light text-gray-500 dark:text-gray-400">내가 생성한 장소를 관리 합니다.</span>
+                        </a>
+
+                    </li>
+                    <li sec:authorize="hasAnyRole('ROLE_ADMIN')">
+                        <a id="adminevents"
+                           class="block p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                           th:href="@{/admin/searchAdminEvent}"
+                        >
+                            <div class="font-semibold">My Event</div>
+                            <span class="text-sm font-light text-gray-500 dark:text-gray-400">내가 생성한 이벤트를 관리 합니다.</span>
+                        </a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ROLE_SUPERADMIN')">
+                        <a id="adminpageall"
+                           class="block p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                           th:href="@{/admin/places-all}"
+                        >
+
+                            <div class="font-semibold"> Place Management</div>
+                            <span class="text-sm font-light text-gray-500 dark:text-gray-400">전체 장소를 관리 합니다.</span>
+                        </a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ROLE_SUPERADMIN')">
+                        <a id="noticemodify"
+                           class="block p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                           th:href="@{/posts/searchNotice}"
+                        >
+                            <div class="font-semibold"> Notice Management</div>
+                            <span class="text-sm font-light text-gray-500 dark:text-gray-400">공지사항을 관리 합니다.</span>
+                        </a>
+                    </li>
+                    <li sec:authorize="(hasAnyRole('ROLE_ADMIN') && !hasAnyRole('ROLE_SUPERADMIN')) || (!hasAnyRole('ROLE_SUPERADMIN','ROLE_USER') && !isAnonymous())" >
+                        <a id="adminplacenoticemodify"
+                           class="block p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                           th:href="@{/posts/searchAdminPlaceNotice}"
+                        >
+                            <div class="font-semibold"> Place Notice Management</div>
+                            <span class="text-sm font-light text-gray-500 dark:text-gray-400">장소별 공지 사항을 관리 합니다.</span>
+                        </a>
+                    </li>
+                </ul>
+                <ul>
+                    <li sec:authorize="hasAnyRole('ROLE_SUPERADMIN')">
+                        <a id="admineventsall"
+                           class="block p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                           th:href="@{/admin/events-all}"
+                        >
+                            <div class="font-semibold"> Event Management</div>
+                            <span class="text-sm font-light text-gray-500 dark:text-gray-400">전체 이벤트를 관리 합니다.</span>
+                        </a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ROLE_SUPERADMIN')">
+                        <a id="memberall"
+                           class="block p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                           th:href="@{/admin/user-all}"
+                        >
+                            <div class="font-semibold"> User Management</div>
+                            <span class="text-sm font-light text-gray-500 dark:text-gray-400">전체 사용자를 관리 합니다.</span>
+                        </a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ROLE_SUPERADMIN')">
+                        <a id="requestallpage"
+                           class="block p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                           th:href="@{/requests/all}"
+                        >
+                            <div class="font-semibold"> Q&A Management</div>
+                            <span class="text-sm font-light text-gray-500 dark:text-gray-400">사용자의 문의/요청사항을 관리 합니다.</span>
+                        </a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ROLE_SUPERADMIN')">
+                        <a id="placenoticemodify"
+                           class="block p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                           th:href="@{/posts/searchPlaceNotice}"
+                        >
+                            <div class="font-semibold"> Place Notice Management</div>
+                            <span class="text-sm font-light text-gray-500 dark:text-gray-400">전체 장소별 공지 사항을 관리 합니다.</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+</div>
+<script src="https://unpkg.com/flowbite@1.5.5/dist/flowbite.js"></script>
+</body>
+</html>
