@@ -8,7 +8,7 @@
         <meta name="_csrf_header" th:content="${_csrf?.headerName}">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>New Post</title>
+        <title>Modify Post</title>
         <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"/>
         <link rel="stylesheet" href="https://unpkg.com/@tailwindcss/typography@0.2.x/dist/typography.min.css"/>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.59.2/lib/codemirror.min.css"/>
@@ -34,6 +34,7 @@
 
             .CodeMirror {
                 padding: 0.75rem;
+                padding: 0.75rem;
                 font-family: inherit;
                 font-size: inherit;
                 border-bottom-left-radius: .375rem;
@@ -55,8 +56,7 @@
     </head>
     <body class="bg-gray-50 antialiased">
     <header th:insert="fragments.html::nav"></header>
-
-    <div class="heading text-center font-bold text-2xl m-5 text-gray-800">New Post</div>
+    <div  th:text="${post.status} + ' Modify'" class="heading text-center font-bold text-2xl m-5 text-gray-800">New Post</div>
     <div class="px-4 max-w-5xl mx-auto min-h-screen py-4">
 
 
@@ -88,17 +88,17 @@
                             class="bg-gray-50  border border-gray-300 text-gray-700 text-sm font-bold mb-2 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-3/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             required>
                         <option sec:authorize="hasAnyRole('ROLE_SUPERADMIN')" value = "NOTICE">공지사항</option>
-                        <option sec:authorize="hasAnyRole('ROLE_USER')" value = "REVIEW">장소 리뷰</option>
                         <option sec:authorize="hasAnyRole('ROLE_ADMIN')" value = "PLACE_NOTICE">장소 공지사항</option>
+                        <option sec:authorize="hasAnyRole('ROLE_USER')" value = "REVIEW">장소 리뷰</option>
                     </select>
                     <input id = "email" name="email"
                            class="title bg-gray-300 w-1/2 border border-gray-300 p-2 mb-4  outline-none rounded"
-                           spellcheck="false" placeholder="Email" th:value= "${#authentication.principal}"
+                           spellcheck="false" placeholder="Email" th:value= "${post.email}"
                            type="text" readonly>
                     <div></div>
                     <input id = "title" name="title"
-                           class="title bg-gray-100 w-full border border-gray-300 p-2 mb-4  outline-none rounded"
-                           spellcheck="false" placeholder="Title"
+                           class="title bg-white-100 w-full border border-gray-300 p-2 mb-4  outline-none rounded"
+                           spellcheck="false" placeholder="Title" th:value="${post.title}"
                            type="text" required>
                 <div class="bg-gray-50 border border-b-0 border-gray-300 top-0 left-0 right-0 block rounded-t-md">
                     <button type="button" class="py-2 px-4 inline-block text-gray-400 font-semibold"
@@ -146,7 +146,7 @@
             </button>
             <button id="newPost" type="submit"
                     class="btn border border-indigo-500 p-1 px-4 font-semibold cursor-pointer text-gray-200 ml-2 bg-indigo-500">
-                Post
+                Submit
             </button>
         </div>
 
@@ -157,7 +157,10 @@
     <script src="https://cdn.jsdelivr.net/npm/codemirror@5.59.2/mode/markdown/markdown.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/turndown@7.0.0/dist/turndown.min.js"></script>
     <script src="https://unpkg.com/marked@0.3.6/lib/marked.js"></script>
-    <script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        let post = /*[[ ${post.post} ]]*/;
+        /*]]*/
         function markdown() {
             return {
                 height: '500px',
@@ -174,8 +177,7 @@
                         headingStyle: 'atx',
                         codeBlockStyle: 'fenced'
                     });
-                    this.content = turndownService.turndown('');
-
+                    this.content = turndownService.turndown(post);
                 }
             }
         }

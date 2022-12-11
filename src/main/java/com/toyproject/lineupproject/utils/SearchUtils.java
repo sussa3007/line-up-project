@@ -105,10 +105,10 @@ public class SearchUtils {
         if (!statusKeyEncode.isEmpty())
             stringBuilder.append("&").append("statusKey").append("=").append(statusKeyEncode);
 
-        if (!statusKeyEncode.isEmpty())
+        if (!titleEncode.isEmpty())
             stringBuilder.append("&").append("title").append("=").append(titleEncode);
 
-        if (!statusKeyEncode.isEmpty())
+        if (!postEncode.isEmpty())
             stringBuilder.append("&").append("post").append("=").append(postEncode);
 
         if (!pageEncode.isEmpty())
@@ -169,8 +169,9 @@ public class SearchUtils {
     ) {
         String forPage = getRequestUriParam(request);
         Map<String, Object> map = getPostPageMap(forPage, findDtos);
-        map.put("currentPage", "/posts/searchNotice");
         map.put("statusKey", "NOTICE");
+        map.put("currentPage", "/posts/searchNotice");
+        map.put("status", "NOTICE");
         return map;
     }
     public Map<String, Object> getSearchPlaceNoticePageInfo(
@@ -179,8 +180,9 @@ public class SearchUtils {
     ) {
         String forPage = getRequestUriParam(request);
         Map<String, Object> map = getPostPageMap(forPage, findDtos);
-        map.put("currentPage", "/posts/searchNotice");
+        map.put("currentPage", "/posts/searchPlaceNotice");
         map.put("statusKey", "PLACE_NOTICE");
+        map.put("status", "PLACE_NOTICE");
         return map;
     }
     public Map<String, Object> getSearchReviewPageInfo(
@@ -199,7 +201,10 @@ public class SearchUtils {
     ) {
         String forPage = getRequestUriParam(request);
         Map<String, Object> map = getPostPageMap(forPage, findDtos);
-        map.put("currentPage", "/posts/searchUserPost");
+        map.put("currentPage", "/posts/searchAdminPlaceNotice");
+        map.put("statusKey", "PLACE_NOTICE");
+        map.put("status", "PLACE_NOTICE");
+
         return map;
     }
 
@@ -368,7 +373,7 @@ public class SearchUtils {
         return map;
     }
 
-    private static Map<String, Object> getPageMap(String forPage, Page findDtos) {
+    public static Map<String, Object> getPageMap(String forPage, Page findDtos) {
         int nowPage = findDtos.getPageable().getPageNumber() + 1;
         Map<String, Object> map = new HashMap<>();
         int startPage = nowPage-1;

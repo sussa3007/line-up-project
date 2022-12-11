@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <title>Alert</title>
+</head>
+<body>
+<script th:inline="javascript">
+    window.onload = function(){
+        var nextPage = [[@{__${nextPage}__}]], msg = [[${msg}]],prevPage = [[@{__${prevPage}__}]];
+        if(nextPage) {
+            if(confirm(msg)){
+                //확인 버튼 클릭 true
+                location.href = nextPage;
+            }else{
+                //취소 버튼 클릭 false
+                location.href = prevPage;
+            }
+        } else {
+        }
+
+    };
+    $(this).ready(function(){
+        var nextPage = [[@{__${nextPage}__}]], msg = [[${msg}]],prevPage = [[@{__${prevPage}__}]];
+        if(nextPage) {
+            if(confirm(msg)){
+                //확인 버튼 클릭 true
+                location.href = nextPage;
+            }else{
+                //취소 버튼 클릭 false
+                location.href = prevPage;
+            }
+        } else {
+        }
+    });
+
+</script>
+</body>
+</html>

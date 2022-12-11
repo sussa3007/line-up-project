@@ -51,6 +51,10 @@ public class AdminController {
     private final SearchUtils searchUtils;
 
 
+    @GetMapping("/management")
+    public String adminManagementpage() {
+        return "admin/management";
+    }
     @GetMapping("/searchPlace")
     @PreAuthorize("hasAnyRole('ROLE_SUPERADMIN')")
     public String searchSuperAdminPlace(

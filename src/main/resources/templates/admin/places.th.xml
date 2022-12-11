@@ -7,7 +7,8 @@
                 <attr sel="td.placeName" th:text="${place.placeName}" />
                 <attr sel="td.address" th:text="${place.address}" />
                 <attr sel="td.phoneNumber" th:text="${place.phoneNumber}" />
-                <attr sel="td/a" th:text="'상세'" th:href="@{'/admin/places/' + ${place.id}}" />
+                <attr sel="td/a.notice" th:text="'공지사항 등록'" th:href="@{'/posts/' + ${place.id}+'/new'}" />
+                <attr sel="td/a.detail" th:text="'상세'" th:href="@{'/admin/places/' + ${place.id}}" />
             </attr>
         </attr>
     </attr>

@@ -43,5 +43,15 @@ public record PostRequest(
                 Post.Status.valueOf(status)
         );
     }
+    public Post dtoToPost(String post) {
+        return Post.of(
+                null,
+                null,
+                this.title,
+                post,
+                this.password,
+                Post.Status.valueOf(status)
+        );
+    }
 
 }
