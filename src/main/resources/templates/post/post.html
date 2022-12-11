@@ -1,0 +1,182 @@
+<!-- component -->
+<!-- This is an example component -->
+    <!DOCTYPE html>
+    <html lang="ko"
+          xmlns:th="http://www.thymeleaf.org"
+          xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+    <head>
+        <meta name="_csrf" th:content="${_csrf?.token}">
+        <meta name="_csrf_header" th:content="${_csrf?.headerName}">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Post</title>
+        <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"/>
+        <link rel="stylesheet" href="https://unpkg.com/@tailwindcss/typography@0.2.x/dist/typography.min.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.59.2/lib/codemirror.min.css"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+              rel="stylesheet">
+        <style>
+
+            .cursive {
+                font-family: 'Nanum Pen Script', cursive;
+            }
+
+            [x-cloak] {
+                display: none;
+            }
+
+            .CodeMirror-focused {
+                border-radius: .375rem;
+                outline: 2px solid transparent;
+                outline-offset: 2px;
+                --tw-ring-opacity: 0.5;
+                --tw-ring-color: rgba(199, 210, 254, var(--tw-ring-opacity));
+                --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+                --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+                box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+            }
+
+            .CodeMirror {
+                padding: 0.75rem;
+                font-family: inherit;
+                font-size: inherit;
+                border-bottom-left-radius: .375rem;
+                border-bottom-right-radius: .375rem;
+                --tw-border-opacity: 1;
+                border: 1px solid rgba(209, 213, 219, var(--tw-border-opacity));
+            }
+
+            .CodeMirror.CodeMirror-focused {
+                --tw-border-opacity: 1;
+                border-color: rgba(165, 180, 252, var(--tw-border-opacity));
+            }
+
+            .cm-s-default .cm-header,
+            .cm-s-default .cm-variable-2 {
+                color: rgb(31, 41, 55);
+            }
+        </style>
+    </head>
+    <body class="bg-gray-50 antialiased">
+    <header th:insert="fragments.html::nav"></header>
+
+    <div th:text="${post.status}" class="heading text-center font-bold text-2xl m-5 text-gray-800">Post</div>
+    <div class="px-4 max-w-xl mx-auto min-h-screen py-4">
+        <div >
+            <form id="postForm">
+                <label for="status">
+                </label>
+                <input id="status" name="status"
+                       class="bg-white-300 w-1/3 border border-gray-300 p-2 mb-4  outline-none rounded"
+                       placeholder="Status" th:value="${post.status}"
+                       type="text" readonly>
+                <label style="margin-left: 0.5em; margin-right: 0.3em"
+                       for="nickName" class="text-gray-700 text-sm font-bold mb-2">
+                    Written by
+                </label>
+                <input id="nickName" name="nickName"
+                       class="bg-gray-300 w-1/3 border border-gray-300 p-2 mb-4  outline-none rounded"
+                       placeholder="NickName" th:value="${post.nickName}"
+                       type="text" readonly>
+                <input id="title" name="title"
+                       class="bg-gray-100 w-full border border-gray-300 p-2 mb-4  outline-none rounded"
+                       placeholder="Title" th:value="${post.title}"
+                       type="text" readonly>
+                <div class="w-full">
+                    <div style="word-break: break-all"
+                            id="post"
+                            class="prose prose-indigo w-full rounded shadow-sm border border-gray-300 p-5 bg-white "
+                            name="post"
+                            th:utext ="${post.post}"
+                            readonly
+                    >
+                        <h1 id="sample-markdown">Sample Markdown</h1>
+                        <p>This is some basic, sample markdown.aghslkdfhklashdglkahsl 줄바꿈 테스트kdqklsadhflk;ahslaskdflhashdklfhalksdhfklhskldhflkshdklfhalksdhfklaskldhfklasdk;gadsklfalkdshflkahsdlkfsfhasdfagwafasdavsdvlak'sdhlk</p>
+                        <h2 id="second-heading">Second Heading</h2>
+                        <ul>
+                            <li>Unordered lists, and:
+                                <ol>
+                                    <li>One</li>
+                                    <li>Two</li>
+                                    <li>Three</li>
+                                </ol>
+                            </li>
+                            <li>More</li>
+                        </ul>
+                        <blockquote>
+                            <p>Blockquote</p>
+                        </blockquote>
+                        <p>And <strong>bold</strong>, <em>italics</em>, and even <em>italics and later
+                            <strong>bold</strong></em>. Even
+                            <del>strikethrough</del>
+                            . <a href="https://markdowntohtml.com">A link</a> to somewhere.
+                        </p>
+                        <p>And code highlighting:</p>
+                        <pre><code class="lang-js"><span class="hljs-keyword">var</span> foo = <span
+                                class="hljs-string">'bar'</span>;
+
+                            <span class="hljs-function"><span class="hljs-keyword">function</span> <span
+                                    class="hljs-title">baz</span><span class="hljs-params">(s)</span> </span>{
+                            <span class="hljs-keyword">return</span> foo + <span class="hljs-string">':'</span> + s;
+                            }
+                            </code></pre>
+                        <p>Or inline code like <code>var foo = &#39;bar&#39;;</code>.</p>
+                        <p>Or an image of bears</p>
+                        <p><img src="http://placebear.com/200/200" alt="bears"></p>
+                        <p>The end ...</p>
+                    </div>
+                </div>
+                <label
+                        for="createAt" class="text-gray-700 text-sm font-bold mb-2">
+                    CreateAt
+                </label>
+                <input id = "createAt" name="createAt" style="margin-top: 0.5em; margin-left: 0.3em"
+                       class="w-4/12 bg-gray-100  border border-gray-300 p-2  outline-none rounded"
+                       placeholder="CreateAt" th:value="${post.createAt}"
+                       type="text" readonly>
+                <label style="margin-left: 0.5em"
+                        for="modifiedAt" class="text-gray-700 text-sm font-bold mb-2">
+                    ModifiedAt
+                </label>
+                <input id = "modifiedAt" name="modifiedAt" style="margin-top: 0.5em; margin-left: 0.3em"
+                       class="w-4/12 bg-gray-100  border border-gray-300 p-2  outline-none rounded"
+                       placeholder="ModifiedAt" th:value="${post.modifiedAt}"
+                       type="text" readonly>
+                <input type="hidden" id="csrf">
+                <div class="buttons flex" style="margin-top: 0.5em">
+                    <button id="back" type="button"
+                            class="btn rounded border border-gray-300 p-1 px-4 font-semibold cursor-pointer text-gray-500 ml-auto">
+                        목록
+                    </button>
+                    <button sec:authorize="hasAnyRole('ROLE_ADMIN')"
+                            th:if ="${#authentication.principal eq post.email || #strings.contains(#authentication.authorities,'ROLE_SUPERADMIN') }"
+                            id="modifyPost" type="button"
+                            class="btn rounded border border-indigo-500 p-1 px-4 font-semibold cursor-pointer text-gray-200 ml-2 bg-indigo-500">
+                        수정
+                    </button>
+                    <button sec:authorize="hasAnyRole('ROLE_ADMIN')"
+                            th:if ="${#authentication.principal eq post.email || #strings.contains(#authentication.authorities,'ROLE_SUPERADMIN') }"
+                            id="deletePost" type="button"
+                            class="btn rounded border border-red-500 p-1 px-4 font-semibold cursor-pointer text-gray-200 ml-2 bg-red-500">
+                        삭제
+                    </button>
+                </div>
+            </form>
+        </div>
+
+
+
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.0/dist/alpine.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.59.2/lib/codemirror.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.59.2/mode/markdown/markdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/turndown@7.0.0/dist/turndown.min.js"></script>
+    <script src="https://unpkg.com/marked@0.3.6/lib/marked.js"></script>
+
+    </body>
+    </html>
+</div>

@@ -2,6 +2,7 @@
 
 insert into `place` (`place_type`, `admin_email`,`place_name`, `address`, `phone_number`, `capacity`, `memo`)
 values
+    ('COMMON', 'super@test.com','test', 'aaadfga', '010-1111-2222', 1, 'test'),
     ('SPORTS', 'admin@gmail.com','스포츠 센터', '경기도 성남시 판교로 999', '010-9999-0000', 20, '스포츠 센터 예약 가능'),
     ('RESTAURANT', 'admin@gmail.com','스프링 식당', '서울시 강남구 가나대로 123', '010-1234-5678', 10, '테스트 메모'),
     ('SPORTS', 'admin@gmail.com','스프링 스키장', '하늘 천국 천국로 555', '010-1004-1004', 9000, null),
@@ -104,9 +105,88 @@ values
 
 ;
 
-insert into `post`(`title`, `post`, `admin_id`, `status`, `password`)
+insert into `post`(`title`, `post`,`admin_id`, `status`, `password`,`place_id`)
 values
-    ('[공지사항] 안녕하세요 반갑습니다!!!!!ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ', 'ㅁㅇ', 11, 'NOTICE', '1234')
+    ('[공지사항] 안녕하세요 반갑습니다!!!!!', '<h1>Sample Markdown</h1>
+<p>Hello!
+공지사항 테스트 입니다!!</p>
+<p>This is some basic, sample markdown.aghslkdfhklashdglkahsl 줄바꿈 테스트kdqklsadhflk;ahslaskdflhashdklfhalksdhfklhskldhflkshdklfhalksdhfklaskldhfklasdk;gadsklfalkdshflkahsdlkfsfhasdfagwafasdavsdvlak"sdhlk</p>
+<ul>
+<li>공지사항</li>
+<li>장소 공지사항</li>
+</ul>
+<h2>Second Heading</h2>
+<ul>
+<li>Unordered lists,
+<ol>
+<li>One</li>
+<li>Two</li>
+<li>Three</li>
+</ol>
+</li>
+<li>More</li>
+</ul>
+<blockquote>
+<p>Blockquote</p>
+</blockquote>
+<p>And <strong>bold</strong>, <em>italics</em>, and even <em>italics and later <strong>bold</strong></em>. Even strikethrough. <a href="https://markdowntohtml.com">A link</a> to somewhere.</p>
+<ul>
+<li>코드블럭</li>
+</ul>
+<pre><code>var foo = hello;
+
+                            function baz(s) {
+                            return foo + &quot;:&quot; + s;
+                            }
+
+</code></pre>
+<p>Or inline code like <code>var foo = hello;</code>.</p>
+<ul>
+<li>이미지 셈플</li>
+</ul>
+<p><img src="https://user-images.githubusercontent.com/110886399/206844039-58b24212-abfb-42f5-b570-70c5c311898c.png" alt="image" /></p>
+<p>The end ...</p>
+', 11, 'NOTICE', '1111',1),
+    ('[공지사항] 안녕하세요 반갑습니다!!!!!ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ', '<h1>Sample Markdown</h1>
+<p>Hello!
+공지사항 테스트 입니다!!</p>
+<p>This is some basic, sample markdown.aghslkdfhklashdglkahsl 줄바꿈 테스트kdqklsadhflk;ahslaskdflhashdklfhalksdhfklhskldhflkshdklfhalksdhfklaskldhfklasdk;gadsklfalkdshflkahsdlkfsfhasdfagwafasdavsdvlak"sdhlk</p>
+<ul>
+<li>공지사항</li>
+<li>장소 공지사항</li>
+</ul>
+<h2>Second Heading</h2>
+<ul>
+<li>Unordered lists,
+<ol>
+<li>One</li>
+<li>Two</li>
+<li>Three</li>
+</ol>
+</li>
+<li>More</li>
+</ul>
+<blockquote>
+<p>Blockquote</p>
+</blockquote>
+<p>And <strong>bold</strong>, <em>italics</em>, and even <em>italics and later <strong>bold</strong></em>. Even strikethrough. <a href="https://markdowntohtml.com">A link</a> to somewhere.</p>
+<ul>
+<li>코드블럭</li>
+</ul>
+<pre><code>var foo = hello;
+
+                            function baz(s) {
+                            return foo + &quot;:&quot; + s;
+                            }
+
+</code></pre>
+<p>Or inline code like <code>var foo = hello;</code>.</p>
+<ul>
+<li>이미지 셈플</li>
+</ul>
+<p><img src="https://user-images.githubusercontent.com/110886399/206844039-58b24212-abfb-42f5-b570-70c5c311898c.png" alt="image" /></p>
+<p>The end ...</p>
+', 2, 'PLACE_NOTICE', '1111',2)
 ;
 
 insert into `admin_roles`(`admin_id`, `roles`)
@@ -130,17 +210,18 @@ values
 
 insert into `admin_place_map` (`admin_id`, `place_id`)
 values
-    (2, 1),
+    (11, 1),
     (2, 2),
     (2, 3),
     (2, 4),
     (2, 5),
     (2, 6),
-    (3, 7),
+    (2, 7),
     (3, 8),
     (3, 9),
     (3, 10),
     (3, 11),
-    (3, 12)
+    (3, 12),
+    (3, 13)
 
 ;

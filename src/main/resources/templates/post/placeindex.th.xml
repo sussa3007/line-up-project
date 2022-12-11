@@ -5,7 +5,7 @@
     <attr sel="#postTable">
         <attr sel="tbody">
             <attr sel="tr[0]" th:each="post : ${posts}">
-                <attr sel="td.id" th:text="${post.status}" />
+                <attr sel="td.id" th:text="${post.placeName}" />
                 <attr sel="td.nickName" th:text="${post.nickName}" />
                 <attr sel="td.createAt" th:text="${#temporals.format(post.createAt, 'M/d (ha)', 'US')}" />
             </attr>
