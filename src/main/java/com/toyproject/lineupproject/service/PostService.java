@@ -11,12 +11,15 @@ import com.toyproject.lineupproject.repository.PlaceRepository;
 import com.toyproject.lineupproject.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -72,18 +75,22 @@ public class PostService {
             Map<String ,Object> param,
             Pageable pageable
     ) {
-        Page<PostResponse> postDtos = getPostResponses(param, pageable);
-        if (!postDtos.isEmpty()) {
-            PostResponse response =
-                    postDtos.stream()
-                            .filter(p -> p.email().equals(email))
-                            .findFirst().orElse(null);
-            if (response == null) {
-                throw new GeneralException(ErrorCode.POST_ACCESS_DENIED);
+        if (param.get("role") != null) {
+            param.remove("role");
+            return getPostResponses(param, pageable);
+        } else {
+            Page<PostResponse> postDtos = getPostResponses(param, pageable);
+            if (!postDtos.isEmpty()) {
+                PostResponse response =
+                        postDtos.stream()
+                                .filter(p -> p.email().equals(email))
+                                .findFirst().orElse(null);
+                if (response == null) {
+                    throw new GeneralException(ErrorCode.POST_ACCESS_DENIED);
+                }
             }
+            return postDtos;
         }
-
-        return postDtos;
     }
     @Transactional(readOnly = true)
     public Page<PostResponse> getPostAllByParamsAndPlace(
@@ -95,6 +102,22 @@ public class PostService {
         return postDtos;
     }
 
+    @Transactional(readOnly = true)
+    public Page<PostResponse> getPostByPlace(
+            Place place,
+            Pageable pageable
+    ) {
+        Page<Post> postPage = postRepository.findAllByPlace(pageable, place);
+        List<PostResponse> posts = postPage.getContent().stream()
+                .map(PostResponse::of)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(
+                posts,
+                postPage.getPageable(),
+                postPage.getTotalElements()
+        );
+    }
 
     public void deleteById(Long postId) {
         Post post = verifiedPostById(postId);

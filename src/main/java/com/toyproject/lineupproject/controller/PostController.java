@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -38,9 +37,6 @@ import java.util.Map;
 @Controller
 public class PostController {
 
-    @Value("${ADMIN_EMAIL}")
-    private String adminEmail;
-
     private final AdminService adminService;
 
     private final SearchUtils searchUtils;
@@ -49,13 +45,6 @@ public class PostController {
 
     private final PlaceService placeService;
 
-    @GetMapping("/searchPost")
-    public String searchPosts(
-            @RequestParam Map<String, Object> param
-    ) {
-        String uri = searchUtils.getSearchUri(param);
-        return "redirect:/posts" + (uri == null ? "" : uri);
-    }
 
     @GetMapping("/searchReview")
     public String searchReview(
@@ -87,13 +76,60 @@ public class PostController {
 
     @GetMapping("/searchAdminPlaceNotice")
     public String searchAdminPlacePosts(
-            @RequestParam HashMap<String, Object> param,
-            Principal principal
+            @RequestParam HashMap<String, Object> param
     ) throws UnsupportedEncodingException {
-        param.put("email", principal.getName());
+        param.put("statusKey", "PLACE_NOTICE");
         String uri = searchUtils.getSearchUri(param);
 
         return "redirect:/posts/place/admin" + (uri == null ? "" : uri);
+    }
+
+    @GetMapping("/searchMessage")
+    public String searchMessage(
+            @RequestParam HashMap<String, Object> param
+    ) {
+
+        param.put("statusKey", "MESSAGE");
+        String uri = searchUtils.getSearchUri(param);
+        return "redirect:/posts/message" + (uri == null ? "" : uri);
+    }
+
+    @GetMapping("/message")
+    public ModelAndView getMessage(
+            @RequestParam HashMap<String, Object> param,
+            Principal principal,
+            @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
+            Pageable pageable,
+            HttpServletRequest request
+    ) {
+        Admin findUser = adminService.findUserByEmail(principal.getName());
+        if (findUser.getRoles().contains("SUPERADMIN")) {
+            param.put("role", findUser.getRoles());
+        } else {
+            param.put("email", principal.getName());
+        }
+        Page<PostResponse> findDtos =
+                postService.getPostAllByParamsAndAdmin(principal.getName(), param, pageable);
+        Map<String, Object> adminPostPageInfo =
+                searchUtils.getSearchMessagePageInfo(request, findDtos);
+
+        return new ModelAndView("post/messageindex", adminPostPageInfo);
+    }
+
+    @GetMapping("/{adminId}/message")
+    public ModelAndView newMessage(
+            @RequestHeader("referer") String referer,
+            @PathVariable("adminId") Long adminId
+    ) {
+
+        return new ModelAndView(
+                "post/newform",
+                Map.of(
+                        "adminId", adminId,
+                        "postStatus", Post.Status.values(),
+                        "backUrl", referer
+                )
+        );
     }
 
     @GetMapping("/new")
@@ -109,6 +145,7 @@ public class PostController {
                 )
         );
     }
+
 
     @PostMapping("/new")
     public ModelAndView createPost(
@@ -131,28 +168,28 @@ public class PostController {
                 )
         );
     }
-
-    @GetMapping("/{postId}")
-    public ModelAndView getPost(
-            @PathVariable("postId") Long postId
+    @PostMapping("/new/{adminId}/message")
+    public ModelAndView createMessage(
+            @Valid @ModelAttribute PostRequest request,
+            @PathVariable("adminId") Long adminId
     ) {
-        PostResponse post = postService.getPost(postId);
-        String backUrl = "";
-        if (post.status().equals(Post.Status.NOTICE)) {
-            backUrl = "/searchNotice";
-        } else if (post.status().equals(Post.Status.PLACE_NOTICE)) {
-            backUrl = "/searchPlaceNotice";
-        }
+
+        Parser parser = Parser.builder().build();
+        Node parse = parser.parse(request.post());
+        HtmlRenderer renderer = HtmlRenderer.builder().build();
+        String result = renderer.render(parse);
+
+        Admin findUser = adminService.findUserById(adminId);
+        Post post = request.dtoToPost(result);
+        PostResponse response = postService.createPost(post, findUser, 1L);
         return new ModelAndView(
-                "post/post",
+                "alert",
                 Map.of(
-                        "post", post,
-                        "backUrl", "/posts" + backUrl
+                        "msg", "정상적으로 작성 되었습니다.",
+                        "nextPage", "/posts/" + response.id()
                 )
         );
-
     }
-
     @GetMapping("/{placeId}/new")
     public ModelAndView newPlacePost(
             @RequestHeader("referer") String referer,
@@ -168,7 +205,6 @@ public class PostController {
                 )
         );
     }
-
     @PostMapping("/{placeId}/new")
     public ModelAndView createPostAndPlace(
             @PathVariable("placeId") Long placeId,
@@ -186,28 +222,48 @@ public class PostController {
         );
     }
 
+    @GetMapping("/{postId}")
+    public ModelAndView getPost(
+            @PathVariable("postId") Long postId,
+            @RequestHeader("referer") String referer
+    ) {
+        PostResponse post = postService.getPost(postId);
+        String backUrl = getBackUrl(post);
+        if (backUrl.equals("")) {
+            backUrl = referer;
+        }
+        return new ModelAndView(
+                "post/post",
+                Map.of(
+                        "post", post,
+                        "backUrl", backUrl
+                )
+        );
+
+    }
+
+
+
+
+
+
+
     @GetMapping("/{postId}/modify")
     public ModelAndView modifyPost(
             @PathVariable("postId") Long postId,
             Principal principal
     ) {
         PostResponse post = postService.getPost(postId);
-        if (principal.getName().equals(post.email()) || principal.getName().equals(adminEmail)) {
-
-        } else {
+        Admin findUser = adminService.findUserByEmail(principal.getName());
+        if (!(principal.getName().equals(post.email()) || findUser.getRoles().contains("SUPERADMIN"))) {
             throw new GeneralException(ErrorCode.ACCESS_DENIED);
         }
-        String backUrl = "";
-        if (post.status().equals(Post.Status.NOTICE)) {
-            backUrl = "/searchNotice";
-        } else if (post.status().equals(Post.Status.PLACE_NOTICE)) {
-            backUrl = "/searchAdminPlaceNotice";
-        }
+        String backUrl = getBackUrl(post);
         return new ModelAndView(
                 "post/modifyform",
                 Map.of(
                         "post", post,
-                        "backUrl", "/posts" + backUrl
+                        "backUrl", backUrl
                 )
         );
 
@@ -227,12 +283,12 @@ public class PostController {
 
         Post post = request.dtoToPost(result);
         post.setId(postId);
-        if (principal.getName().equals(request.email()) || principal.getName().equals(adminEmail)) {
+        Admin findUser = adminService.findUserByEmail(principal.getName());
+        if (findUser.getEmail().equals(request.email()) || findUser.getRoles().contains("SUPERADMIN")) {
             PostResponse response = postService.updatePost(post);
         } else {
             throw new GeneralException(ErrorCode.POST_ACCESS_DENIED);
         }
-
 
         return new ModelAndView(
                 "alert",
@@ -251,6 +307,7 @@ public class PostController {
             Pageable pageable,
             HttpServletRequest request
     ) {
+        param.put("email", principal.getName());
         Page<PostResponse> findDtos =
                 postService.getPostAllByParamsAndAdmin(principal.getName(), param, pageable);
         Map<String, Object> adminPostPageInfo =
@@ -308,7 +365,8 @@ public class PostController {
             Principal principal
     ) {
         PostResponse post = postService.getPost(postId);
-        if (principal.getName().equals(post.email()) || principal.getName().equals(adminEmail)) {
+        Admin findUser = adminService.findUserByEmail(principal.getName());
+        if (findUser.getEmail().equals(post.email()) || findUser.getRoles().contains("SUPERADMIN")) {
             postService.deleteById(postId);
         } else {
             throw new GeneralException(ErrorCode.POST_ACCESS_DENIED);
@@ -321,5 +379,17 @@ public class PostController {
                         "nextPage", "/posts/searchNotice"
                 )
         );
+    }
+
+    private static String getBackUrl(PostResponse post) {
+        String backUrl = "";
+        if (post.status().equals(Post.Status.NOTICE)) {
+            backUrl = "/posts/searchNotice";
+        } else if (post.status().equals(Post.Status.PLACE_NOTICE)) {
+            backUrl = "/posts/searchPlaceNotice";
+        } else if (post.status().equals(Post.Status.MESSAGE)) {
+            backUrl = "/posts/searchMessage";
+        }
+        return backUrl;
     }
 }
