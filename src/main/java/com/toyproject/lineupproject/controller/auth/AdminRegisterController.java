@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,8 +37,45 @@ public class AdminRegisterController {
     private final SearchUtils searchUtils;
 
     @GetMapping("/sign-up")
-    public String signUp() {
-        return "auth/sign-up";
+    public ModelAndView signUp(
+            @RequestParam(value = "email", required = false ,defaultValue = "") String email,
+            @RequestParam(value = "check", required = false ,defaultValue = "false") Boolean check
+    ) {
+
+        return new ModelAndView(
+                "auth/sign-up",
+                Map.of(
+                        "email", email,
+                        "check", check,
+                        "backUrl", "/"
+                )
+        );
+    }
+
+    @GetMapping("/validationEmail")
+    public ModelAndView validateEmail(
+            @RequestParam("email") String email
+    ) {
+        boolean val = adminService.verifyUserByEmail(email);
+        if (val) {
+            return new ModelAndView(
+                    "alert",
+                    Map.of(
+                            "msg", "가입 가능한 이메일 입니다!.",
+                            "nextPage", "/sign-up?email="+email+"&check=" + val,
+                            "backUrl", "/"
+                    )
+            );
+        } else {
+            return new ModelAndView(
+                    "alert",
+                    Map.of(
+                            "msg", "이미 존재하는 이메일 입니다!.",
+                            "nextPage", "/sign-up",
+                            "backUrl", "/"
+                    )
+            );
+        }
     }
 
     @PostMapping("/new-signup")
