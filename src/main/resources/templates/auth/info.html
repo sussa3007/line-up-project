@@ -9,7 +9,7 @@
 <body class="bg-gray-200">
 <header th:insert="fragments.html::nav"></header>
 
-<div class="py-32 bg-gray-200 flex justify-center">
+<div class="py-14 bg-gray-200 flex justify-center">
     <div class="w-full max-w-md">
         <form id="modifyForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
@@ -33,7 +33,7 @@
                        required>
             </div>
 
-            <div class="mb-6" th:if = "${user.loginBase.equals('Basic Login')}" th:type = "hidden">
+            <div class="mb-6" th:if="${user.loginBase.equals('Basic Login')}" th:type="hidden">
                 <label for="password" class="block text-gray-700 text-sm font-bold mb-2">
                     Password
                 </label>
@@ -99,7 +99,7 @@
                 <td class="request px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">테스트 요청</td>
                 <td class="requestStatus px-6 py-4 whitespace-nowrap">
                     <span th:if="${request.status.equals('OPEN')}" th:text="${request.status}"
-                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                          class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                         test1</span>
                     <span th:if="${request.status.equals('INPROGRESS')}" th:text="${request.status}"
                           class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
@@ -117,8 +117,7 @@
         <header th:insert="pagebar.html::nav"></header>
     </div>
 
+
 </div>
-
-
 </body>
 </html>

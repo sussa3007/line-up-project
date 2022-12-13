@@ -142,25 +142,23 @@ public class SearchUtils {
         return map;
     }
 
-    public Map<String, Object> getPostPageInfo(
+    public Map<String, Object> getPlaceDetailPageInfo(
             HttpServletRequest request,
-            Page<PostResponse> findDtos,
-            AdminResponse user
+            Page<PostResponse> findDtos
     ) {
         String forPage = getRequestUriParam(request);
-        Map<String, Object> map = getPostPageMap(forPage, findDtos);
-        map.put("adminOperationStatus", AdminOperationStatus.MODIFY);
-        map.put("user", user);
-        map.put("backUrl", "/");
-        return map;
+
+        return getPostPageMap(forPage, findDtos);
     }
-    public Map<String, Object> getSearchPostPageInfo(
+    public Map<String, Object> getSearchMessagePageInfo(
             HttpServletRequest request,
             Page<PostResponse> findDtos
     ) {
         String forPage = getRequestUriParam(request);
         Map<String, Object> map = getPostPageMap(forPage, findDtos);
-        map.put("currentPage", "/posts/searchPost");
+        map.put("currentPage", "/posts/searchMessage");
+        map.put("statusKey", "MESSAGE");
+        map.put("status", "MESSAGE");
         return map;
     }
     public Map<String, Object> getSearchNoticePageInfo(

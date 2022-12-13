@@ -176,6 +176,7 @@ public class Post {
 
         NOTICE,
         REVIEW,
+        MESSAGE,
         PLACE_NOTICE;
 
     }

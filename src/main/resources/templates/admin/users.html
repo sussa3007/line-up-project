@@ -43,6 +43,8 @@
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     CreateAt</th>
                 <th scope="col"
+                    class="relative px-6 py-3"><span class="sr-only"> 메세지 </span></th>
+                <th scope="col"
                     class="relative px-6 py-3"><span class="sr-only"> 수정 </span></th>
             </tr>
             </thead>
@@ -66,7 +68,10 @@
                 <td class="loginbase px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">SOCIAL LOGIN</td>
                 <td class="createAt px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">2021-01-01 10:00:00</td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <a class="text-indigo-600 hover:text-indigo-900">수정</a>
+                    <a th:text="'메세지'" th:href="@{'/posts/' + ${user.id} + '/message'}" class="text-indigo-600 hover:text-indigo-900">메세지</a>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <a th:text="'수정'" th:href="@{'/admin/user/' + ${user.id}}" class="text-indigo-600 hover:text-indigo-900">수정</a>
                 </td>
             </tr>
             </tbody>

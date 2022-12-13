@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-  <title>Post</title>
+  <title>Message</title>
 </head>
 <body>
 <header th:insert="fragments.html::nav"></header>
@@ -22,50 +22,54 @@
     <span th:if = "${status.equals('MESSAGE')}" th:text = "'관리자 메세지'"
           id="postTitle">This is Post page.</span>
   </h2>
-    <header th:insert="searchbar.html::nav"></header>
+    <header sec:authorize="hasAnyRole('ROLE_SUPERADMIN')" th:insert="searchbar.html::nav"></header>
   <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
     <table id="postTable" class="min-w-full divide-y divide-gray-200">
       <thead class="bg-gray-50">
       <tr>
         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">title</th>
-        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Written By</th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">From</th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">To</th>
         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CreateAt</th>
         <th sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
-                scope="col" class="relative px-6 py-3"><span class="sr-only">삭제</span></th>
-        <th sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
             scope="col" class="relative px-6 py-3"><span class="sr-only">수정</span></th>
+        <th sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
+                scope="col" class="relative px-6 py-3"><span class="sr-only">삭제</span></th>
       </tr>
       </thead>
 
       <tbody class="bg-white divide-y divide-gray-200">
       <tr>
-        <td class="id px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900 text-red-400">11</td>
+        <td class="id px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900 text-red-400">MESSAGE</td>
         <td class="title px-6 py-4 w-3/5 whitespace-nowrap text-sm font-medium text-gray-900">
           <a th:text="${post.title}" th:href="@{'/posts/' + ${post.id}}"
-                  class="text-gray-900 hover:text-indigo-900">[공지사항] 안녕하세요!</a>
+                  class="text-gray-900 hover:text-indigo-900">관리자 메세지 입니다. 안녕하세요!</a>
         </td>
-        <td class="nickName px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900">test</td>
+        <td class="nickName px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900">관리자</td>
+        <td class="toUser px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900">test@test.com</td>
         <td class="createAt px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900">2021-01-01 09:00:00</td>
         <td sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
+            th:if ="${#strings.contains(#authentication.authorities,'ROLE_SUPERADMIN') }"
                 class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
           <a th:text="'수정'" th:href="@{'/posts/' + ${post.id} +'/modify'}"
                   class="text-indigo-600 hover:text-indigo-900">수정</a>
         </td>
         <td sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
+            th:if ="${#strings.contains(#authentication.authorities,'ROLE_SUPERADMIN') }"
             class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
           <a th:text="'삭제'" th:href="@{'/posts/' + ${post.id} +'/delete/check'}"
-                  class="text-indigo-600 hover:text-indigo-900">삭제</a>
+             class="text-indigo-600 hover:text-indigo-900">삭제</a>
         </td>
       </tr>
       </tbody>
     </table>
 
   </div>
-  <button id="newPost" type="submit" sec:authorize="hasAnyRole('ROLE_SUPERADMIN')"
-          class="btn rounded border border-indigo-500 p-1 px-4 font-semibold cursor-pointer text-gray-200 ml-2 bg-indigo-500">
-    New Post
-  </button>
+<!--  <button id="newPost" type="submit" sec:authorize="hasAnyRole('ROLE_ADMIN')"-->
+<!--          class="btn rounded border border-indigo-500 p-1 px-4 font-semibold cursor-pointer text-gray-200 ml-2 bg-indigo-500">-->
+<!--    New Post-->
+<!--  </button>-->
 </div>
 <header th:insert="pagebar.html::nav"></header>
 </body>

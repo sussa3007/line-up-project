@@ -5,6 +5,7 @@ import com.toyproject.lineupproject.constant.ErrorCode;
 import com.toyproject.lineupproject.domain.Place;
 import com.toyproject.lineupproject.dto.PlaceDto;
 import com.toyproject.lineupproject.dto.PlaceResponse;
+import com.toyproject.lineupproject.dto.PostResponse;
 import com.toyproject.lineupproject.exception.GeneralException;
 import com.toyproject.lineupproject.service.PlaceService;
 import com.toyproject.lineupproject.service.PostService;
@@ -63,14 +64,19 @@ public class PlaceController {
 
     @GetMapping("/{placeId}")
     public ModelAndView placeDetail(
-            @PathVariable Long placeId
+            @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
+            Pageable pageable,
+            @PathVariable Long placeId,
+            HttpServletRequest request
     ) {
-        HashMap<String , Object> map = new HashMap<>();
         Place placeEntity = placeService.getPlaceEntity(placeId);
         PlaceResponse place =
                 placeService.getPlace(placeId)
                         .map(PlaceResponse::from)
                         .orElseThrow(()-> new GeneralException(ErrorCode.NOT_FOUND));
+
+        Page<PostResponse> findDtos = postService.getPostByPlace(placeEntity, pageable);
+        Map<String, Object> map = searchUtils.getPlaceDetailPageInfo(request, findDtos);
         map.put("place", place);
 
         return new ModelAndView("place/detail",map);

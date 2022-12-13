@@ -100,11 +100,11 @@ Spring Boot
     - 공지사항 및 모든 게시글은 Markdown 문법으로 작성한다.
     - 마크다운 -> html 변환 라이브러리 추가 하여 변환된 마크다운 Text로 DB 저장.
     - 전체 공지사항과 장소별 공지사항 별도로 관리 가능.
+- SuperAdmin 사용자와 장소 관리자에게 메세지 전송 기능 추가.
   
 
 ## 추가 개발 예정
 
-- Super Admin 사용자와 장소 관리자에게 메세지 보내기 기능 추가 예정.
 - 사용자의 방문지 리뷰 작성 게시판 구현 예정.
 - 회원 가입과 정보 수정시 Email 알림 서비스 기능 추가 구현 예정.
 - 일반 회원의 이벤트 방문 예약 기능 구현 예정.
@@ -156,6 +156,47 @@ Spring Boot
 
 
 ![image](https://user-images.githubusercontent.com/110886399/206916479-7f3343ad-ac8a-4cc2-98ee-66c5ae8e6269.png)
+
+
+
+ </details>
+
+ </br>
+ <details>
+   <summary> 전체 / 장소 공지사항 조회 페이지 </summary>
+
+
+![image](https://user-images.githubusercontent.com/110886399/207236953-f54613fc-3729-4cc1-9556-9cc8e49d23f1.png)
+
+![image](https://user-images.githubusercontent.com/110886399/207236994-7088f1bb-6307-4489-9e87-62cc4d2b0281.png)
+
+
+ </details>
+
+
+
+ </br>
+ <details>
+   <summary> 일반 / 비회원 이벤트,장소 상세 조회 페이지 </summary>
+
+![image](https://user-images.githubusercontent.com/110886399/207237055-e1bd98f4-ffb3-42e6-b11b-e3d05eac596d.png)
+
+
+![image](https://user-images.githubusercontent.com/110886399/207237104-aad4dc33-245b-42b7-9147-5969a8f0341b.png)
+
+
+
+ </details>
+
+
+ </br>
+ <details>
+   <summary> 일반 회원/장소 관리자 메세지 조회 페이지 </summary>
+
+
+
+![image](https://user-images.githubusercontent.com/110886399/207237157-64d62152-8572-48e9-88c8-fbb2b051319c.png)
+
 
 
 
@@ -242,13 +283,14 @@ Spring Boot
  <details>
    <summary> Super 관리자 전체 회원 조회/수정 페이지 </summary>
 
-![image](https://user-images.githubusercontent.com/110886399/206916860-a8762956-f672-479f-8b33-636226e844c6.png)
+![image](https://user-images.githubusercontent.com/110886399/207237454-37098e3f-d697-4afa-822f-c8e888f1ccb8.png)
 
 
 ![image](https://user-images.githubusercontent.com/110886399/206916943-4f2b1897-3f52-4d6a-8511-5c269cea2698.png)
 
 
  </details>
+
 
  </br>
  <details>
@@ -275,6 +317,7 @@ Spring Boot
  </details>
 
 
+
  </br>
  <details>
    <summary> 공지사항 / 장소 공지사항 등록, 수정 페이지 </summary>
@@ -293,6 +336,17 @@ Spring Boot
 
 
 ![image](https://user-images.githubusercontent.com/110886399/206917273-a2687ae1-017f-4443-af53-068a3591e718.png)
+
+
+
+ </details>
+
+ </br>
+ <details>
+   <summary> Super Admin 메세지 관리 페이지 </summary>
+
+
+![image](https://user-images.githubusercontent.com/110886399/207237542-fb7bd162-386b-43e2-8644-1529b54a0da6.png)
 
 
 
