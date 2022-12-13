@@ -136,6 +136,9 @@ public class AdminService {
 
 
     // 검증 기능 로직
+    public boolean verifyUserByEmail(String email) {
+        return adminRepository.findByEmail(email).isEmpty();
+    }
 
     private void verifyUserInfo(Admin admin) {
         if(adminRepository.findByEmail(admin.getEmail()).isPresent()){

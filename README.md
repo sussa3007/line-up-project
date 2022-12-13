@@ -72,8 +72,8 @@ Spring Boot
 
 [(Commit 이력 확인)](https://github.com/sussa3007/line-up-project/commits/main)
 
-- 핵심 기능 개발 완료.
-- Auth : Srping Security + JWT 구현.
+- 핵심 기능 개발 완료.[~ 22/11/10]
+- Auth : Srping Security + JWT 구현.[~ 22/11/31]
     - 다수 어드민 추가되며 변경 사항
         - 어드민 별 장소와 이벤트 조회 기능 추가.
         - 어드민 가입 기능 추가.
@@ -86,21 +86,23 @@ Spring Boot
     - Auth 기능 개발 완료, 기능 추가 사항
         - Super Admin 모든 사용자 정보 조회시 사용자의 상태, 가입 경로 확인 기능 추가.
         - Super Admin의 사용자 정보 수정시 비밀번호 Pass 가능 하도록 수정 하였고, 사용자의 상태와 권한 변경 기능 추가.
-- Request 기능 추가
+- Request 기능 추가[~ 22/12/01]
     - 사용자의 요청 / 문의 사항 접수 기능 추가
     - 사용자의 관리자 권한, 회원 탈퇴, 클레임, 문의사항 접수 가능하도록 별도 Ticket 페이지 만들어 구현.
     - 기존 회원 정보만 볼수 있었던 마이 페이지에서 사용자가 접수한 요청사항을 리스트와 상세 내역을 볼수 있도록 구현.
     - Super Admin은 전체 사용자의 요청을 확인할 수 있으며, 요청에 대한 관리자 메세지도 보낼수 있도록 구현.
-- 검색 기능 추가
+- 검색 기능 추가[~ 22/12/04]
     - 각 페이지별 검색요소 모두 적용하여 다중 검색으로 검색할 수 있도록 구현.
     - 다중 검색은 QueryDSL 동적 쿼리 작성하여 구현.
-- 공지 사항 기능 추가
+- GA EC2 배포 완료[~ 22/12/07]
+- 공지 사항 기능 추가[~ 22/12/09]
     - 마크다운 에디터 기능 추가.
     - 쓰기 모드와 미리보기 모드를 적용하여 현재 작성한 마크다운 글이 정상적으로 작성 되었는지 확인 가능
     - 공지사항 및 모든 게시글은 Markdown 문법으로 작성한다.
     - 마크다운 -> html 변환 라이브러리 추가 하여 변환된 마크다운 Text로 DB 저장.
     - 전체 공지사항과 장소별 공지사항 별도로 관리 가능.
-- SuperAdmin 사용자와 장소 관리자에게 메세지 전송 기능 추가.
+- SuperAdmin 사용자와 장소 관리자에게 메세지 전송 기능 추가.[~ 22/12/10]
+- 회원 가입시 이메일 중복 확인 기능 추가.[~ 22/12/13]
   
 
 ## 추가 개발 예정
@@ -111,7 +113,6 @@ Spring Boot
     - 일반 회원의 마이 페이지에 방문 예약한 이벤트 리스트 확인 및 취소 기능 구현 예정.
 
 
-
 ## Refactoring
 
 
@@ -120,9 +121,6 @@ Spring Boot
 - 개발 예정 기능 구현 후 테스트 코드 수정. 현재 테스트 73/108 Pass.
     - 테스트 실패로 GitHub Actions Failed
     - 임시로 배포위해 테스트 코드 별도로 수정 중
-- 에러와 예외, 브라우저 알림창 호출시 중복 코드 리팩토링 필요.
-- 회원 가입 및 정보 수정시 View에서 Email Validation 기능 추가 필요.
-    - 타임리프 패턴 검증 적용 필요.
 
 
 ## View
@@ -131,10 +129,16 @@ Spring Boot
  <details>
    <summary> 로그인/회원가입 페이지 </summary>
 
-![로그인](https://user-images.githubusercontent.com/110886399/206916185-4bf5bada-5c84-422c-a6b8-2448548ccb53.png)
+![image](https://user-images.githubusercontent.com/110886399/207334427-e2b35413-f5d0-4874-aab9-575582d239bb.png)
+
+![image](https://user-images.githubusercontent.com/110886399/207341096-6faaa08f-d651-43f2-8ebc-8954841a66b7.png)
 
 
-![image](https://user-images.githubusercontent.com/110886399/206916219-e0a41241-40bb-4d92-a220-35999bb42220.png)
+![image](https://user-images.githubusercontent.com/110886399/207327832-343b9fce-c0a6-4fa7-ba40-af28fc7a5a2c.png)
+
+
+![image](https://user-images.githubusercontent.com/110886399/207341431-382b9815-6075-4c56-a8e0-573905bb8838.png)
+
 
  </details>
 

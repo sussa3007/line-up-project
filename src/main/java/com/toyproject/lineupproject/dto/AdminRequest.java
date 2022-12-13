@@ -14,7 +14,7 @@ import java.util.Arrays;
 public record AdminRequest(
         @NotBlank
         @Pattern(regexp = "^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$",
-                message = "Please enter a valid email.")
+                message = "정확한 이메일을 입력해 주세요.")
         String email,
 
         @NotBlank

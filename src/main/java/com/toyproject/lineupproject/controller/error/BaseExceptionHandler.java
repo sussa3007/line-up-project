@@ -6,6 +6,7 @@ import com.toyproject.lineupproject.exception.GeneralException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
+import java.util.Optional;
 
 // View Excption Handler
 @ControllerAdvice
@@ -31,7 +33,7 @@ public class BaseExceptionHandler {
             httpStatus = HttpStatus.FORBIDDEN;
             errorCode = ErrorCode.BAD_REQUEST;
         }
-        String referer = request.getHeader("REFERER").replace("http://localhost:8080", "");
+        String referer = request.getHeader("REFERER");
 
         return new ModelAndView(
                 "error",
@@ -50,23 +52,29 @@ public class BaseExceptionHandler {
     public ModelAndView velidateBindingException(
             BindException e,
             HttpServletRequest request,
-            HttpServletResponse response) {
+            HttpServletResponse response
+    ) {
         HttpStatus httpStatus = HttpStatus.valueOf(response.getStatus());
         ErrorCode errorCode = httpStatus.is4xxClientError() ? ErrorCode.BAD_REQUEST : ErrorCode.INTERNAL_ERROR;
-
+        String referer = request.getHeader("REFERER");
+        String message;
+        Optional<FieldError> fieldError = Optional.ofNullable(e.getFieldError());
+        if (fieldError.isPresent()) {
+            message = fieldError.get().getDefaultMessage();
+        } else {
+            message = "Incorrect information entered return to previous page";
+        }
         if (httpStatus == HttpStatus.OK) {
             httpStatus = HttpStatus.FORBIDDEN;
             errorCode = ErrorCode.BAD_REQUEST;
         }
-        String referer = request.getHeader("REFERER").replace("http://localhost:8080", "");
-
         return new ModelAndView(
                 "error",
                 Map.of(
                         "statusCode", httpStatus.value(),
                         "errorCode", errorCode,
-                        "message", errorCode.getMessage(e),
-                        "msg", "Incorrect information entered return to previous page",
+                        "message", message,
+                        "msg", message,
                         "nextPage", referer
                 ),
                 httpStatus
@@ -74,9 +82,11 @@ public class BaseExceptionHandler {
     }
 
     @ExceptionHandler
-    public ModelAndView general(GeneralException e, HttpServletRequest request) {
+    public ModelAndView general(
+            GeneralException e,
+            HttpServletRequest request) {
         ErrorCode errorCode = e.getErrorCode();
-        String referer = request.getHeader("REFERER").replace("http://localhost:8080", "");
+        String referer = request.getHeader("REFERER");
         if (e.getErrorCode().equals(ErrorCode.NOT_FOUND_MEMBER)) {
             referer = "/";
         }
