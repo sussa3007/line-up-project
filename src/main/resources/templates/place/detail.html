@@ -67,6 +67,44 @@
   <div class="text-right w-full max-w-md">
     <button id="backToPlaces" type="button" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded">목록</button>
   </div>
+
+  <hr style="margin-top: 1em" class="w-full max-w-xl">
+  <h2 class="text-xl font-bold leading-7 text-gray-900 sm:text-xl sm:truncate">
+    <span id="placeNoticeTitle">장소 공지사항</span>
+  </h2>
+  <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg "
+       style="width: 50em; max-width: 70%">
+    <table id="noticeTable" class="w-full max-w-xxl divide-y divide-gray-200" >
+      <thead class="bg-gray-50">
+      <tr>
+        <th scope="col"
+            class="py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+        </th>
+        <th scope="col"
+            class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title
+        </th>
+        <th scope="col"
+            class="px-1/7 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CreateAt
+        </th>
+
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td style="padding-left: 1em"
+                class="id noticeStatus whitespace-nowrap text-sm font-medium text-red-600 ">NOTICE</td>
+        <td class="noticeTitle px-4 py-4 text-truncate " >
+          <a th:text="${post.title}" th:href="@{'/posts/' + ${post.id}}"
+             class="truncate text-gray-900 hover:text-indigo-900 ">[장소 공지사항] 안녕하세요!asdfasdgasdasdfasdfasdffasdgasdffasdfasdfasdfasdfasagsdfasgsdfasdf</a>
+        </td>
+        <td class="noticeCreateAt px-1/7 py-4 whitespace-nowrap text-sm font-medium text-gray-900">1/1 9AM
+        </td>
+
+      </tr>
+      </tbody>
+    </table>
+    <header th:insert="pagebar.html::nav"></header>
+  </div>
 </div>
 </body>
 </html>

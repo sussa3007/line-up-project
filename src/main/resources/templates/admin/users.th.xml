@@ -11,7 +11,7 @@
                 <attr sel="td.memo" th:text="${user.memo}" />
                 <attr sel="td.loginbase" th:text="${user.loginBase}" />
                 <attr sel="td.createAt" th:text="${#temporals.format(user.createAt, 'M/d (ha)', 'US')}" />
-                <attr sel="td/a" th:text="'수정'" th:href="@{'/admin/user/' + ${user.id}}" />
+<!--                <attr sel="td/a" th:text="'수정'" th:href="@{'/admin/user/' + ${user.id}}" />-->
             </attr>
         </attr>
     </attr>

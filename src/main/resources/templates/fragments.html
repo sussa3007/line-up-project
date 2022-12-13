@@ -62,13 +62,14 @@
     </nav>
 
     <nav class="bg-white border-gray-200 dark:border-gray-600 dark:bg-gray-900">
-        <div class="flex flex-wrap justify-center items-center mx-auto max-w-screen-xl px-4 md:px-6 py-2.5">
+        <hr />
+        <div class="flex flex-wrap justify-center items-center mx-auto max-w-screen-xl px-4 md:px-6">
 
             <div id="mega-menu-full" class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1">
-                <ul class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                <ul class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                     <li>
                         <a id="home"
-                           class="flex justify-between w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                           class="flex justify-between text-lg w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
                            th:href="@{/}"
                         >
                             Home
@@ -76,7 +77,7 @@
                     </li>
                     <li sec:authorize="!hasAnyRole('ROLE_SUPERADMIN')" >
                         <a id="notice"
-                           class="flex justify-between w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                           class="flex justify-between text-lg w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
                            th:href="@{/posts/searchNotice}"
                         >
                             Notice
@@ -84,7 +85,7 @@
                     </li>
                     <li sec:authorize="!hasAnyRole('ROLE_SUPERADMIN')" >
                         <a id="placenotice"
-                           class="flex justify-between w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                           class="flex justify-between text-lg w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
                            th:href="@{/posts/searchPlaceNotice}"
                         >
                             Place Notice
@@ -92,7 +93,7 @@
                     </li>
                     <li sec:authorize="!hasAnyRole('ROLE_SUPERADMIN')">
                         <a id="eventhome"
-                           class="flex justify-between w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                           class="flex justify-between text-lg w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
                            th:href="@{/}"
                         >
                             Event
@@ -100,7 +101,7 @@
                     </li>
                     <li sec:authorize="!hasAnyRole('ROLE_SUPERADMIN')">
                         <a id="placeshome"
-                           class="flex justify-between w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                           class="flex justify-between text-lg w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
                            th:href="@{/places}"
                         >
                             Place
@@ -108,15 +109,15 @@
                     </li>
                     <li sec:authorize="!hasAnyRole('ROLE_SUPERADMIN','ROLE_ADMIN') && !isAnonymous()">
                         <a id="messagepage"
-                           class="flex justify-between w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
-                           th:href="@{/}"
+                           class="flex justify-between text-lg w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                           th:href="@{/posts/searchMessage}"
                         >
                             My Message
                         </a>
                     </li>
                     <li sec:authorize="!hasAnyRole('ROLE_SUPERADMIN') && !isAnonymous()">
                         <a id="requestpage"
-                           class="flex justify-between w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
+                           class="flex justify-between text-lg w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded"
                            th:href="@{/requests/new}"
                         >
                             Q&A
@@ -124,11 +125,11 @@
                     </li>
                     <li sec:authorize="hasAnyRole('ROLE_SUPERADMIN','ROLE_ADMIN')">
                         <button id="mega-menu-full-dropdown-button"
-                                class="flex justify-between w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded dropdown-toggle"
+                                class="flex justify-between text-lg w-full hover:bg-gray-300 text-black font-bold py-1 px-3 rounded dropdown-toggle"
                                 th:onclick="'location.href=\'' + @{/admin/management} + '\''"
                                 >
                             Management
-                            <svg class="w-5 h-5 ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <svg class="w-7 h-9 ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd">
 
                                 </path>
@@ -138,6 +139,7 @@
                 </ul>
             </div>
         </div>
+        <hr />
         <div id="mega-menu-full-dropdown" style="display: none"
              class=" mt-1 border-gray-200 shadow-sm bg-gray-50 md:bg-white border-y dark:bg-gray-800 dark:border-gray-600">
             <div class="grid max-w-screen-xl px-4 py-5 mx-auto text-gray-900 dark:text-white sm:grid-cols-2 md:px-6">

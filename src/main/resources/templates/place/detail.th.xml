@@ -10,4 +10,12 @@
         <attr sel="#memo" th:text="*{memo} ?: _" />
     </attr>
     <attr sel="#backToPlaces" th:onclick="'location.href=\'' + @{/places} + '\''" />
+    <attr sel="#noticeTable" th:if="${place?.id} != null">
+        <attr sel="tbody" th:remove="all-but-first">
+            <attr sel="tr[0]" th:each="post : ${posts}">
+                <attr sel="td.id" th:text="${post.status}" />
+                <attr sel="td.noticeCreateAt" th:text="${#temporals.format(post.createAt, 'M/d (ha)', 'US')}" />
+            </attr>
+        </attr>
+    </attr>
 </thlogic>

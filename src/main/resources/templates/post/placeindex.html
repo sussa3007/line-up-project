@@ -19,6 +19,8 @@
             id="postTitle">This is Post page.</span>
     <span th:if = "${status.equals('PLACE_NOTICE')}" th:text = "'장소 공지사항'"
             id="postTitle">This is Post page.</span>
+    <span th:if = "${status.equals('MESSAGE')}" th:text = "'관리자 메세지'"
+          id="postTitle">This is Post page.</span>
   </h2>
     <header th:insert="searchbar.html::nav"></header>
   <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
@@ -38,7 +40,7 @@
 
       <tbody class="bg-white divide-y divide-gray-200">
       <tr>
-        <td class="id px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900">11</td>
+        <td class="id px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900 text-red-400">11</td>
         <td class="title px-6 py-4 w-3/5 whitespace-nowrap text-sm font-medium text-gray-900">
           <a th:text="${post.title}" th:href="@{'/posts/' + ${post.id}}"
                   class="text-gray-900 hover:text-indigo-900">[공지사항] 안녕하세요!</a>

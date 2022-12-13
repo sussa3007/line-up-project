@@ -88,6 +88,7 @@
                             class="bg-gray-50  border border-gray-300 text-gray-700 text-sm font-bold mb-2 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-3/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             required>
                         <option sec:authorize="hasAnyRole('ROLE_SUPERADMIN')" value = "NOTICE">공지사항</option>
+                        <option sec:authorize="hasAnyRole('ROLE_SUPERADMIN')" value = "MESSAGE">관리자 메세지</option>
                         <option sec:authorize="hasAnyRole('ROLE_ADMIN')" value = "PLACE_NOTICE">장소 공지사항</option>
                         <option sec:authorize="hasAnyRole('ROLE_USER')" value = "REVIEW">장소 리뷰</option>
                     </select>
