@@ -59,6 +59,7 @@ public class PlaceController {
 
         Page<PlaceDto> findDtos = placeService.getPlacesAll(predicate, pageable);
         Map<String, Object> placePageInfo = searchUtils.getPlacePageInfo(request,findDtos);
+
         return new ModelAndView("place/index",placePageInfo);
     }
 
