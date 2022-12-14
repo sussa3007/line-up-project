@@ -15,10 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,17 +49,18 @@ public class AdminRegisterController {
         );
     }
 
-    @GetMapping("/validationEmail")
+    @PostMapping("/checkEmail")
     public ModelAndView validateEmail(
-            @RequestParam("email") String email
+            @RequestBody String email
     ) {
         boolean val = adminService.verifyUserByEmail(email);
+        System.out.println("#### = "+ email);
         if (val) {
             return new ModelAndView(
                     "alert",
                     Map.of(
                             "msg", "가입 가능한 이메일 입니다!.",
-                            "nextPage", "/sign-up?email="+email+"&check=" + val,
+                            "nextPage", "/sign-up?"+email+"&check=" + val,
                             "backUrl", "/"
                     )
             );
