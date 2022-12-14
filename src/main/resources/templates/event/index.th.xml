@@ -3,7 +3,7 @@
     <attr sel="#eventsTitle" th:text="'이벤트 목록'" />
     <attr sel="#eventsTable">
         <attr sel="tbody">
-            <attr sel="tr[0]" th:each="event : ${events}">
+            <attr sel="tr[0]" th:if = "${!(event.place.id eq 1)}" th:each="event : ${events}">
                 <attr sel="td.placeName" th:text="${event.placeName}" />
                 <attr sel="td.eventName" th:text="${event.eventName}" />
                 <attr sel="td.eventStatus/span" th:text="${event.eventStatus}" />

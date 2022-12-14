@@ -32,7 +32,7 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-      # Github Repository Secrets를 통해 환경 변수 파일을 생성합니다.
+      # Github Repository Secrets를 통해 환경 변수 파일을 생성한다.
     - name: Generate Environment Variables File for Production
       run: |
         echo "LINEUP_DB_URL=$LINEUP_DB_URL" >> ./src/main/resources/env.yml

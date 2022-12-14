@@ -19,8 +19,8 @@ values
 
 insert into `event` (`place_id`, `event_name`, `event_status`, `event_start_datetime`, `event_end_datetime`, `current_number_of_people`, `capacity`, `memo`)
 values
-    (1, '운동1', 'OPENED', '2022-08-01 09:00:00', '2022-08-01 12:00:00', 0, 20, 'test memo1'),
-    (1, '운동2', 'OPENED', '2022-08-01 13:00:00', '2022-08-01 12:00:00', 0, 20, 'test memo2'),
+    (13, '운동1', 'OPENED', '2022-08-01 09:00:00', '2022-08-01 12:00:00', 0, 20, 'test memo1'),
+    (13, '운동2', 'OPENED', '2022-08-01 13:00:00', '2022-08-01 12:00:00', 0, 20, 'test memo2'),
     (2, '행사1', 'OPENED', '2022-08-02 09:00:00', '2022-08-02 12:00:00', 0, 30, 'test memo3'),
     (2, '행사2', 'OPENED', '2022-08-03 09:00:00', '2022-08-03 12:00:00', 0, 30, 'test memo4'),
     (2, '행사3', 'CLOSED', '2022-08-04 09:00:00', '2022-08-04 12:00:00', 0, 30, 'test memo5'),
@@ -56,8 +56,8 @@ values
     (12, 'test event', 'ABORTED', '2022-10-30 18:00:00', '2022-10-30 20:00:00', 0, 10, 'test'),
     (12, 'test event', 'ABORTED', '2022-10-30 18:00:00', '2022-10-30 20:00:00', 0, 10, 'test'),
     (12, 'test event', 'ABORTED', '2022-10-30 18:00:00', '2022-10-30 20:00:00', 0, 10, 'test'),
-    (1, 'test event', 'ABORTED', '2022-10-30 18:00:00', '2022-10-30 20:00:00', 0, 10, 'test'),
-    (1, 'test event', 'ABORTED', '2022-10-30 18:00:00', '2022-10-30 20:00:00', 0, 10, 'test'),
+    (13, 'test event', 'ABORTED', '2022-10-30 18:00:00', '2022-10-30 20:00:00', 0, 10, 'test'),
+    (13, 'test event', 'ABORTED', '2022-10-30 18:00:00', '2022-10-30 20:00:00', 0, 10, 'test'),
     (2, 'test event', 'ABORTED', '2022-10-30 18:00:00', '2022-10-30 20:00:00', 0, 10, 'test'),
     (2, 'test event', 'ABORTED', '2022-10-30 18:00:00', '2022-10-30 20:00:00', 0, 10, 'test'),
     (3, 'test event', 'CANCELLED', '2022-10-30 18:00:00', '2022-10-30 20:00:00', 0, 10, 'test'),
@@ -107,46 +107,11 @@ values
 
 insert into `post`(`title`, `post`,`admin_id`, `status`, `password`,`place_id`)
 values
-    ('[공지사항] 안녕하세요 반갑습니다!!!!!', '<h1>Sample Markdown</h1>
-<p>Hello!
-공지사항 테스트 입니다!!</p>
-<p>This is some basic, sample markdown.aghslkdfhklashdglkahsl 줄바꿈 테스트kdqklsadhflk;ahslaskdflhashdklfhalksdhfklhskldhflkshdklfhalksdhfklaskldhfklasdk;gadsklfalkdshflkahsdlkfsfhasdfagwafasdavsdvlak"sdhlk</p>
-<ul>
-<li>공지사항</li>
-<li>장소 공지사항</li>
-</ul>
-<h2>Second Heading</h2>
-<ul>
-<li>Unordered lists,
-<ol>
-<li>One</li>
-<li>Two</li>
-<li>Three</li>
-</ol>
-</li>
-<li>More</li>
-</ul>
-<blockquote>
-<p>Blockquote</p>
-</blockquote>
-<p>And <strong>bold</strong>, <em>italics</em>, and even <em>italics and later <strong>bold</strong></em>. Even strikethrough. <a href="https://markdowntohtml.com">A link</a> to somewhere.</p>
-<ul>
-<li>코드블럭</li>
-</ul>
-<pre><code>var foo = hello;
-
-                            function baz(s) {
-                            return foo + &quot;:&quot; + s;
-                            }
-
-</code></pre>
-<p>Or inline code like <code>var foo = hello;</code>.</p>
-<ul>
-<li>이미지 셈플</li>
-</ul>
-<p><img src="https://user-images.githubusercontent.com/110886399/206844039-58b24212-abfb-42f5-b570-70c5c311898c.png" alt="image" /></p>
-<p>The end ...</p>
-', 11, 'NOTICE', '1111',1),
+    ('[공지사항] 안녕하세요 반갑습니다!!!!!', 'aaasdg', 11, 'NOTICE', '1111',1),
+    ('[장소 공지사항] 안녕하세요 반갑습니다!!!!!', 'aaasdg', 2, 'PLACE_NOTICE', '1111',2),
+    ('[장소 공지사항] 안녕하세요 반갑습니다!!!!!', 'aaasdg', 2, 'PLACE_NOTICE', '1111',2),
+    ('[공지사항] 안녕하세요 반갑습니다!!!!!', 'aaasdg', 11, 'NOTICE', '1111',1),
+    ('[메세지] 안녕하세요 반갑습니다!!!!!', 'aaasdg', 1, 'MESSAGE', '1111',1),
     ('[메세지] 안녕하세요 반갑습니다!!!!!', '<h1>Sample Markdown</h1>
 <p>Hello!
 공지사항 테스트 입니다!!</p>
