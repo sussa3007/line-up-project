@@ -51,16 +51,15 @@ public class AdminRegisterController {
 
     @PostMapping("/checkEmail")
     public ModelAndView validateEmail(
-            @RequestBody String email
+            @RequestParam String email
     ) {
         boolean val = adminService.verifyUserByEmail(email);
-        System.out.println("#### = "+ email);
         if (val) {
             return new ModelAndView(
                     "alert",
                     Map.of(
                             "msg", "가입 가능한 이메일 입니다!.",
-                            "nextPage", "/sign-up?"+email+"&check=" + val,
+                            "nextPage", "/sign-up?email="+email+"&check=" + val,
                             "backUrl", "/"
                     )
             );
