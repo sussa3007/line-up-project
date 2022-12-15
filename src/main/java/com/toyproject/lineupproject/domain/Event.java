@@ -24,7 +24,7 @@ import java.util.Objects;
 })
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-public class Event {
+public class  Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
