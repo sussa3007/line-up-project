@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<thlogic>
+    <attr sel="#visitTable" th:object = "${visitInfo}">
+        <attr sel="#placeName" th:value="*{placeName} ?: _"  />
+        <attr sel="#placeAddress" th:value="*{placeAddress} ?: _" />
+        <attr sel="#placePhoneNumber" th:value="*{placePhoneNumber} ?: _" />
+        <attr sel="#eventName" th:value="*{eventName} ?: _" />
+        <attr sel="#email" th:value="*{email} ?: _" />
+        <attr sel="#memo" th:text="*{memo} ?: _" />
+        <attr sel="#eventStartDatetime" th:value="${#temporals.format(visitInfo.eventStartDatetime, 'M/d ha', 'US')}" />
+        <attr sel="#eventEndDatetime" th:value="${#temporals.format(visitInfo.eventEndDatetime, 'M/d ha', 'US')}" />
+        <attr sel="#currentNumberOfPeople" th:value="*{currentNumberOfPeople} ?: _" />
+        <attr sel="#capacity" th:value="*{capacity} ?: _" />
+        <attr sel="#requestNumberOfPeople" th:value="*{requestNumberOfPeople} ?: _" />
+    </attr>
+    <attr sel="#modify" th:onclick="'location.href=\'' + @{'/visit/'+${visitInfo.id}+'/modify'} + '\''"/>
+    <attr sel="#cancel" th:onclick="'location.href=\'' + @{${backUrl}} + '\''"/>
+    <attr sel="#delete"  th:onclick="'location.href=\'' + @{'/visit/'+${visitInfo.id}+'/delete/check'} + '\''" />
+    <attr sel="#csrf" th:value="${_csrf.token}" th:name="${_csrf.parameterName}"/>
+    <attr sel="#requestTitle" th:text="'방문 예약 상세'"/>
+</thlogic>

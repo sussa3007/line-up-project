@@ -26,6 +26,8 @@
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">종료 일시</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">현재 인원</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">최대 수용 인원</th>
+                <th sec:authorize="isAuthenticated()"
+                        scope="col" class="relative px-6 py-3"><span class="sr-only">예약 신청</span></th>
                 <th scope="col" class="relative px-6 py-3"><span class="sr-only">상세</span></th>
             </tr>
             </thead>
@@ -40,8 +42,16 @@
                 <td class="eventEndDatetime px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">2021-01-01 10:00:00</td>
                 <td class="currentNumberOfPeople px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">0</td>
                 <td class="capacity px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">10</td>
+                <td sec:authorize="isAuthenticated()" th:if = "${(event.capacity)!=(event.currentNumberOfPeople)}"
+                        class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <a class="visit text-indigo-600 hover:text-indigo-900">방문 신청</a>
+                </td>
+                <td sec:authorize="isAuthenticated()" th:if = "${(event.capacity)==(event.currentNumberOfPeople)}"
+                    class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <a class="text-red-600 hover:text-red-900">예약 마감</a>
+                </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <a class="text-indigo-600 hover:text-indigo-900">상세</a>
+                    <a class="detail text-indigo-600 hover:text-indigo-900">상세</a>
                 </td>
             </tr>
             </tbody>

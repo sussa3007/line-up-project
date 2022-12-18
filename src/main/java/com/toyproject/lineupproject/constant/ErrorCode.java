@@ -25,8 +25,10 @@ public enum ErrorCode {
     MEMBER_EXISTS(10007, HttpStatus.BAD_REQUEST, "Member Exists"),
     NICKNAME_EXISTS(10008, HttpStatus.BAD_REQUEST, "Nickname Exists"),
     NOT_FOUND_REQUEST(10009, HttpStatus.NOT_FOUND, "Not Found Request"),
+    NOT_FOUND_EVENT(10010, HttpStatus.NOT_FOUND, "Not Found Event"),
+    EXCEEDING_MAXIMUM_OCCUPANCY(10011, HttpStatus.NOT_FOUND, "Exceeding maximum occupancy"),
 
-    REQUETS_DELETE_PLACE_DENIED(10007, HttpStatus.BAD_REQUEST, "Request Place Delete Denied"),
+    REQUEST_DELETE_PLACE_DENIED(10012, HttpStatus.BAD_REQUEST, "Request Place Delete Denied"),
 
     INTERNAL_ERROR(20000, HttpStatus.INTERNAL_SERVER_ERROR, "Internal error"),
     SPRING_INTERNAL_ERROR(20001, HttpStatus.INTERNAL_SERVER_ERROR, "Spring-detected internal error"),

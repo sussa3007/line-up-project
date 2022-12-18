@@ -38,7 +38,7 @@ public record ReqResponse(
             Request request
     ) {
         return new ReqResponse(
-                request.getRequestId(),
+                request.getId(),
                 request.getAdmin().getEmail(),
                 request.getRequestCode().getRequestMessage(),
                 request.getMessage(),

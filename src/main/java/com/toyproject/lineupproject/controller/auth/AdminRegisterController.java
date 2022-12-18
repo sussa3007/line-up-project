@@ -2,11 +2,13 @@ package com.toyproject.lineupproject.controller.auth;
 
 import com.toyproject.lineupproject.constant.AdminOperationStatus;
 import com.toyproject.lineupproject.domain.Admin;
+import com.toyproject.lineupproject.dto.AdminEventResponse;
 import com.toyproject.lineupproject.dto.AdminRequest;
 import com.toyproject.lineupproject.dto.AdminResponse;
 import com.toyproject.lineupproject.dto.ReqResponse;
 import com.toyproject.lineupproject.service.AdminService;
 import com.toyproject.lineupproject.service.RequestService;
+import com.toyproject.lineupproject.service.VisitService;
 import com.toyproject.lineupproject.utils.SearchUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,7 +17,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +37,8 @@ public class AdminRegisterController {
     private final RequestService requestService;
 
     private final SearchUtils searchUtils;
+
+    private final VisitService visitService;
 
     @GetMapping("/sign-up")
     public ModelAndView signUp(
@@ -95,7 +102,7 @@ public class AdminRegisterController {
     public ModelAndView userInfo(
             HttpServletRequest request,
             Principal principal,
-            @PageableDefault(page = 0, size = 8, sort = "requestId", direction = Sort.Direction.DESC)
+            @PageableDefault(page = 0, size = 8, sort = "id", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
         Admin findUser = adminService.findUserByEmail(principal.getName());
@@ -104,7 +111,8 @@ public class AdminRegisterController {
                 requestService.findAllByUser(pageable, findUser);
         Map<String, Object> requestPageInfo =
                 searchUtils.getRequestPageInfo(request, requests, user);
-
+        Page<AdminEventResponse> visitByAdmin = visitService.findVisitByAdmin(findUser, pageable);
+        requestPageInfo.put("visits", visitByAdmin);
         return new ModelAndView(
                 "auth/info",
                 requestPageInfo

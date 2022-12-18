@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<thlogic>
+    <attr sel="#csrf" th:value="${_csrf.token}" th:name="${_csrf.parameterName}"/>
+    <attr sel="#requestsTitle" th:text="'장소 예약 현황'" />
+    <attr sel="#visitTable">
+        <attr sel="tbody">
+            <attr sel="tr[0]" th:each="visit : ${visits}">
+                <attr sel="td.placeName" th:text="${visit.placeName}" />
+                <attr sel="td.eventName" th:text="${visit.eventName}" />
+                <attr sel="td.email" th:text="${visit.email}" />
+                <attr sel="td.eventStartDatetime" th:text="${#temporals.format(visit.eventStartDatetime, 'M/d (ha)', 'US')}" />
+                <attr sel="td.eventEndDatetime" th:text="${visit.modifyAt}" />
+                <attr sel="td.requestNumberOfPeople" th:text="${visit.requestNumberOfPeople}" />
+                <attr sel="td/a" th:text="'Detail'" th:href="@{'/visit/' + ${visit.id}}" />
+            </attr>
+        </attr>
+    </attr>
+</thlogic>

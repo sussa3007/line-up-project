@@ -44,19 +44,19 @@
                                 th:id="statusKey" th:name="statusKey"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
                             <option selected value="">상태/유형 검색</option>
-                            <option th:if = "${places eq null && events eq null && requests eq null && posts eq null }" value=""
+                            <option th:if = "${places eq null && events eq null && requests eq null && posts eq null && visits eq null }" value=""
                                     sec:authorize="hasAnyRole('ROLE_SUPERADMIN')" >==UserStatus==</option>
-                            <option th:if = "${places eq null && events eq null && requests eq null && posts eq null }" th:value="active"
+                            <option th:if = "${places eq null && events eq null && requests eq null && posts eq null && visits eq null }" th:value="active"
                                     sec:authorize="hasAnyRole('ROLE_SUPERADMIN')" > Active </option>
-                            <option th:if = "${places eq null && events eq null && requests eq null && posts eq null }" th:value="inActive"
+                            <option th:if = "${places eq null && events eq null && requests eq null && posts eq null && visits eq null }" th:value="inActive"
                                     sec:authorize="hasAnyRole('ROLE_SUPERADMIN')" > InActive </option>
-                            <option th:if = "${places eq null && events eq null && requests eq null && posts eq null }" value=""
+                            <option th:if = "${places eq null && events eq null && requests eq null && posts eq null && visits eq null }" value=""
                                     sec:authorize="hasAnyRole('ROLE_SUPERADMIN')">==UserAuth==</option>
-                            <option th:if = "${places eq null && events eq null && requests eq null && posts eq null }" th:value="superAdmin"
+                            <option th:if = "${places eq null && events eq null && requests eq null && posts eq null && visits eq null }" th:value="superAdmin"
                                     sec:authorize="hasAnyRole('ROLE_SUPERADMIN')" > SUPERADMIN </option>
-                            <option th:if = "${places eq null && events eq null && requests eq null && posts eq null }" th:value="admin"
+                            <option th:if = "${places eq null && events eq null && requests eq null && posts eq null && visits eq null }" th:value="admin"
                                     sec:authorize="hasAnyRole('ROLE_SUPERADMIN')" > ADMIN </option>
-                            <option th:if = "${places eq null && events eq null && requests eq null && posts eq null }" th:value="user"
+                            <option th:if = "${places eq null && events eq null && requests eq null && posts eq null && visits eq null }" th:value="user"
                                     sec:authorize="hasAnyRole('ROLE_SUPERADMIN')" > USER </option>
                             <option th:if = "${allUser eq null && places eq null && requests eq null && posts eq null }" value=""
                                     sec:authorize="hasAnyRole('ROLE_SUPERADMIN')">==EventStatus==</option>
@@ -70,13 +70,13 @@
                                     th:value="cancelled"  >CANCELLED</option>
                             <option th:if = "${allUser eq null && places eq null && requests eq null && posts eq null }"
                                     th:value="aborted"  >ABORTED</option>
-                            <option th:if = "${allUser eq null && places eq null && events eq null && posts eq null }" value=""
+                            <option th:if = "${allUser eq null && places eq null && events eq null && posts eq null && visits eq null }" value=""
                                     sec:authorize="hasAnyRole('ROLE_SUPERADMIN')">==ReqStatus==</option>
-                            <option th:if = "${allUser eq null && places eq null && events eq null && posts eq null }" value="OPEN_ISSUE"
+                            <option th:if = "${allUser eq null && places eq null && events eq null && posts eq null && visits eq null }" value="OPEN_ISSUE"
                                     sec:authorize="hasAnyRole('ROLE_SUPERADMIN')">OPENED</option>
-                            <option th:if = "${allUser eq null && places eq null && events eq null && posts eq null }" value="IN_PROGRESS_ISSUE"
+                            <option th:if = "${allUser eq null && places eq null && events eq null && posts eq null && visits eq null }" value="IN_PROGRESS_ISSUE"
                                     sec:authorize="hasAnyRole('ROLE_SUPERADMIN')">INPROGRESS</option>
-                            <option th:if = "${allUser eq null && places eq null && events eq null && posts eq null }" value="CLOSE_ISSUE"
+                            <option th:if = "${allUser eq null && places eq null && events eq null && posts eq null && visits eq null }" value="CLOSE_ISSUE"
                                     sec:authorize="hasAnyRole('ROLE_SUPERADMIN')">CLOSED</option>
                         </select>
                     </div>
@@ -99,9 +99,9 @@
                                     Phone </option>
                                 <option th:if = "${events eq null && requests eq null && places eq null && posts eq null}"
                                         th:value="nickname" sec:authorize="hasAnyRole('ROLE_SUPERADMIN')" > 닉네임 </option>
-                                <option th:if = "${allUser eq null && requests eq null && places eq null && events eq null}"
+                                <option th:if = "${allUser eq null && requests eq null && places eq null && events eq null && visits eq null}"
                                         th:value="title"  >글제목</option>
-                                <option th:if = "${allUser eq null && requests eq null && places eq null && events eq null}"
+                                <option th:if = "${allUser eq null && requests eq null && places eq null && events eq null && visits eq null}"
                                         th:value="post"  >글내용</option>
                             </select>
                         <input style="margin-left: 0.3em"
