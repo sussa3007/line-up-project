@@ -104,6 +104,9 @@ public class  Event {
     public void modifyCurrentNumberOfPeople(Integer before, Integer after) {
         this.currentNumberOfPeople -= before;
         this.currentNumberOfPeople += after;
+        if (!(this.currentNumberOfPeople.equals(this.capacity))) {
+            this.setEventStatus(EventStatus.OPENED);
+        }
     }
 
     protected Event() {}
