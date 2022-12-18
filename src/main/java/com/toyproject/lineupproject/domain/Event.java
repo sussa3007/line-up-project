@@ -94,6 +94,9 @@ public class  Event {
             throw new GeneralException(ErrorCode.EXCEEDING_MAXIMUM_OCCUPANCY);
         } else {
             this.currentNumberOfPeople += adminEventMap.getRequestNumberOfPeople();
+            if (this.currentNumberOfPeople.equals(this.capacity)) {
+                this.setEventStatus(EventStatus.CLOSED);
+            }
             adminEventMaps.add(adminEventMap);
         }
     }
