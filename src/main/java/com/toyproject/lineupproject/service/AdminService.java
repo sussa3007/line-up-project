@@ -66,7 +66,7 @@ public class AdminService {
 
     @Transactional(readOnly = true)
     public Admin findUser(Admin  admin) {
-        return verifiedUser(admin);
+        return verifiedGetUser(admin);
     }
 
     @Transactional(readOnly = true)
@@ -148,7 +148,13 @@ public class AdminService {
             throw new GeneralException(ErrorCode.NICKNAME_EXISTS);
         }
     }
-    private Admin verifiedUser(Admin admin) {
+    public AdminResponse verifiedUser(String email) {
+        Admin admin1 = adminRepository.findByEmail(email)
+                .orElseThrow(
+                        () -> new GeneralException(ErrorCode.NOT_FOUND_MEMBER));
+        return AdminResponse.of(admin1);
+    }
+    private Admin verifiedGetUser(Admin admin) {
         return adminRepository.findByEmail(admin.getEmail())
                 .orElseThrow(
                         () -> new GeneralException(ErrorCode.NOT_FOUND_MEMBER));
