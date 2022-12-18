@@ -145,10 +145,10 @@ public class PlaceService {
                     .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
             if (place.getEvents().size() == 0) {
                 placeRepository.deleteById(placeId);
-            } else throw new GeneralException(ErrorCode.REQUETS_DELETE_PLACE_DENIED);
+            } else throw new GeneralException(ErrorCode.REQUEST_DELETE_PLACE_DENIED);
             return true;
         } catch (GeneralException e) {
-            throw new GeneralException(ErrorCode.REQUETS_DELETE_PLACE_DENIED);
+            throw new GeneralException(ErrorCode.REQUEST_DELETE_PLACE_DENIED);
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR);
         }
