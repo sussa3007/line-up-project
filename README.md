@@ -355,10 +355,12 @@ Spring Boot
  <details>
    <summary> 장소 관리자 / Super Admin 예약 현황 관리 페이지 </summary>
 
-![image](https://user-images.githubusercontent.com/110886399/208289895-dbafaefd-fb4c-459e-9705-f1f3719a485d.png)
+
+![image](https://user-images.githubusercontent.com/110886399/208290801-442eda63-5262-4f85-9cb6-4cdd2c3b7b16.png)
 
 
-![image](https://user-images.githubusercontent.com/110886399/208289916-881cd9bb-5726-45be-b5a1-3abfd7ee0d97.png)
+
+![image](https://user-images.githubusercontent.com/110886399/208290816-87e2f2c2-467b-4c90-a8ac-db25ed10dced.png)
 
 
 
@@ -369,7 +371,9 @@ Spring Boot
    <summary> 장소 관리자 / Super Admin / 예약자 예약 현황 상세 페이지 </summary>
 
 
-![image](https://user-images.githubusercontent.com/110886399/208290429-821c65d9-d196-45e4-90b5-54a6c6644347.png)
+
+![image](https://user-images.githubusercontent.com/110886399/208290786-8df4f710-f308-468c-a05c-c482b28df0e9.png)
+
 
 
 
