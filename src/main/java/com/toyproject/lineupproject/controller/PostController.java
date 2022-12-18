@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -85,6 +86,7 @@ public class PostController {
     }
 
     @GetMapping("/searchMessage")
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
     public String searchMessage(
             @RequestParam HashMap<String, Object> param
     ) {
