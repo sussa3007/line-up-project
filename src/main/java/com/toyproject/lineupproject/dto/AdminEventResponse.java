@@ -18,7 +18,9 @@ public record AdminEventResponse(
         String phoneNumber,
         String placeName,
         String placePhoneNumber,
-        String placeAddress
+        String placeAddress,
+        LocalDateTime createAt,
+        LocalDateTime modifyAt
 ) {
 
     public static AdminEventResponse of (AdminEventMap adminEvent) {
@@ -36,7 +38,9 @@ public record AdminEventResponse(
                 adminEvent.getAdmin().getPhoneNumber(),
                 adminEvent.getEvent().getPlace().getPlaceName(),
                 adminEvent.getEvent().getPlace().getPhoneNumber(),
-                adminEvent.getEvent().getPlace().getAddress()
+                adminEvent.getEvent().getPlace().getAddress(),
+                adminEvent.getCreatedAt(),
+                adminEvent.getModifiedAt()
         );
     }
 

@@ -24,7 +24,7 @@ import java.util.Optional;
 public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long requestId;
+    private Long id;
 
     @Setter
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
