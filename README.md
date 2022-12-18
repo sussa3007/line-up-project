@@ -103,12 +103,13 @@ Spring Boot
     - 전체 공지사항과 장소별 공지사항 별도로 관리 가능.
 - SuperAdmin 사용자와 장소 관리자에게 메세지 전송 기능 추가.[~ 22/12/10]
 - 회원 가입시 이메일 중복 확인 기능 추가.[~ 22/12/13]
+- 사용자의 이벤트 방문 예약 기능 구현 완료.[~ 22/12/16]
+- 사용자의 예약 현황 마이 페이지 조회 구현 완료.[~ 22/12/17]
+- 장소 관리자/ Super Admin 예약 현황 조회 및 수정 삭제 기능 구현 완료. [~ 22/12/18]
   
 
 ## 추가 개발 예정
 
-- 일반 회원의 이벤트 방문 예약 기능 구현 예정.
-    - 일반 회원의 마이 페이지에 방문 예약한 이벤트 리스트 확인 및 취소 기능 구현 예정.
 - 사용자의 방문지 리뷰 작성 게시판 구현 예정.
 - 회원 가입과 정보 수정시 Email 알림 서비스 기능 추가 구현 예정.
 
@@ -147,7 +148,7 @@ Spring Boot
  <details>
    <summary> 회원 정보 수정 페이지 </summary>
 
-![image](https://user-images.githubusercontent.com/110886399/206916403-b1059bd2-551c-4924-bf0a-3236c9db2327.png)
+![image](https://user-images.githubusercontent.com/110886399/208289796-f9bd79df-09c7-40ca-8b72-1b9a21ae96f5.png)
 
 
  </details>
@@ -157,7 +158,8 @@ Spring Boot
    <summary> 일반 / 비회원 이벤트,장소 리스트 조회 페이지 </summary>
 
 
-![image](https://user-images.githubusercontent.com/110886399/206916460-24a2992b-f751-4687-93ad-687dc02dbf1e.png)
+![image](https://user-images.githubusercontent.com/110886399/208289848-e1e701be-78b6-41c0-99b9-65543716a082.png)
+
 
 
 ![image](https://user-images.githubusercontent.com/110886399/206916479-7f3343ad-ac8a-4cc2-98ee-66c5ae8e6269.png)
@@ -212,10 +214,13 @@ Spring Boot
  <details>
    <summary> Super Admin / 장소 관리자 관리 페이지 </summary>
 
-![image](https://user-images.githubusercontent.com/110886399/206916527-02039b02-f95d-42d8-8964-2e1e77d57877.png)
 
-![image](https://user-images.githubusercontent.com/110886399/206916554-a6467f2d-89d3-4164-b710-4f60e766e0dc.png)
 
+![image](https://user-images.githubusercontent.com/110886399/208290021-7bb862d8-cb78-446b-807a-6cc50997e583.png)
+
+
+
+![image](https://user-images.githubusercontent.com/110886399/208290005-686d6a33-f23a-46e7-9d1e-aafe826d7032.png)
 
 
  </details>
@@ -345,6 +350,33 @@ Spring Boot
 
 
  </details>
+
+ </br>
+ <details>
+   <summary> 장소 관리자 / Super Admin 예약 현황 관리 페이지 </summary>
+
+![image](https://user-images.githubusercontent.com/110886399/208289895-dbafaefd-fb4c-459e-9705-f1f3719a485d.png)
+
+
+![image](https://user-images.githubusercontent.com/110886399/208289916-881cd9bb-5726-45be-b5a1-3abfd7ee0d97.png)
+
+
+
+ </details>
+
+ </br>
+ <details>
+   <summary> 장소 관리자 / Super Admin / 예약자 예약 현황 상세 페이지 </summary>
+
+
+![image](https://user-images.githubusercontent.com/110886399/208290429-821c65d9-d196-45e4-90b5-54a6c6644347.png)
+
+
+
+ </details>
+
+
+
 
  </br>
  <details>
