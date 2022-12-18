@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<thlogic>
+<!--    <attr sel="#requestTable">-->
+<!--        <attr sel="tbody">-->
+<!--            <attr sel="#request" th:remove="all-but-first">-->
+<!--                <attr sel="select.option"-->
+<!--                      th:each=" type : ${requestOption}"-->
+<!--                      th:value="${type}"-->
+<!--                      th:text="${type}"/>-->
+<!--            </attr>-->
+<!--        </attr>-->
+<!--    </attr>-->
+    <attr sel="#newVisit" th:form="visitForm" th:formaction="@{'/visit/'+${event.id}+'/new'}" th:formmethod="post" />
+    <attr sel="#cancel"  th:onclick="'location.href=\'' + @{/events} + '\''" />
+    <attr sel="#csrf" th:value="${_csrf.token}" th:name="${_csrf.parameterName}"/>
+    <attr sel="#visitTitle" th:text="'방문 신청'"/>
+
+</thlogic>
