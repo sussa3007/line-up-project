@@ -10,8 +10,8 @@
 <!--            </attr>-->
 <!--        </attr>-->
 <!--    </attr>-->
-    <attr sel="#newVisit" th:form="visitForm" th:formaction="@{'/visit/'+${event.id}+'/new'}" th:formmethod="post" />
-    <attr sel="#cancel"  th:onclick="'location.href=\'' + @{/events} + '\''" />
+    <attr sel="#modifyVisit" th:form="visitForm" th:formaction="@{'/visit/'+${visitInfo.id}+'/modify'}" th:formmethod="post" />
+    <attr sel="#cancel"  th:onclick="'location.href=\'' + @{${backUrl}} + '\''" />
     <attr sel="#csrf" th:value="${_csrf.token}" th:name="${_csrf.parameterName}"/>
     <attr sel="#visitTitle" th:text="'방문 신청'"/>
 

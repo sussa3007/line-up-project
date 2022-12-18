@@ -15,6 +15,7 @@
     </attr>
     <attr sel="#modify" th:onclick="'location.href=\'' + @{'/visit/'+${visitInfo.id}+'/modify'} + '\''"/>
     <attr sel="#cancel" th:onclick="'location.href=\'' + @{${backUrl}} + '\''"/>
+    <attr sel="#delete"  th:onclick="'location.href=\'' + @{'/visit/'+${visitInfo.id}+'/delete/check'} + '\''" />
     <attr sel="#csrf" th:value="${_csrf.token}" th:name="${_csrf.parameterName}"/>
     <attr sel="#requestTitle" th:text="'방문 예약 상세'"/>
 </thlogic>

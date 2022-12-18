@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-    <title>New Visit</title>
+    <title>Modify Visit</title>
 </head>
 <body class="bg-gray-200">
 <header th:insert="fragments.html::nav"></header>
@@ -13,11 +13,11 @@
     <div class="w-full max-w-md">
         <form id="visitForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
-                <span id="visitTitle">방문 신청</span>
+                <span id="visitTitle">방문 신청 수정</span>
             </h2>
             <h2 class="text-sm font-bold leading-7 text-gray-900 sm:text-sm sm:truncate"
-                style="color: cornflowerblue">
-                <span id="infoSubTitle">메모 입력은 선택 / 신청 가능 인원 확인 후 신청 바랍니다.</span>
+                style="color: palevioletred">
+                <span id="infoSubTitle">메모와 예약 인원만 수정 가능합니다.</span>
             </h2>
             <table id="requestTable" class="w-full max-w-md" style="margin-top: 1em">
                 <tbody>
@@ -30,7 +30,7 @@
                     <td class="md:w-3/4">
                         <input type="text" id="eventName" name="eventName" placeholder="이벤트 이름"
                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                               th:value="${event.eventName}"
+                               th:value="${visitInfo.eventName}"
                                readonly>
                     </td>
                 </tr>
@@ -43,7 +43,7 @@
                     <td class="md:w-3/4">
                         <input type="text" id="adminEmail" name="adminEmail" placeholder="이메일 주소 (ex: hello@mail.com)"
                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                               th:value="${admin.email}"
+                               th:value="${visitInfo.email}"
                                readonly>
                     </td>
                 </tr>
@@ -56,7 +56,7 @@
                     <td class="md:w-3/4">
                         <input type="text" id="nickname" name="nickname" placeholder="닉네임"
                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                               th:value="${admin.nickname}"
+                               th:value="${visitInfo.nickname}"
                                readonly>
                     </td>
                 </tr>
@@ -69,7 +69,7 @@
                     <td class="md:w-3/4">
                         <input type="text" id="capacity" name="capacity" placeholder="신청 가능 인원"
                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                               th:value="${(event.capacity)-(event.currentNumberOfPeople)}"
+                               th:value="${(visitInfo.capacity)-(visitInfo.currentNumberOfPeople)+(visitInfo.requestNumberOfPeople)}"
                                readonly>
                     </td>
                 </tr>
@@ -80,8 +80,9 @@
                         </label>
                     </td>
                     <td class="md:w-3/4">
-                        <input type="number" min="0" th:max = "${(event.capacity)-(event.currentNumberOfPeople)}" id="requestNumberOfPeople" name="requestNumberOfPeople" placeholder="예약 인원"
+                        <input type="number" min="0" th:max = "${(visitInfo.capacity)-(visitInfo.currentNumberOfPeople)+(visitInfo.requestNumberOfPeople)}" id="requestNumberOfPeople" name="requestNumberOfPeople" placeholder="예약 인원"
                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                               th:value="${visitInfo.requestNumberOfPeople}"
                                required>
                     </td>
                 </tr>
@@ -96,6 +97,7 @@
                               placeholder="메모"
                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                               style="height: 8em"
+                              th:text="${visitInfo.memo}"
                     ></textarea>
                     </td>
                 </tr>
@@ -104,14 +106,14 @@
 
             </table>
             <div class="text-right" style="margin-top: 1em">
-                <button id="newVisit" type="submit"
+                <button id="modifyVisit" type="submit"
                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 >
-                    Submit
+                    수정
                 </button>
                 <button id="cancel" type="button"
                         class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Cancel
+                    취소
                 </button>
             </div>
             <input type="hidden" id="csrf">
