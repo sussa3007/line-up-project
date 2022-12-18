@@ -75,6 +75,7 @@ public class AdminEventMap {
 
     public void updateEntity(AdminEventRequest request) {
         this.event.modifyCurrentNumberOfPeople(this.requestNumberOfPeople, request.requestNumberOfPeople());
+        this.requestNumberOfPeople = request.requestNumberOfPeople();
         this.memo = request.memo();
     }
 
