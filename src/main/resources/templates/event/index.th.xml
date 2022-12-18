@@ -11,7 +11,7 @@
                 <attr sel="td.eventEndDatetime" th:text="${#temporals.format(event.eventEndDatetime, 'M/d (ha)', 'US')}" />
                 <attr sel="td.currentNumberOfPeople" th:text="${event.currentNumberOfPeople}" />
                 <attr sel="td.capacity" th:text="${event.capacity}" />
-                <attr sel="td/a.visit" th:text="'예약 신청'" th:href="@{'/visit/' + ${event.id} + '/new'}" />
+                <attr sel="td/a.visit" th:text="'방문 신청'" th:href="@{'/visit/' + ${event.id} + '/new'}" />
                 <attr sel="td/a.detail" th:text="'상세'" th:href="@{'/events/' + ${event.id}}" />
             </attr>
         </attr>
