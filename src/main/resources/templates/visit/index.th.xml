@@ -8,6 +8,7 @@
                 <attr sel="td.placeName" th:text="${visit.placeName}" />
                 <attr sel="td.eventName" th:text="${visit.eventName}" />
                 <attr sel="td.email" th:text="${visit.email}" />
+                <attr sel="td.phoneNumber" th:text="${visit.phoneNumber}" />
                 <attr sel="td.eventStartDatetime" th:text="${#temporals.format(visit.eventStartDatetime, 'M/d (ha)', 'US')}" />
                 <attr sel="td.eventEndDatetime" th:text="${visit.modifyAt}" />
                 <attr sel="td.requestNumberOfPeople" th:text="${visit.requestNumberOfPeople}" />
