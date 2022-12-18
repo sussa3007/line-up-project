@@ -73,6 +73,10 @@ public class SearchUtils {
                 URLEncoder.encode(
                         Optional.ofNullable((String) param.get("post"))
                                 .orElse(""), StandardCharsets.UTF_8);
+        String placeAdminEmail =
+                URLEncoder.encode(
+                        Optional.ofNullable((String) param.get("placeAdminEmail"))
+                                .orElse(""), StandardCharsets.UTF_8);
 
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -111,6 +115,9 @@ public class SearchUtils {
         if (!postEncode.isEmpty())
             stringBuilder.append("&").append("post").append("=").append(postEncode);
 
+        if (!placeAdminEmail.isEmpty())
+            stringBuilder.append("&").append("placeAdminEmail").append("=").append(placeAdminEmail);
+
         if (!pageEncode.isEmpty())
             stringBuilder.append("&").append("page").append("=").append(pageEncode);
 
@@ -119,6 +126,16 @@ public class SearchUtils {
     }
 
     /* 컨트롤러 호출 부 */
+
+    public Map<String, Object> getVisitPageInfo(
+            HttpServletRequest request,
+            Page<AdminEventResponse> findDtos
+    ) {
+        String forPage = getRequestUriParam(request);
+        Map<String, Object> map = getAdminEventPageMap(forPage, findDtos);
+        map.put("currentPage", "/visit/searchVisit");
+        return map;
+    }
     public Map<String, Object> getRequestPageInfo(
             HttpServletRequest request,
             Page<ReqResponse> findDtos,
@@ -368,6 +385,17 @@ public class SearchUtils {
 
         map.put("posts", findDtos);
         map.put("postStatus", Post.Status.values());
+        return map;
+    }
+    private static Map<String, Object> getAdminEventPageMap(
+            String forPage,
+            Page<AdminEventResponse> findDtos
+    ) {
+        List<AdminEventResponse> toResponse = findDtos.getContent();
+
+        Map<String, Object> map = getPageMap(forPage, findDtos);
+
+        map.put("visits", findDtos);
         return map;
     }
 
