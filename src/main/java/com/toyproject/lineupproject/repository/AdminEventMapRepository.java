@@ -2,8 +2,8 @@ package com.toyproject.lineupproject.repository;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.StringExpression;
-import com.toyproject.lineupproject.domain.AdminEventMap;
-import com.toyproject.lineupproject.domain.QAdminEventMap;
+import com.toyproject.lineupproject.domain.*;
+import com.toyproject.lineupproject.repository.querydsl.AdminEventRepositoryCustom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +13,7 @@ import org.springframework.data.querydsl.binding.QuerydslBindings;
 
 public interface AdminEventMapRepository extends
         JpaRepository<AdminEventMap, Long>,
+        AdminEventRepositoryCustom,
         QuerydslPredicateExecutor<AdminEventMap>,
         QuerydslBinderCustomizer<QAdminEventMap>
 {
@@ -29,4 +30,8 @@ public interface AdminEventMapRepository extends
     }
 
     Page<AdminEventMap> findAll(Predicate predicate, Pageable pageable);
+
+    Page<AdminEventMap> findAllByAdmin(Admin admin, Pageable pageable);
+    Page<AdminEventMap> findAllByEvent_Place(Place place, Pageable pageable);
+    Page<AdminEventMap> findAllByEvent(Event event, Pageable pageable);
 }
