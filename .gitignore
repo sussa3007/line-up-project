@@ -46,3 +46,6 @@ application-oauth.properties
 
 ### yml ###
 application-local.yml
+
+### data ###
+data.sql
