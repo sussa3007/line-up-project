@@ -1,6 +1,8 @@
 package com.toyproject.lineupproject.domain;
 
+import com.toyproject.lineupproject.constant.ErrorCode;
 import com.toyproject.lineupproject.constant.EventStatus;
+import com.toyproject.lineupproject.exception.GeneralException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,7 +13,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @ToString
@@ -77,6 +81,27 @@ public class  Event {
     @LastModifiedDate
     private LocalDateTime modifiedAt;
 
+
+    @ToString.Exclude
+    @OrderBy("id")
+    @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE)
+    private final Set<AdminEventMap> adminEventMaps = new LinkedHashSet<>();
+
+
+    public void addAdminEventMaps(AdminEventMap adminEventMap) {
+        int capa = this.currentNumberOfPeople + adminEventMap.getRequestNumberOfPeople();
+        if (capa > this.capacity) {
+            throw new GeneralException(ErrorCode.EXCEEDING_MAXIMUM_OCCUPANCY);
+        } else {
+            this.currentNumberOfPeople += adminEventMap.getRequestNumberOfPeople();
+            adminEventMaps.add(adminEventMap);
+        }
+    }
+
+    public void modifyCurrentNumberOfPeople(Integer before, Integer after) {
+        this.currentNumberOfPeople -= before;
+        this.currentNumberOfPeople += after;
+    }
 
     protected Event() {}
 

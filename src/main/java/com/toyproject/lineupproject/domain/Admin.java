@@ -71,6 +71,11 @@ public class Admin {
     @ToString.Exclude
     @OrderBy("id")
     @OneToMany(mappedBy = "admin")
+    private final Set<AdminEventMap> adminEventMaps = new LinkedHashSet<>();
+
+    @ToString.Exclude
+    @OrderBy("id")
+    @OneToMany(mappedBy = "admin")
     private final Set<Post> posts = new LinkedHashSet<>();
 
     @ToString.Exclude
@@ -79,6 +84,9 @@ public class Admin {
     private final Set<Request> requests = new LinkedHashSet<>();
 
 
+    public void addAdminEventMaps(AdminEventMap adminEventMap) {
+        adminEventMaps.add(adminEventMap);
+    }
     public void addAdminPlaceMaps(AdminPlaceMap adminPlaceMap) {
         adminPlaceMaps.add(adminPlaceMap);
     }
