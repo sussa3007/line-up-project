@@ -76,6 +76,15 @@
                             <span class="text-sm font-light text-gray-500 dark:text-gray-400">사용자의 문의/요청사항을 관리 합니다.</span>
                         </a>
                     </li>
+                    <li sec:authorize="hasAnyRole('ROLE_SUPERADMIN')">
+                        <a id="visit"
+                           class="block p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                           th:href="@{/visit/searchVisit}"
+                        >
+                            <div class="font-semibold"> Visit Management</div>
+                            <span class="text-sm font-light text-gray-500 dark:text-gray-400">전체 방문 신청 현황을 관리합니다.</span>
+                        </a>
+                    </li>
                 </ul>
                 <ul>
                     <li sec:authorize="hasAnyRole('ROLE_ADMIN')">
@@ -130,6 +139,15 @@
                         >
                             <div class="font-semibold"> Message Management</div>
                             <span class="text-sm font-light text-gray-500 dark:text-gray-400">사용자에게 보낸 메세지를 관리 합니다.</span>
+                        </a>
+                    </li>
+                    <li sec:authorize="(hasAnyRole('ROLE_ADMIN') && !hasAnyRole('ROLE_SUPERADMIN')) || (!hasAnyRole('ROLE_SUPERADMIN','ROLE_USER') && !isAnonymous())">
+                        <a id="visitAdmin"
+                           class="block p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                           th:href="@{/visit/searchVisit}"
+                        >
+                            <div class="font-semibold"> Visit Management</div>
+                            <span class="text-sm font-light text-gray-500 dark:text-gray-400">사용자의 방문 신청 현황을 관리합니다.</span>
                         </a>
                     </li>
                 </ul>

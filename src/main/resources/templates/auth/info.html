@@ -117,7 +117,64 @@
         <header th:insert="pagebar.html::nav"></header>
     </div>
 
-
+</div>
+<div class="bg-gray-200 flex justify-center">
+    <div class="w-full max-w-5xl">
+        <div class="bg-white bg-white shadow-md rounded px-6 pt-4 pb-8 mb-4">
+            <table id="visitTable" class="min-w-full divide-y divide-gray-200">
+                <div style="margin-bottom: 0.5em">
+                    <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                        <span id="visitTitle">나의 예약 목록</span>
+                    </h2>
+                    <h2 style=" margin-top: 0.5em" class="text-sm font-bold leading-7 text-gray-900 sm:text-sm sm:truncate">
+                        <span style="color: red">최근 방문한 이벤트 8건만 조회 가능합니다.</span>
+                    </h2>
+                </div>
+                <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Place
+                    </th>
+                    <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Event
+                    </th>
+                    <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        신청자
+                    </th>
+                    <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        시작 일시
+                    </th>
+                    <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        종료 일시
+                    </th>
+                    <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        신청 인원
+                    </th>
+                    <th scope="col" class="relative px-6 py-3"><span class="sr-only">상세</span></th>
+                </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                <tr>
+                    <td class="placeName px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">스포츠 센터</td>
+                    <td class="eventName px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">베드민턴</td>
+                    <td class="email px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">admin@gmail.com</td>
+                    <td class="eventStartDatetime px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">2021-01-01 09:00:00</td>
+                    <td class="eventEndDatetime px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">2021-01-01 10:00:00</td>
+                    <td class="requestNumberOfPeople px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">16</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <a class="text-indigo-600 hover:text-indigo-900">Detail</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 </body>
 </html>

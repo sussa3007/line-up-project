@@ -39,6 +39,7 @@ public class Post {
     @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String post;
 
+
     @Setter
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Admin admin;
