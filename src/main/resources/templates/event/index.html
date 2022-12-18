@@ -47,19 +47,19 @@
                 </td>
                 <td sec:authorize="isAuthenticated()" th:if = "${((event.capacity)!=(event.currentNumberOfPeople))  && !(event.eventStatus.name().equals('OPENED'))}"
                     class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <a class="text-red-600 hover:text-red-900">신청 불가</a>
+                    <a class="text-red-600 hover:text-red-900">방문 불가</a>
                 </td>
                 <td th:if = "${((event.capacity)==(event.currentNumberOfPeople)) && !(event.eventStatus.name().equals('OPENED'))}"
                     class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <a class="text-yellow-600 hover:text-yellow-900">신청 마감</a>
+                    <a class="text-yellow-600 hover:text-yellow-900">방문 마감</a>
                 </td>
                 <td sec:authorize="!isAuthenticated()" th:if = "${((event.capacity)!=(event.currentNumberOfPeople)) && (event.eventStatus.name().equals('OPENED'))}"
                     class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <a class="text-green-600 hover:text-green-900">신청 가능</a>
+                    <a class="text-green-600 hover:text-green-900">방문 가능</a>
                 </td>
                 <td sec:authorize="!isAuthenticated()" th:if = "${((event.capacity)!=(event.currentNumberOfPeople))  && !(event.eventStatus.name().equals('OPENED'))}"
                     class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <a class="text-red-600 hover:text-red-900">신청 불가</a>
+                    <a class="text-red-600 hover:text-red-900">방문 불가</a>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <a class="detail text-indigo-600 hover:text-indigo-900">상세</a>

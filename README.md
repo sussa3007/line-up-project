@@ -158,8 +158,10 @@ Spring Boot
    <summary> 일반 / 비회원 이벤트,장소 리스트 조회 페이지 </summary>
 
 
-![image](https://user-images.githubusercontent.com/110886399/208289848-e1e701be-78b6-41c0-99b9-65543716a082.png)
+![image](https://user-images.githubusercontent.com/110886399/208294518-94b49139-fbee-48a4-af0b-35d2bd6e2403.png)
 
+
+![image](https://user-images.githubusercontent.com/110886399/208294503-ecdd6ccb-60a2-444f-91ff-f1bfa1550afc.png)
 
 
 ![image](https://user-images.githubusercontent.com/110886399/206916479-7f3343ad-ac8a-4cc2-98ee-66c5ae8e6269.png)
